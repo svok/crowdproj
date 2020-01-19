@@ -1,6 +1,7 @@
 rootProject.name = "crowdproj"
-include("crowdproj-backend")
 include("crowdproj-models-kt")
+include("crowdproj-models-dart")
+include("crowdproj-backend")
 
 pluginManagement {
 
