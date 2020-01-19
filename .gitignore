@@ -1,5 +1,8 @@
 .gradle
-/build/
+**/.gradle
+.idea
+build/
+**/build/
 
 # Ignore Gradle GUI config
 gradle-app.setting
@@ -10,5 +13,6 @@ gradle-app.setting
 # Cache of project
 .gradletasknamecache
 
-# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
-# gradle/wrapper/gradle-wrapper.properties
+
+/crowdproj-models-kt/*
+!/crowdproj-models-kt/build.gradle.kts
