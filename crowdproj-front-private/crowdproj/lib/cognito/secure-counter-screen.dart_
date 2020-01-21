@@ -1,0 +1,140 @@
+import 'dart:developer';
+
+import 'package:amazon_cognito_identity_dart/sig_v4.dart';
+import 'package:flutter/material.dart';
+import 'package:amazon_cognito_identity_dart/cognito.dart';
+import 'package:crowdproj/common/CpSession.dart';
+
+import '../modules/auth/CognitoConfig.dart';
+import 'counter-service.dart';
+import 'counter.dart';
+import 'SigninScreen.dart';
+import '../modules/auth/AuthService.dart';
+import 'user.dart';
+
+class SecureCounterScreen extends StatefulWidget {
+  SecureCounterScreen({Key key}) : super(key: key);
+
+  @override
+  _SecureCounterScreenState createState() => new _SecureCounterScreenState();
+}
+
+class _SecureCounterScreenState extends State<SecureCounterScreen> {
+  final _userService = CpSession.get.authService;
+//  final _userService = new UserService(_userPool);
+  CounterService _counterService;
+  AwsSigV4Client _awsSigV4Client;
+  User _user = new User();
+  Counter _counter = new Counter(0);
+  bool _isAuthenticated = false;
+
+  void _incrementCounter() async {
+    final counter = await _counterService.incrementCounter();
+    setState(() {
+      _counter = counter;
+    });
+  }
+
+  Future<AuthService> _getValues(BuildContext context) async {
+    try {
+      log("ZZZ0");
+      await _userService.init();
+      log("ZZZ1");
+      _isAuthenticated = await _userService.isAuthenticated();
+      log("ZZZ2");
+      if (_isAuthenticated) {
+        // get user attributes from cognito
+        log("ZZZ: authenticated");
+        _user = await _userService.getCurrentUser();
+
+        // get session credentials
+        log("ZZZ: getting credentials");
+        final credentials = await _userService.getCredentials();
+        log("ZZZ: AwsSig");
+        _awsSigV4Client = new AwsSigV4Client(
+            credentials.accessKeyId,
+            credentials.secretAccessKey,
+            CognitoConfig.endpoint,
+            region: CognitoConfig.region,
+            sessionToken: credentials.sessionToken
+        );
+
+        // get previous count
+        log("ZZZ: Counter Service");
+        _counterService = new CounterService(_awsSigV4Client);
+        log("ZZZ: getCounter");
+        _counter = await _counterService.getCounter();
+      }
+      log("ZZZ: finished authenticated");
+      return _userService;
+    } on CognitoClientException catch (e) {
+      if (e.code == 'NotAuthorizedException') {
+        await _userService.signOut();
+        Navigator.pop(context);
+      }
+      throw e;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return new FutureBuilder(
+        future: _getValues(context),
+        builder: (context, AsyncSnapshot<AuthService> snapshot) {
+          if (snapshot.hasData) {
+            if (!_isAuthenticated) {
+              return new SigninScreen();
+            }
+
+            return new Scaffold(
+              appBar: new AppBar(
+                title: new Text('Secure Counter'),
+              ),
+              body: new Center(
+                child: new Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    new Text(
+                      'Welcome ${_user.name}!',
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                    new Divider(),
+                    new Text(
+                      'You have pushed the button this many times:',
+                    ),
+                    new Text(
+                      '${_counter.count}',
+                      style: Theme.of(context).textTheme.display1,
+                    ),
+                    new Divider(),
+                    new Center(
+                      child: new InkWell(
+                        child: new Text(
+                          'Logout',
+                          style: new TextStyle(color: Colors.blueAccent),
+                        ),
+                        onTap: () {
+                          _userService.signOut();
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+//              floatingActionButton: new FloatingActionButton(
+//                onPressed: () {
+//                  if (snapshot.hasData) {
+//                    _incrementCounter();
+//                  }
+//                },
+//                tooltip: 'Increment',
+//                child: new Icon(Icons.add),
+//              ),
+            );
+          }
+          return new Scaffold(
+              appBar: new AppBar(title: new Text('Loading...')));
+        });
+  }
+}

@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+
+class TeamUpdateWidget extends StatefulWidget {
+
+  @override
+  _TeamUpdateWidgetState createState() => _TeamUpdateWidgetState();
+
+}
+
+class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+
+}

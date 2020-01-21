@@ -17,5 +17,4 @@ local.properties
 
 /crowdproj-models-kt/*
 !/crowdproj-models-kt/build.gradle.kts
-/crowdproj-models-dart/*
-!/crowdproj-models-dart/build.gradle.kts
+/crowdproj-front-private/crowdproj_models/*

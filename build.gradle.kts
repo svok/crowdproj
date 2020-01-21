@@ -38,56 +38,41 @@ tasks {
             )
         )
     }
-
-    create<GenerateTask>("generateDartModels") {
+    val cleanKotlinModels by creating(GenerateTask::class) {
         group = "openapi"
-        generatorName.set("dart")
-        inputSpec.set("$rootDir/spec/crowdproj-spec.yaml")
-        outputDir.set("$rootDir/crowdproj-models-dart")
-        modelPackage.set("${project.group}.models")
-        generateModelDocumentation.set(true)
-        generateModelTests.set(true)
-        configOptions.putAll(
-            mutableMapOf(
-                "modelMutable" to "true",
-                "swaggerAnnotations" to "true"
-            )
-        )
-        systemProperties.putAll(
-            mapOf(
-                "models" to "",
-                "modelTests" to "",
-                "modelDocs" to ""
-            )
-        )
-    }
-
-    create<Delete>("clean", Delete::class) {
-        group = BasePlugin.BUILD_GROUP
-//        val modelsJs = project(":models-js").projectDir
-//        fileTree(modelsJs).visit {
-//            if (!file.name.endsWith(".kts")) {
-//                delete(file)
-//            }
-//        }
-//        delete("$modelsJs/.gradle")
-
-//        val backendApi = "${project(":backend-api").projectDir}/src/main/kotlin/ru/iteco/dfu/nma/backend/controllers"
-//        fileTree(backendApi).visit {
-//            delete(file)
-//        }
-
         val modelsKt = project(":crowdproj-models-kt").projectDir
         fileTree(modelsKt).visit {
             if (!file.name.endsWith(".kts")) {
                 delete(file)
             }
         }
-        val modelsDart = project(":crowdproj-models-dart").projectDir
+    }
+
+    create<GenerateTask>("generateDartModels") {
+        group = "openapi"
+        generatorName.set("dart-dio")
+        inputSpec.set("$rootDir/spec/crowdproj-spec.yaml")
+        outputDir.set("$rootDir/crowdproj-front-private/crowdproj_models")
+        packageName.set(project.group.toString())
+        modelPackage.set("${project.group}.models")
+        generateModelDocumentation.set(true)
+        generateModelTests.set(true)
+        apiPackage.set("${project.group}.api")
+        invokerPackage.set("${project.group}.invoker")
+    }
+
+    val cleanDartModels by creating(GenerateTask::class) {
+        group = "openapi"
+        val modelsDart = "${project(":crowdproj-front-private").projectDir}/crowdproj_models"
+        println("MODELS DART: $modelsDart")
         fileTree(modelsDart).visit {
-            if (!file.name.endsWith(".kts")) {
-                delete(file)
-            }
+            delete(file)
         }
+    }
+
+    create<Delete>("clean", Delete::class) {
+        group = BasePlugin.BUILD_GROUP
+        dependsOn(cleanDartModels)
+        dependsOn(cleanKotlinModels)
     }
 }
