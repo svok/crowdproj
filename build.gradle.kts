@@ -38,7 +38,7 @@ tasks {
             )
         )
     }
-    val cleanKotlinModels by creating(GenerateTask::class) {
+    val cleanKotlinModels by creating(Delete::class) {
         group = "openapi"
         val modelsKt = project(":crowdproj-models-kt").projectDir
         fileTree(modelsKt).visit {
@@ -61,7 +61,7 @@ tasks {
         invokerPackage.set("${project.group}.invoker")
     }
 
-    val cleanDartModels by creating(GenerateTask::class) {
+    val cleanDartModels by creating(Delete::class) {
         group = "openapi"
         val modelsDart = "${project(":crowdproj-front-private").projectDir}/crowdproj_models"
         println("MODELS DART: $modelsDart")

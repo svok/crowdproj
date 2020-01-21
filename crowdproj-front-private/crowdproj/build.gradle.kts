@@ -12,9 +12,22 @@ tasks {
 
     }
 
+    val generateModles by creating {
+        dependsOn(rootProject.getTasksByName("generateDartModels", false))
+    }
+
     val buildFlutterLinux by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "build"
+        inputs.files(
+            fileTree("$projectDir/linux"),
+            fileTree("$projectDir/assets"),
+            fileTree("$projectDir/fonts"),
+            fileTree("$projectDir/lib")
+        )
+        outputs.files(
+            fileTree("$buildDir/linux/release")
+        )
         executable = flutterCommand
         args = listOf(
             "build",
@@ -23,8 +36,17 @@ tasks {
     }
 
     val buildFlutterWeb by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "build"
+        inputs.files(
+            fileTree("$projectDir/web"),
+            fileTree("$projectDir/assets"),
+            fileTree("$projectDir/fonts"),
+            fileTree("$projectDir/lib")
+        )
+        outputs.files(
+            fileTree("$buildDir/web")
+        )
         executable = flutterCommand
         args = listOf(
             "build",
@@ -33,17 +55,31 @@ tasks {
     }
 
     val buildFlutterAndroid by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "build"
+        inputs.files("android/app", "assets", "fonts", "lib")
+        inputs.files(
+            fileTree("$projectDir/android/app"),
+            file("$projectDir/android/build.gradle"),
+            file("$projectDir/android/gradle.properties"),
+            fileTree("$projectDir/android/gradle"),
+            fileTree("$projectDir/assets"),
+            fileTree("$projectDir/fonts"),
+            fileTree("$projectDir/lib")
+        )
+        outputs.files(
+            fileTree("$buildDir/app/outputs/bundle")
+        )
+
         executable = flutterCommand
         args = listOf(
             "build",
-            "apk"
+            "appbundle", "--target-platform", "android-arm,android-arm64,android-x64"
         )
     }
 
     val buildFlutterIos by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "build"
         executable = flutterCommand
         args = listOf(
@@ -53,7 +89,7 @@ tasks {
     }
 
     val runFlutterLinux by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "run"
         executable = flutterCommand
         args = listOf(
@@ -64,7 +100,7 @@ tasks {
     }
 
     val runFlutterWeb by creating(Exec::class) {
-        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
+        dependsOn(generateModles)
         group = "run"
         executable = flutterCommand
         args = listOf(
@@ -99,6 +135,10 @@ tasks {
     create("build") {
         dependsOn(buildFlutterWeb)
         dependsOn(buildFlutterLinux)
+    }
+
+    create<Delete>("clean") {
+        delete(buildDir)
     }
 }
 
