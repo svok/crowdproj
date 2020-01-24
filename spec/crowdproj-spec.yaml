@@ -1,98 +1,99 @@
 openapi: 3.0.1
 info:
-  title: Swagger Petstore
-  description: 'This is a sample server Petstore server.  You can find out more about     Swagger
-    at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For
-    this sample, you can use the api key `special-key` to test the authorization     filters.'
-  termsOfService: http://swagger.io/terms/
+  title: Crowdproj models
+  description: 'This spec contains a [Crowdproj](http://crowdpwoj.com) project models and api description.'
+  # termsOfService: http://swagger.io/terms/
   contact:
-    email: apiteam@swagger.io
+    email: sokatov@gmail.com
   license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 1.0.0
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
+    name: Proprietar
+    # url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: http://swagger.io
 servers:
-  - url: https://petstore.swagger.io/v2
-  - url: http://petstore.swagger.io/v2
+  - url: https://crowdproj.com/v1
+  - url: http://localhost/
 tags:
-  - name: pet
-    description: Everything about your Pets
-    externalDocs:
-      description: Find out more
-      url: http://swagger.io
-  - name: store
-    description: Access to Petstore orders
-  - name: user
-    description: Operations about user
-    externalDocs:
-      description: Find out more about our store
-      url: http://swagger.io
+  - name: teams
+    description: Full description of the teams
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://swagger.io
+  - name: profiles
+    description: Description of the user profiles
+  - name: groups
+    description: Definitions of the groups of users/teams
+    # externalDocs:
+    #   description: Find out more about our store
+    #   url: http://swagger.io
 paths:
-  /pet:
+  /team:
     put:
       tags:
-        - pet
-      summary: Update an existing pet
-      operationId: updatePet
+        - team
+      summary: Update an existing team
+      operationId: updateTeam
       requestBody:
-        description: Pet object that needs to be added to the store
+        description: Team object that needs to be added to the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/Team'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/Team'
+          text/plain:
+            schema:
+              type: string
         required: true
       responses:
         400:
           description: Invalid ID supplied
           content: {}
         404:
-          description: Pet not found
+          description: Team not found
           content: {}
         405:
           description: Validation exception
           content: {}
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+        - teamstore_auth:
+            - write:teams
+            - read:teams
       x-codegen-request-body-name: body
     post:
       tags:
-        - pet
-      summary: Add a new pet to the store
-      operationId: addPet
+        - team
+      summary: Add a new team to the store
+      operationId: addTeam
       requestBody:
-        description: Pet object that needs to be added to the store
+        description: Team object that needs to be added to the store
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/Team'
           application/xml:
             schema:
-              $ref: '#/components/schemas/Pet'
+              $ref: '#/components/schemas/Team'
         required: true
       responses:
         405:
           description: Invalid input
           content: {}
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+        - teamstore_auth:
+            - write:teams
+            - read:teams
       x-codegen-request-body-name: body
-  /pet/findByStatus:
+  /team/findByStatus:
     get:
       tags:
-        - pet
-      summary: Finds Pets by status
+        - team
+      summary: Finds Teams by status
       description: Multiple status values can be provided with comma separated strings
-      operationId: findPetsByStatus
+      operationId: findTeamsByStatus
       parameters:
         - name: status
           in: query
@@ -117,27 +118,27 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Team'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Team'
         400:
           description: Invalid status value
           content: {}
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/findByTags:
+        - teamstore_auth:
+            - write:teams
+            - read:teams
+  /team/findByTags:
     get:
       tags:
-        - pet
-      summary: Finds Pets by tags
+        - team
+      summary: Finds Teams by tags
       description: Muliple tags can be provided with comma separated strings. Use         tag1,
         tag2, tag3 for testing.
-      operationId: findPetsByTags
+      operationId: findTeamsByTags
       parameters:
         - name: tags
           in: query
@@ -157,31 +158,31 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Team'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Pet'
+                  $ref: '#/components/schemas/Team'
         400:
           description: Invalid tag value
           content: {}
       deprecated: true
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}:
+        - teamstore_auth:
+            - write:teams
+            - read:teams
+  /team/{teamId}:
     get:
       tags:
-        - pet
-      summary: Find pet by ID
-      description: Returns a single pet
-      operationId: getPetById
+        - team
+      summary: Find team by ID
+      description: Returns a single team
+      operationId: getTeamById
       parameters:
-        - name: petId
+        - name: teamId
           in: path
-          description: ID of pet to return
+          description: ID of team to return
           required: true
           schema:
             type: integer
@@ -192,27 +193,27 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/Team'
             application/json:
               schema:
-                $ref: '#/components/schemas/Pet'
+                $ref: '#/components/schemas/Team'
         400:
           description: Invalid ID supplied
           content: {}
         404:
-          description: Pet not found
+          description: Team not found
           content: {}
       security:
         - api_key: []
     post:
       tags:
-        - pet
-      summary: Updates a pet in the store with form data
-      operationId: updatePetWithForm
+        - team
+      summary: Updates a team in the store with form data
+      operationId: updateTeamWithForm
       parameters:
-        - name: petId
+        - name: teamId
           in: path
-          description: ID of pet that needs to be updated
+          description: ID of team that needs to be updated
           required: true
           schema:
             type: integer
@@ -224,31 +225,31 @@ paths:
               properties:
                 name:
                   type: string
-                  description: Updated name of the pet
+                  description: Updated name of the team
                 status:
                   type: string
-                  description: Updated status of the pet
+                  description: Updated status of the team
       responses:
         405:
           description: Invalid input
           content: {}
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+        - teamstore_auth:
+            - write:teams
+            - read:teams
     delete:
       tags:
-        - pet
-      summary: Deletes a pet
-      operationId: deletePet
+        - team
+      summary: Deletes a team
+      operationId: deleteTeam
       parameters:
         - name: api_key
           in: header
           schema:
             type: string
-        - name: petId
+        - name: teamId
           in: path
-          description: Pet id to delete
+          description: Team id to delete
           required: true
           schema:
             type: integer
@@ -258,22 +259,22 @@ paths:
           description: Invalid ID supplied
           content: {}
         404:
-          description: Pet not found
+          description: Team not found
           content: {}
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
-  /pet/{petId}/uploadImage:
+        - teamstore_auth:
+            - write:teams
+            - read:teams
+  /team/{teamId}/uploadImage:
     post:
       tags:
-        - pet
+        - team
       summary: uploads an image
       operationId: uploadFile
       parameters:
-        - name: petId
+        - name: teamId
           in: path
-          description: ID of pet to update
+          description: ID of team to update
           required: true
           schema:
             type: integer
@@ -298,14 +299,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - petstore_auth:
-            - write:pets
-            - read:pets
+        - teamstore_auth:
+            - write:teams
+            - read:teams
   /store/inventory:
     get:
       tags:
         - store
-      summary: Returns pet inventories by status
+      summary: Returns team inventories by status
       description: Returns a map of status codes to quantities
       operationId: getInventory
       responses:
@@ -324,10 +325,10 @@ paths:
     post:
       tags:
         - store
-      summary: Place an order for a pet
+      summary: Place an order for a team
       operationId: placeOrder
       requestBody:
-        description: order placed for purchasing the pet
+        description: order placed for purchasing the team
         content:
           '*/*':
             schema:
@@ -358,7 +359,7 @@ paths:
       parameters:
         - name: orderId
           in: path
-          description: ID of pet that needs to be fetched
+          description: ID of team that needs to be fetched
           required: true
           schema:
             maximum: 10.0
@@ -404,75 +405,75 @@ paths:
         404:
           description: Order not found
           content: {}
-  /user:
+  /profile:
     post:
       tags:
-        - user
-      summary: Create user
-      description: This can only be done by the logged in user.
-      operationId: createUser
+        - profile
+      summary: Create profile
+      description: This can only be done by the logged in profile.
+      operationId: createProfile
       requestBody:
-        description: Created user object
+        description: Created profile object
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Profile'
         required: true
       responses:
         default:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /user/createWithArray:
+  /profile/createWithArray:
     post:
       tags:
-        - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithArrayInput
+        - profile
+      summary: Creates list of profiles with given input array
+      operationId: createProfilesWithArrayInput
       requestBody:
-        description: List of user object
-        content:
-          '*/*':
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        default:
-          description: successful operation
-          content: {}
-      x-codegen-request-body-name: body
-  /user/createWithList:
-    post:
-      tags:
-        - user
-      summary: Creates list of users with given input array
-      operationId: createUsersWithListInput
-      requestBody:
-        description: List of user object
+        description: List of profile object
         content:
           '*/*':
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Profile'
         required: true
       responses:
         default:
           description: successful operation
           content: {}
       x-codegen-request-body-name: body
-  /user/login:
+  /profile/createWithList:
+    post:
+      tags:
+        - profile
+      summary: Creates list of profiles with given input array
+      operationId: createProfilesWithListInput
+      requestBody:
+        description: List of profile object
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /profile/login:
     get:
       tags:
-        - user
-      summary: Logs user into the system
-      operationId: loginUser
+        - profile
+      summary: Logs profile into the system
+      operationId: loginProfile
       parameters:
-        - name: username
+        - name: profilename
           in: query
-          description: The user name for login
+          description: The profile name for login
           required: true
           schema:
             type: string
@@ -487,7 +488,7 @@ paths:
           description: successful operation
           headers:
             X-Rate-Limit:
-              description: calls per hour allowed by the user
+              description: calls per hour allowed by the profile
               schema:
                 type: integer
                 format: int32
@@ -504,24 +505,24 @@ paths:
               schema:
                 type: string
         400:
-          description: Invalid username/password supplied
+          description: Invalid profilename/password supplied
           content: {}
-  /user/logout:
+  /profile/logout:
     get:
       tags:
-        - user
-      summary: Logs out current logged in user session
-      operationId: logoutUser
+        - profile
+      summary: Logs out current logged in profile session
+      operationId: logoutProfile
       responses:
         default:
           description: successful operation
           content: {}
-  /user/{username}:
+  /profile/{username}:
     get:
       tags:
-        - user
-      summary: Get user by user name
-      operationId: getUserByName
+        - profile
+      summary: Get profile by user name
+      operationId: getProfileByName
       parameters:
         - name: username
           in: path
@@ -535,22 +536,22 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Profile'
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/Profile'
         400:
           description: Invalid username supplied
           content: {}
         404:
-          description: User not found
+          description: Profile not found
           content: {}
     put:
       tags:
-        - user
-      summary: Updated user
-      description: This can only be done by the logged in user.
-      operationId: updateUser
+        - profile
+      summary: Updated profile
+      description: This can only be done by the logged in profile.
+      operationId: updateProfile
       parameters:
         - name: username
           in: path
@@ -563,22 +564,22 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/Profile'
         required: true
       responses:
         400:
-          description: Invalid user supplied
+          description: Invalid profile supplied
           content: {}
         404:
-          description: User not found
+          description: Profile not found
           content: {}
       x-codegen-request-body-name: body
     delete:
       tags:
-        - user
-      summary: Delete user
-      description: This can only be done by the logged in user.
-      operationId: deleteUser
+        - profile
+      summary: Delete profile
+      description: This can only be done by the logged in profile.
+      operationId: deleteProfile
       parameters:
         - name: username
           in: path
@@ -591,7 +592,7 @@ paths:
           description: Invalid username supplied
           content: {}
         404:
-          description: User not found
+          description: Profile not found
           content: {}
 components:
   schemas:
@@ -601,7 +602,7 @@ components:
         id:
           type: integer
           format: int64
-        petId:
+        teamId:
           type: integer
           format: int64
         quantity:
@@ -632,13 +633,12 @@ components:
           type: string
       xml:
         name: Category
-    User:
+    Profile:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-        username:
+          type: string
+        alias:
           type: string
         firstName:
           type: string
@@ -650,12 +650,15 @@ components:
           type: string
         phone:
           type: string
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
+        profileStatus:
+          type: string
+          description: Profile Status
+          enum:
+            - closed
+            - open
+            - deleted
       xml:
-        name: User
+        name: Profile
     Tag:
       type: object
       properties:
@@ -666,20 +669,31 @@ components:
           type: string
       xml:
         name: Tag
-    Pet:
+    Team:
       required:
         - name
-        - photoUrls
+        - summary
+        - description
       type: object
       properties:
         id:
-          type: integer
-          format: int64
-        category:
-          $ref: '#/components/schemas/Category'
+          type: string
+#        category:
+#          $ref: '#/components/schemas/Category'
         name:
           type: string
-          example: doggie
+          description: "Name qualifying the team"
+          example: "New York swimming team"
+        summary:
+          type: string
+          description: "A brief description for the team to be shown in the list of teams"
+          example: "We are the swimming team. We do swimming sports etc..."
+        description:
+          type: string
+          description: "The team description field in markdown format."
+          example: "# New York swimming team\n\nYou are **welcome** ..."
+        owner:
+          $ref: '#/components/schemas/Profile'
         photoUrls:
           type: array
           xml:
@@ -694,15 +708,24 @@ components:
             wrapped: true
           items:
             $ref: '#/components/schemas/Tag'
+        visibility:
+          type: string
+          description: Visibility type of the team
+          enum:
+            - public
+            - registeredOnly
+            - groupOnly
+            - membersOnly
         status:
           type: string
-          description: pet status in the store
+          description: team status in the store
           enum:
-            - available
+            - active
             - pending
-            - sold
+            - closed
+            - deleted
       xml:
-        name: Pet
+        name: Team
     ApiResponse:
       type: object
       properties:
@@ -714,14 +737,14 @@ components:
         message:
           type: string
   securitySchemes:
-    petstore_auth:
+    teamstore_auth:
       type: oauth2
       flows:
         implicit:
-          authorizationUrl: http://petstore.swagger.io/oauth/dialog
+          authorizationUrl: http://teamstore.swagger.io/oauth/dialog
           scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
+            write:teams: modify teams in your account
+            read:teams: read your teams
     api_key:
       type: apiKey
       name: api_key

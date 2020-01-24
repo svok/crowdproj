@@ -1,3 +1,4 @@
+import 'package:crowdproj_models/model/team.dart';
 import 'package:flutter/material.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
@@ -10,6 +11,7 @@ class TeamUpdateWidget extends StatefulWidget {
 class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
+    final pet = Team();
     return Container();
   }
 

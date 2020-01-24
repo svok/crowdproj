@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.crowdproj"
-version = "1.0-SNAPSHOT"
+version = "0.0.1"
 
 allprojects {
     repositories {
@@ -59,12 +59,18 @@ tasks {
         generateModelTests.set(true)
         apiPackage.set("${project.group}.api")
         invokerPackage.set("${project.group}.invoker")
+        additionalProperties.set(
+            mapOf(
+                "pubName" to "crowdproj_models",
+                "pubDescription" to "Crowdproj API generated REST-interface",
+                "pubVersion" to project.version.toString()
+            )
+        )
     }
 
     val cleanDartModels by creating(Delete::class) {
         group = "openapi"
         val modelsDart = "${project(":crowdproj-front-private").projectDir}/crowdproj_models"
-        println("MODELS DART: $modelsDart")
         fileTree(modelsDart).visit {
             delete(file)
         }

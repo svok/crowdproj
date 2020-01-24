@@ -1,5 +1,5 @@
-enable-experiment:
-  - extension-methods
+#enable-experiment:
+#  - extension-methods
 #include: package:flutter/analysis_options_user.yaml
 
 ## TODO: Remove these excludes when https://github.com/flutter/flutter/issues/12726 is fixed.
@@ -8,3 +8,8 @@ enable-experiment:
 #    implementation_imports: ignore
 #    non_constant_identifier_names: ignore
 #    unused_element: ignore
+
+analyzer:
+  enable-experiment:
+    - non-nullable
+    - extension-methods
