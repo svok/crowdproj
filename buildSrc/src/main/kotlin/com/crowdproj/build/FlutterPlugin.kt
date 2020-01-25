@@ -127,4 +127,93 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         )
     }
 
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_LINUX) {
+        dependsOn(FlutterPubUpgradeTask.TASK_NAME)
+        architecture.set("linux")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/linux"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+        outputs.files(
+            fileTree("$dir/build/linux/release")
+        )
+
+    }
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_WINDOWS) {
+        architecture.set("windows")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/windows"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+    }
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_WEB) {
+        architecture.set("web")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/web"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+        outputs.files(
+            fileTree("$dir/build/web")
+        )
+    }
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_ANDROID) {
+        architecture.set("android")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/android"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+        outputs.files(
+            fileTree("$dir/build/app/outputs/bundle")
+        )
+    }
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_IOS) {
+        architecture.set("ios")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/ios"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+    }
+
+    tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_MACOS) {
+        architecture.set("macos")
+        flutterCommand.set(taskData.flutterCommand)
+        val dir = taskData.workDir
+        flutterProjectDir.set(dir)
+        inputs.files(
+            fileTree("$dir/macos"),
+            fileTree("$dir/assets"),
+            fileTree("$dir/fonts"),
+            fileTree("$dir/lib")
+        )
+    }
 }
