@@ -27,6 +27,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         flutterCommand.set(taskData.flutterCommand)
         flutterProjectDir.set(taskData.workDir)
         inputs.files("${taskData.workDir}/pubspec.yaml")
+        outputs.files("${taskData.workDir}/pubspec.yaml")
     }
 
     tasks.register<FlutterBuildRunnerTask>(FlutterBuildRunnerTask.TASK_NAME) {

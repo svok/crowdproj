@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/common/RouteSettingsArgs.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
+import 'package:flutter/material.dart';
+
+import 'models/Team.dart';
 
 class TeamsPage extends StatefulWidget {
   @override
@@ -11,8 +12,7 @@ class TeamsPage extends StatefulWidget {
   static String titleFormatter({BuildContext context, RouteSettings settings}) =>
       TeamsLocalizations.of(context).title;
 
-  static String pathFormatter({RouteSettings settings}) =>
-      "/teams";
+  static String pathFormatter({RouteSettings settings}) => "/teams";
 
   static final route = RouteDescription(
       id: "TeamsPage",
@@ -26,6 +26,7 @@ class TeamsPage extends StatefulWidget {
 class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
+//    final team = Team();
     final localizer = TeamsLocalizations.of(context);
     return PageSimple(
       title: localizer.title,

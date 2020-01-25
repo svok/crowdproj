@@ -15,6 +15,7 @@ gradle-app.setting
 .gradletasknamecache
 
 gradle-local.properties
+local.properties
 
 /crowdproj-models-kt/*
 !/crowdproj-models-kt/build.gradle.kts

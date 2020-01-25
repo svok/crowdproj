@@ -1,11 +1,12 @@
 import 'package:crowdproj_models/model/profile.dart' as exchange;
 
 class Profile {
-  Profile(): super();
+  Profile({this.id}) : super();
 
-  static fromExchange(exchange.Profile owner) => Profile(
+  String id;
 
-  );
+  static fromExchange(exchange.Profile owner) => Profile();
 
-  exchange.Profile toExchange() => exchange.ProfileBuilder()
+  exchange.Profile toExchange() => toExchangeBuilder().build();
+  exchange.ProfileBuilder toExchangeBuilder() => exchange.ProfileBuilder()..id = id;
 }

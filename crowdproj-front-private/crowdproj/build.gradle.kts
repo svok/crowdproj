@@ -4,54 +4,11 @@ group = rootProject.group
 version = rootProject.version
 
 flutter {
-
+    val flutterBinPath: String by project
+    this.flutterCommand = flutterCommand
 }
 
 tasks {
-
-//    val runFlutterLinux by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "run"
-//        executable = flutterBinPath
-//        setArgs(listOf(
-//            "run",
-//            "-d",
-//            "linux"
-//        ))
-//    }
-//
-//    val runFlutterWeb by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "run"
-//        executable = flutterBinPath
-//        setArgs(listOf(
-//            "run",
-//            "-d",
-//            "web"
-//        ))
-//    }
-
-//    val runFlutterAndroid by creating(Exec::class) {
-//        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
-//        group = "run"
-//        executable = flutterCommand
-//        setArgs(listOf(
-//            "run",
-//            "-d",
-//            "apk"
-//        )
-//    }
-//
-//    val runFlutterIos by creating(Exec::class) {
-//        dependsOn(rootProject.getTasksByName("generateKotlinModels", false))
-//        group = "run"
-//        executable = flutterCommand
-//        setArgs(listOf(
-//            "run",
-//            "-d",
-//            "ios"
-//        )
-//    }
 
     flutterBuildLinux.get()
         .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/widgets.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/common/RouteSettingsArgs.dart';
 import 'package:crowdproj/translations/PromoLocalizations.dart';
 import 'package:crowdproj/widgets/slider/CpCarousel.dart';
 import 'package:crowdproj/widgets/slider/CpSlide.dart';

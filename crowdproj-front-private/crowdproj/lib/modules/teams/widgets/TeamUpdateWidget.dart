@@ -11,7 +11,7 @@ class TeamUpdateWidget extends StatefulWidget {
 class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
-    final pet = Team();
+    final team = Team();
     return Container();
   }
 

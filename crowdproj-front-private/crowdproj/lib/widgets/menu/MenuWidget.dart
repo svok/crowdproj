@@ -59,10 +59,6 @@ class _MenuWidgetState extends State<MenuWidget> {
             }
           },
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-//            const PopupMenuItem(
-//              child: const Text("child 1"),
-//              value: "Value 1",
-//            ),
             MenuItemTeams(context: context),
             MenuItemAbout(context: context),
             MenuItemProfile(context: context),
