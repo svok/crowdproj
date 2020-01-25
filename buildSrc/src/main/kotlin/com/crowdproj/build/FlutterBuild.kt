@@ -4,6 +4,7 @@ import org.gradle.api.Project
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.named
@@ -19,9 +20,11 @@ open class FlutterBuildTask: DefaultTask() {
     @Input
     val architecture: Property<String> = project.objects.property(String::class.java)
 
+    @Optional
     @Input
     val buildPackage: Property<String> = project.objects.property(String::class.java)
 
+    @Optional
     @Input
     val buildPlatforms: ListProperty<String> = project.objects.listProperty(String::class.java)
 
@@ -40,13 +43,15 @@ open class FlutterBuildTask: DefaultTask() {
             "build"
         )
         if (buildPackage.isPresent) {
+            println("BUILD PACKAGE = ${buildPackage.get()}")
             execArgs.add(buildPackage.get())
         } else if (architecture.isPresent) {
             execArgs.add(architecture.get())
         } else {
             throw GradleException("You must provie either architechture or buildPackage parameter for flutterBuild tasks")
         }
-        if (buildPlatforms.isPresent) {
+        if (buildPlatforms.isPresent && buildPlatforms.get().isNotEmpty()) {
+            println("BUILD PLATFORMS = ${buildPlatforms.get()}")
             execArgs.addAll(listOf(
                 "--target-platform",
                 buildPlatforms.get().joinToString(",")

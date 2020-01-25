@@ -9,81 +9,6 @@ flutter {
 
 tasks {
 
-    val generateModles by creating {
-        dependsOn(rootProject.getTasksByName("generateDartModels", false))
-    }
-
-//    val buildFlutterLinux by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "build"
-//        inputs.files(
-//            fileTree("$projectDir/linux"),
-//            fileTree("$projectDir/assets"),
-//            fileTree("$projectDir/fonts"),
-//            fileTree("$projectDir/lib")
-//        )
-//        outputs.files(
-//            fileTree("$buildDir/linux/release")
-//        )
-//        setArgs(listOf(
-//            "build",
-//            "linux"
-//        ))
-//    }
-//
-//    val buildFlutterWeb by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "build"
-//        inputs.files(
-//            fileTree("$projectDir/web"),
-//            fileTree("$projectDir/assets"),
-//            fileTree("$projectDir/fonts"),
-//            fileTree("$projectDir/lib")
-//        )
-//        outputs.files(
-//            fileTree("$buildDir/web")
-//        )
-//        executable = flutterBinPath
-//        setArgs(listOf(
-//            "build",
-//            "web"
-//        ))
-//    }
-//
-//    val buildFlutterAndroid by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "build"
-//        inputs.files("android/app", "assets", "fonts", "lib")
-//        inputs.files(
-//            fileTree("$projectDir/android/app"),
-//            file("$projectDir/android/build.gradle"),
-//            file("$projectDir/android/gradle.properties"),
-//            fileTree("$projectDir/android/gradle"),
-//            fileTree("$projectDir/assets"),
-//            fileTree("$projectDir/fonts"),
-//            fileTree("$projectDir/lib")
-//        )
-//        outputs.files(
-//            fileTree("$buildDir/app/outputs/bundle")
-//        )
-//
-//        executable = flutterBinPath
-//        setArgs(listOf(
-//            "build",
-//            "appbundle", "--target-platform", "android-arm,android-arm64,android-x64"
-//        ))
-//    }
-//
-//    val buildFlutterIos by creating(Exec::class) {
-//        dependsOn(generateModles)
-//        group = "build"
-//        executable = flutterBinPath
-//        setArgs(listOf(
-//            "build",
-//            "ios"
-//        ))
-//    }
-
 //    val runFlutterLinux by creating(Exec::class) {
 //        dependsOn(generateModles)
 //        group = "run"
@@ -127,6 +52,19 @@ tasks {
 //            "ios"
 //        )
 //    }
+
+    flutterBuildLinux.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
+    flutterBuildWeb.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
+    flutterBuildAndroid.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
+    flutterBuildWindows.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
+    flutterBuildIos.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
+    flutterBuildMacos.get()
+        .dependsOn(project(":crowdproj-front-private:crowdproj_models").getTasksByName("build", false))
 
     create("build") {
         dependsOn(flutterBuildLinux)

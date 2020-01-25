@@ -30,6 +30,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
     }
 
     tasks.register<FlutterBuildRunnerTask>(FlutterBuildRunnerTask.TASK_NAME) {
+        dependsOn(FlutterPubUpgradeTask.TASK_NAME)
         flutterCommand.set(taskData.flutterCommand)
         flutterProjectDir.set(taskData.workDir)
         inputs.files(fileTree(taskData.workDir))

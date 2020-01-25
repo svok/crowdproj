@@ -85,7 +85,9 @@ tasks {
         group = "openapi"
         val modelsDart = "${project(":crowdproj-front-private").projectDir}/crowdproj_models"
         fileTree(modelsDart).visit {
-            delete(file)
+            if (!file.name.endsWith(".kts")) {
+                delete(file)
+            }
         }
     }
 

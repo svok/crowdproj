@@ -1,6 +1,7 @@
 rootProject.name = "crowdproj"
 include("crowdproj-models-kt")
 include("crowdproj-back")
+include(":crowdproj-front-private:crowdproj_models")
 include(":crowdproj-front-private:crowdproj")
 
 pluginManagement {
