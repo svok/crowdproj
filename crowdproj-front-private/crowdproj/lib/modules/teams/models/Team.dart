@@ -55,6 +55,16 @@ class Team {
         status: team.status.toStatus()
       );
 
+  exchange.Team toExchange() => exchange.Team().rebuild((builder) => builder
+  ..id = id
+      ..name = name
+      ..summary = summary
+      ..description = description
+      ..owner = owner.toExchange()
+      ..visibility = visibility.toString()
+      ..status = status.toString()
+  );
+
 //  static TeamVisibility visibilityFromExchange(String visibility) {
 //    switch (visibility) {
 //      case 'public':

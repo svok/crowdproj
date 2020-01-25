@@ -6,4 +6,6 @@ class Profile {
   static fromExchange(exchange.Profile owner) => Profile(
 
   );
+
+  exchange.Profile toExchange() => exchange.ProfileBuilder()
 }

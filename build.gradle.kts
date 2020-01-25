@@ -16,6 +16,9 @@ allprojects {
 }
 
 tasks {
+
+    val flutterBinPath: String by project
+
     create<GenerateTask>("generateKotlinModels") {
         group = "openapi"
         generatorName.set("kotlin-server")
@@ -66,6 +69,16 @@ tasks {
                 "pubVersion" to project.version.toString()
             )
         )
+        doLast {
+            exec {
+                executable = flutterBinPath
+                args = listOf("pub", "upgrade")
+            }
+            exec {
+                executable = flutterBinPath
+                args = listOf("pub", "run", "build_runner", "build")
+            }
+        }
     }
 
     val cleanDartModels by creating(Delete::class) {
