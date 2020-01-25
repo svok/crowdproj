@@ -20,9 +20,8 @@ class TeamsLocalizations {
   TeamsLocalizations(this.localeName);
 
   static Future<TeamsLocalizations> load(Locale locale) {
-    final String name = locale.countryCode.isEmpty
-            ? locale.languageCode
-            : locale.toString();
+    final String name =
+        locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);
 
     return initializeMessages(localeName).then((_) {
@@ -30,27 +29,73 @@ class TeamsLocalizations {
     });
   }
 
-  static TeamsLocalizations of(BuildContext context) =>  
+  static TeamsLocalizations of(BuildContext context) =>
       Localizations.of<TeamsLocalizations>(context, TeamsLocalizations);
-  
+
   static _TeamsLocalizationsDelegate _delegate = _TeamsLocalizationsDelegate();
+
   static _TeamsLocalizationsDelegate get delegate => _delegate;
 
   final String localeName;
 
   String get title => Intl.message(
-      'Teams',
-      name: "TeamsLocalizations_title",
-      desc: 'Title for the Demo application',
-      locale: localeName,
-    );
+        'Teams',
+        name: "TeamsLocalizations_title",
+        desc: 'Title for the Demo application',
+        locale: localeName,
+      );
 
   String get titleMyTeams => Intl.message(
-      'My Teams',
-      name: "TeamsLocalizations_titleMyTeams",
-      desc: 'Title for pages with the users teams lists',
-      locale: localeName,
-    );
+        'My Teams',
+        name: "TeamsLocalizations_titleMyTeams",
+        desc: 'Title for pages with the users teams lists',
+        locale: localeName,
+      );
+
+  String get labelName => Intl.message(
+        "Team Name",
+        name: "TeamsLocalizations_labelName",
+        desc: 'Label for the team\'s name field',
+        locale: localeName,
+      );
+
+  String get hintName => Intl.message(
+        "New Yourk Wolves Byke Den",
+        name: "TeamsLocalizations_hintName",
+        desc: 'Hint for the team\'s name field',
+        locale: localeName,
+      );
+
+  String get labelSummary => Intl.message(
+        "Team Summary",
+        name: "TeamsLocalizations_labelSummary",
+        desc: 'Label for the team\'s summary field',
+        locale: localeName,
+      );
+
+  String get hintSummary => Intl.message(
+        "In our team we are making fun, enjoy bikes, high speed and freedom",
+        name: "TeamsLocalizations_hintSummary",
+        desc: 'Hint for the team\'s summary field',
+        locale: localeName,
+      );
+
+  String get labelSave => Intl.message(
+    "Save",
+    name: "TeamsLocalizations_labelSave",
+    desc: 'Save button label for a team',
+    locale: localeName,
+  );
+
+
+
+  String errorTextFieldLength(String field, int validationNameMinLengh, int length) =>
+      Intl.message(
+        "The field for $field must be at least $validationNameMinLengh symbols long, while currently it's size is just $length symbols",
+        name: "TeamsLocalizations_errorTextFieldLength",
+        desc: 'Error for the field name length is too short',
+        locale: localeName,
+      );
 }
 
 class _TeamsLocalizationsDelegate
@@ -61,9 +106,9 @@ class _TeamsLocalizationsDelegate
   bool isSupported(Locale locale) => ['en', 'ru'].contains(locale.languageCode);
 
   @override
-  Future<TeamsLocalizations> load(Locale locale) => TeamsLocalizations.load(locale);
+  Future<TeamsLocalizations> load(Locale locale) =>
+      TeamsLocalizations.load(locale);
 
   @override
   bool shouldReload(_TeamsLocalizationsDelegate old) => false;
 }
-

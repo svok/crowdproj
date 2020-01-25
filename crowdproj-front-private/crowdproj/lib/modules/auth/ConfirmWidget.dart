@@ -100,7 +100,6 @@ class _ConfirmWidgetState extends State<ConfirmWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = AuthLocalizations.of(context);
-    final Size screenSize = MediaQuery.of(context).size;
     return CentralContainerWidget(
       child: Form(
         key: _formKey,

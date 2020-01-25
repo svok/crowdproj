@@ -6,16 +6,19 @@ import 'package:crowdproj/translations/AuthLocalizations.dart';
 class FormSubmitButtonWidget extends StatelessWidget {
 
   FormSubmitButtonWidget({
+    this.key,
     @required this.label,
     this.onPressed,
-  });
+  }): super(key: key);
 
+  Key key;
   String label;
   VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: key,
       padding: new EdgeInsets.all(20.0),
       child: new RaisedButton(
         child: new Text(

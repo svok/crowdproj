@@ -1,5 +1,6 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
+import 'package:crowdproj/modules/teams/widgets/TeamUpdateWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,8 @@ import 'models/Team.dart';
 class TeamsPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TeamsPageState();
+
+  final team = Team();
 
   static String titleFormatter({BuildContext context, RouteSettings settings}) =>
       TeamsLocalizations.of(context).title;
@@ -26,11 +29,10 @@ class TeamsPage extends StatefulWidget {
 class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
-//    final team = Team();
     final localizer = TeamsLocalizations.of(context);
     return PageSimple(
       title: localizer.title,
-      body: Container()
+      body: TeamUpdateWidget(team: widget.team)
     );
   }
 }
