@@ -21,9 +21,13 @@ tasks {
 
     create<GenerateTask>("generateKotlinModels") {
         group = "openapi"
+        val spec = "$rootDir/spec/crowdproj-spec.yaml"
+        val dest = "$rootDir/crowdproj-models-kt"
+        inputs.files(spec)
+        outputs.files(fileTree(dest))
         generatorName.set("kotlin-server")
-        inputSpec.set("$rootDir/spec/crowdproj-spec.yaml")
-        outputDir.set("$rootDir/crowdproj-models-kt")
+        inputSpec.set(spec)
+        outputDir.set(dest)
         modelPackage.set("${project.group}.models")
         generateModelDocumentation.set(true)
         generateModelTests.set(true)
@@ -53,9 +57,13 @@ tasks {
 
     create<GenerateTask>("generateDartModels") {
         group = "openapi"
+        val specFile = "$rootDir/spec/crowdproj-spec.yaml"
+        val destDir = "$rootDir/crowdproj-front-private/crowdproj_models"
+//        inputs.files(spec)
+//        outputs.files(fileTree(dest))
         generatorName.set("dart-dio")
-        inputSpec.set("$rootDir/spec/crowdproj-spec.yaml")
-        outputDir.set("$rootDir/crowdproj-front-private/crowdproj_models")
+        inputSpec.set(specFile)
+        outputDir.set(destDir)
         packageName.set(project.group.toString())
         modelPackage.set("${project.group}.models")
         generateModelDocumentation.set(true)
@@ -69,16 +77,6 @@ tasks {
                 "pubVersion" to project.version.toString()
             )
         )
-        doLast {
-            exec {
-                executable = flutterBinPath
-                args = listOf("pub", "upgrade")
-            }
-            exec {
-                executable = flutterBinPath
-                args = listOf("pub", "run", "build_runner", "build")
-            }
-        }
     }
 
     val cleanDartModels by creating(Delete::class) {

@@ -31,7 +31,7 @@ open class FlutterInitTask : DefaultTask() {
     }
 
     companion object {
-        const val TASK_NAME = "flutterUpgrade"
+        const val TASK_NAME = "flutterInit"
     }
 }
 

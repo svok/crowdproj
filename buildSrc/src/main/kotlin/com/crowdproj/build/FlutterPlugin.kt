@@ -6,7 +6,7 @@ data class FlutterDescription(
     var workDir: String = ""
 ) {
     companion object {
-        const val DEFAULT_FLUTTER_COMMAND = "/home/sokatov/flutter/bin/flutter"
+        const val DEFAULT_FLUTTER_COMMAND = "flutter"
         const val FLUTTER_GROUP = "flutter"
     }
 }

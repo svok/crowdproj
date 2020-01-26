@@ -4,8 +4,8 @@ group = rootProject.group
 version = rootProject.version
 
 flutter {
-    val flutterBinPath: String by project
-    this.flutterCommand = flutterCommand
+//    val flutterBinPath: String by project
+//    this.flutterCommand = flutterCommand
 }
 
 tasks {

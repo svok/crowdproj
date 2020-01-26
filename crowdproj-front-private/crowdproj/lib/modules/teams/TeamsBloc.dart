@@ -1,27 +1,57 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/modules/teams/TeamsEvent.dart';
+import 'package:crowdproj/modules/teams/TeamsService.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj_models/api/team_api.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart' as rxdart;
 
+import 'models/Team.dart';
+
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
-  TeamsBloc({@required this.api}) : super();
-  TeamApi api;
+  TeamsBloc({
+    @required this.service,
+  }) : super();
+
+  final TeamsService service;
 
   @override
-  TeamsState get initialState => TeamsState();
+  TeamsState get initialState => TeamsStateNothing();
 
   @override
   Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
-    final res = await api.findTeamsByTags(["tags"]);
-    yield TeamsState();
+    switch (event.runtimeType) {
+      case TeamsEventSaveRequested:
+        yield* _saveEvent(event as TeamsEventSaveRequested);
+        break;
+      case TeamsEventEditRequested:
+        yield* _editEvent(event as TeamsEventEditRequested);
+        break;
+      default:
+        yield TeamsStateNothing();
+        break;
+    }
   }
 
   @override
   void onError(Object error, StackTrace stackTrace) {
     print('TeamsBloc - Error\'s occured: $error, $stackTrace');
+  }
+
+  Stream<TeamsState> _saveEvent(TeamsEventSaveRequested event) async* {
+    yield TeamsStateWaiting();
+    final response = service.saveTeam(event.team);
+    yield TeamsStateViewing(team: event.team);
+  }
+
+  Stream<TeamsState> _editEvent(TeamsEventEditRequested event) async* {
+    if (event.team == null) {
+      yield TeamsStateEditing(team: Team(), teamEdited: Team());
+    } else {
+      yield TeamsStateWaiting();
+      final response = service.getTeam(event.team);
+      yield TeamsStateEditing(team: event.team, teamEdited: );
+    }
   }
 
 //  CrowdprojModels crowdprojApi;

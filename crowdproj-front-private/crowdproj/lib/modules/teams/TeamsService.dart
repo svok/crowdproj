@@ -26,4 +26,8 @@ class TeamsService {
     await _api.addTeam(team.toExchange());
   }
 
+  Future<void> getTeam(local.Team team) async {
+    await _api.getTeamById(team.id);
+  }
+
 }

@@ -24,9 +24,17 @@ open class FlutterPubUpgradeTask : DefaultTask() {
     @TaskAction
     fun run() {
         project.exec {
+            executable = "env"
+        }
+        project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = listOf("upgrade")
+            args = listOf("pub", "get")
+        }
+        project.exec {
+            workingDir = File(flutterProjectDir.get())
+            executable = flutterCommand.get()
+            args = listOf("pub", "upgrade")
         }
     }
 

@@ -185,8 +185,7 @@ paths:
           description: ID of team to return
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         200:
           description: successful operation
@@ -252,8 +251,7 @@ paths:
           description: Team id to delete
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       responses:
         400:
           description: Invalid ID supplied
@@ -277,8 +275,7 @@ paths:
           description: ID of team to update
           required: true
           schema:
-            type: integer
-            format: int64
+            type: string
       requestBody:
         content:
           multipart/form-data:
@@ -603,8 +600,7 @@ components:
           type: integer
           format: int64
         teamId:
-          type: integer
-          format: int64
+          type: string
         quantity:
           type: integer
           format: int32
