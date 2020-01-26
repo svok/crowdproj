@@ -23,18 +23,21 @@ open class FlutterPubUpgradeTask : DefaultTask() {
 
     @TaskAction
     fun run() {
+//        project.exec {
+//            workingDir = File(flutterProjectDir.get())
+//            commandLine("env")
+////            executable = flutterCommand.get()
+////            args = listOf("-c", "env")
+//        }
         project.exec {
-            executable = "env"
+            workingDir = File(flutterProjectDir.get())
+            executable = flutterCommand.get()
+            args = listOf("-c", "flutter pub get")
         }
         project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = listOf("pub", "get")
-        }
-        project.exec {
-            workingDir = File(flutterProjectDir.get())
-            executable = flutterCommand.get()
-            args = listOf("pub", "upgrade")
+            args = listOf("-c", "flutter pub upgrade")
         }
     }
 

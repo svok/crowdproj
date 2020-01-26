@@ -26,7 +26,7 @@ open class FlutterBuildRunnerTask : DefaultTask() {
         project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = listOf("pub", "run", "build_runner", "build")
+            args = listOf("-c", "flutter pub run build_runner build")
         }
     }
 

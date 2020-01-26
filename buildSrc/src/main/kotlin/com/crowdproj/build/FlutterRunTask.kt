@@ -30,6 +30,7 @@ open class FlutterRunTask: DefaultTask() {
     @TaskAction
     fun run() {
         val execArgs = mutableListOf<String>(
+            "flutter",
             "run"
         )
         if (architecture.isPresent) {
@@ -41,7 +42,7 @@ open class FlutterRunTask: DefaultTask() {
         project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = execArgs
+            args = listOf("-c", execArgs.joinToString(" "))
         }
     }
 

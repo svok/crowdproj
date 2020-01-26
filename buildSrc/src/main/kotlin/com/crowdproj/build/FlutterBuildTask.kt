@@ -40,6 +40,7 @@ open class FlutterBuildTask: DefaultTask() {
     @TaskAction
     fun run() {
         val execArgs = mutableListOf<String>(
+            "flutter",
             "build"
         )
         if (buildPackage.isPresent) {
@@ -60,7 +61,7 @@ open class FlutterBuildTask: DefaultTask() {
         project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = execArgs
+            args = listOf("-c", execArgs.joinToString(" "))
         }
     }
 

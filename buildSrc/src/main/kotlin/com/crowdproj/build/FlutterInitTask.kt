@@ -26,7 +26,7 @@ open class FlutterInitTask : DefaultTask() {
         project.exec {
             workingDir = File(flutterProjectDir.get())
             executable = flutterCommand.get()
-            args = listOf("upgrade")
+            args = listOf("-c", "flutter upgrade")
         }
     }
 
