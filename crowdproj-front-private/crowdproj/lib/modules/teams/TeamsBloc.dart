@@ -21,11 +21,14 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   @override
   Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
     switch (event.runtimeType) {
+      case TeamsEventViewRequested:
+        yield* _viewEvent(event);
+        break;
       case TeamsEventSaveRequested:
-        yield* _saveEvent(event as TeamsEventSaveRequested);
+        yield* _saveEvent(event);
         break;
       case TeamsEventEditRequested:
-        yield* _editEvent(event as TeamsEventEditRequested);
+        yield* _editEvent(event);
         break;
       default:
         yield TeamsStateNothing();
@@ -46,12 +49,20 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
 
   Stream<TeamsState> _editEvent(TeamsEventEditRequested event) async* {
     if (event.team == null) {
-      yield TeamsStateEditing(team: Team(), teamEdited: Team());
+      yield TeamsStateEditing(teamEdited: Team());
     } else {
       yield TeamsStateWaiting();
-      final response = service.getTeam(event.team);
-      yield TeamsStateEditing(team: event.team, teamEdited: );
+      final response = await service.getTeam(event.team.id);
+      final team = Team.fromExchange(response.data);
+      yield TeamsStateEditing(team: team, teamEdited: team);
     }
+  }
+
+  Stream<TeamsState> _viewEvent(TeamsEventViewRequested event) async* {
+    yield TeamsStateWaiting();
+    final response = await service.getTeam(event.teamId);
+    final team = Team.fromExchange(response.data);
+    yield TeamsStateEditing(team: team, teamEdited: team);
   }
 
 //  CrowdprojModels crowdprojApi;

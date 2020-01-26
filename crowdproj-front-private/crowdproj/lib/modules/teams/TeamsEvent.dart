@@ -2,6 +2,14 @@ import 'models/Team.dart';
 
 abstract class TeamsEvent {}
 
+class TeamsEventViewRequested extends TeamsEvent {
+  TeamsEventViewRequested({
+    this.teamId,
+  }) : super();
+
+  final String teamId;
+}
+
 class TeamsEventSaveRequested extends TeamsEvent {
   TeamsEventSaveRequested({
     this.team,
