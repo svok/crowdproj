@@ -27,7 +27,7 @@ class TeamFieldNameWidget extends StatelessWidget {
         initialValue: name,
         decoration: new InputDecoration(
           hintText: localizer.hintName,
-          labelText: localizer.labelName,
+          labelText: "${localizer.labelName} \*",
         ),
         keyboardType: TextInputType.text,
         minLines: 1,

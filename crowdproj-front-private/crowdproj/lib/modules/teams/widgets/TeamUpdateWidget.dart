@@ -79,7 +79,6 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    print("BUILDING FORM");
     return CentralContainerWidget(
       child: Form(
         key: _formKey,

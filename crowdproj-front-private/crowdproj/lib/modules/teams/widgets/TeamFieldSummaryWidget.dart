@@ -1,5 +1,4 @@
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class TeamFieldSummaryWidget extends StatelessWidget {
@@ -8,23 +7,27 @@ class TeamFieldSummaryWidget extends StatelessWidget {
     @required this.summary,
     this.error,
     this.onSaved,
-  }): super(key: key);
+    this.requiredField,
+  }) : super(key: key);
 
   Key key;
   String summary;
   String error;
+  bool requiredField;
   FormFieldSetter<String> onSaved;
 
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return ListTile(
-      leading: const Icon(Icons.email),
+      leading: const Icon(Icons.group),
       title: new TextFormField(
         key: key,
         initialValue: summary,
         decoration: new InputDecoration(
-            hintText: localizer.hintSummary, labelText: localizer.labelSummary),
+          hintText: localizer.hintSummary,
+          labelText: "${localizer.labelSummary} \*",
+        ),
         keyboardType: TextInputType.text,
         minLines: 1,
         maxLines: 5,

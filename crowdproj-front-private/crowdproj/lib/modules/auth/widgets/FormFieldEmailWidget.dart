@@ -1,10 +1,8 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/translations/AuthLocalizations.dart';
 
 class FormFieldEmailWidget extends StatelessWidget {
-
   FormFieldEmailWidget({
     @required this.email,
     this.onSaved,
@@ -21,13 +19,13 @@ class FormFieldEmailWidget extends StatelessWidget {
       title: new TextFormField(
         initialValue: email,
         decoration: new InputDecoration(
-            hintText: 'example@inspire.my',
-            labelText: 'Email'),
+          hintText: 'example@inspire.my',
+          labelText: 'Email',
+        ),
         keyboardType: TextInputType.emailAddress,
         onSaved: onSaved,
         validator: (String value) {
-          bool emailValid =
-          emailValidationRegex.hasMatch(value);
+          bool emailValid = emailValidationRegex.hasMatch(value);
           if (emailValid) return null;
           return localizer.emailError(value);
         },
@@ -35,6 +33,6 @@ class FormFieldEmailWidget extends StatelessWidget {
     );
   }
 
-    static final emailValidationRegex = RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+  static final emailValidationRegex = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 }

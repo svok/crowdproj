@@ -673,13 +673,12 @@ components:
       required:
         - name
         - summary
-        - description
       type: object
       properties:
         id:
           type: string
-#        category:
-#          $ref: '#/components/schemas/Category'
+        #        category:
+        #          $ref: '#/components/schemas/Category'
         name:
           type: string
           description: "Name qualifying the team"
