@@ -10,6 +10,7 @@ class Team {
     this.description,
     this.owner,
     this.visibility,
+    this.joinability,
     this.status,
   }) : super();
 
@@ -41,6 +42,11 @@ class Team {
   TeamVisibility visibility;
 
   /**
+   * Team joinability is a type of join restrictions to theas team
+   */
+  TeamJoinability joinability;
+
+  /**
    * Team status
    */
   TeamStatus status;
@@ -52,7 +58,9 @@ class Team {
       description: team.description,
       owner: Profile.fromExchange(team.owner),
       visibility: TeamEnumParser.toVisibility(team.visibility),
-      status: TeamEnumParser.toStatus(team.status));
+      joinability: TeamEnumParser.toJoinability(team.joinability),
+      status: TeamEnumParser.toStatus(team.status),
+  );
 
   exchange.Team toExchange() => toExchangeBuilder().build();
 
@@ -63,6 +71,7 @@ class Team {
     ..description = description
     ..owner = owner.toExchangeBuilder()
     ..visibility = visibility.toString()
+    ..joinability = joinability.toString()
     ..status = status.toString();
 }
 
@@ -70,8 +79,14 @@ enum TeamVisibility { public, registeredOnly, groupOnly, membersOnly }
 
 enum TeamStatus { active, pending, closed, deleted }
 
+enum TeamJoinability { byOwner, byMember, byUser }
+
 class TeamEnumParser {
   static TeamVisibility toVisibility(String str) => TeamVisibility.values
+      .firstWhere((e) => e.toString().toLowerCase() == str.toLowerCase(),
+          orElse: () => null); //return null if not found
+
+  static TeamJoinability toJoinability(String str) => TeamJoinability.values
       .firstWhere((e) => e.toString().toLowerCase() == str.toLowerCase(),
           orElse: () => null); //return null if not found
 

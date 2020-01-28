@@ -21,7 +21,8 @@ class MainApp extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return snapshot?.data == true
               ? buildFutured(context)
-              : ActivitySpinner();
+//              : ActivitySpinner();
+              : CircularProgressIndicator();
         },
       );
 
@@ -49,10 +50,6 @@ class MainApp extends StatelessWidget {
             " detecting locale for: $locale, ${AppSession.get.locale}, ${window.locale}");
         print(" phone languageCode........${currLocale?.languageCode}");
         print(" phone countryCode........${currLocale?.countryCode}");
-//        Map<String, String> env = Platform.environment;
-//        env.forEach((key, val) {
-//          print(" ENV $key = $val");
-//        });
 
         for (Locale supportedLocale in supportedLocales) {
           if (supportedLocale.languageCode == currLocale?.languageCode ||

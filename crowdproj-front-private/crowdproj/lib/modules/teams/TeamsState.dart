@@ -1,8 +1,8 @@
+import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
+
 import 'models/Team.dart';
 
-abstract class TeamsState {
-
-}
+abstract class TeamsState {}
 
 class TeamsStateNothing extends TeamsState {
   String toString() => "Nothing to do";
@@ -16,19 +16,24 @@ class TeamsStateEditing extends TeamsState {
   TeamsStateEditing({
     this.team,
     this.teamEdited,
-  }): super();
+    this.errors,
+  }) : super();
 
   Team team;
   Team teamEdited;
+  List<ApiError> errors;
 
   String toString() => "Editing team ${team.id}";
+
 }
 
 class TeamsStateViewing extends TeamsState {
   TeamsStateViewing({
     this.team,
-}): super();
+    this.errors,
+  }) : super();
   Team team;
+  List<ApiError> errors;
 
   String toString() => "Viewing team ${team.id}";
 }

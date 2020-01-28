@@ -1,20 +1,28 @@
 import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
+import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:crowdproj/modules/teams/models/Team.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldNameWidget.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldSummaryWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../TeamsBloc.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
   TeamUpdateWidget({
-    @required this.team,
+//    @required this.team,
+    @required this.state,
   }) : super();
+
+  TeamsStateEditing state;
 
   @override
   _TeamUpdateWidgetState createState() => _TeamUpdateWidgetState();
 
-  final Team team;
+//  final Team team;
 }
 
 class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
@@ -79,6 +87,9 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
+    final TeamsBloc teamsBloc = BlocProvider.of<TeamsBloc>(context);
+    final team = widget.state.team;
+    final errors = widget.state.errors;
     return CentralContainerWidget(
       child: Form(
         key: _formKey,
@@ -86,17 +97,17 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
         child: new ListView(
           children: <Widget>[
             TeamFieldNameWidget(
-              name: widget.team.name,
-              error: nameError,
+              name: widget.state.team.name,
+              error: ApiError.errorString(errors, "name"),
               onSaved: (String newValue) {
-                widget.team.name = newValue;
+                team.name = newValue;
               },
             ),
             TeamFieldSummaryWidget(
-              summary: widget.team.summary,
+              summary: team.summary,
               error: summaryError,
               onSaved: (String newValue) {
-                widget.team.summary = newValue;
+                team.summary = newValue;
               },
             ),
             FormSubmitButtonWidget(

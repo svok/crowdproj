@@ -49,6 +49,22 @@ paths:
               type: string
         required: true
       responses:
+        200:
+          description: Success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTeamSave'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTeamSave'
+            text/plain:
+              schema:
+                type: string
         400:
           description: Invalid ID supplied
           content: {}
@@ -59,7 +75,7 @@ paths:
           description: Validation exception
           content: {}
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
       x-codegen-request-body-name: body
@@ -83,7 +99,7 @@ paths:
           description: Invalid input
           content: {}
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
       x-codegen-request-body-name: body
@@ -128,7 +144,7 @@ paths:
           description: Invalid status value
           content: {}
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
   /team/findByTags:
@@ -169,7 +185,7 @@ paths:
           content: {}
       deprecated: true
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
   /team/{teamId}:
@@ -182,20 +198,29 @@ paths:
       parameters:
         - name: teamId
           in: path
-          description: ID of team to return
+          description: ID of the team to return
           required: true
           schema:
             type: string
+        - name: stub
+          in: query
+          description: "Simulate server activity instead of real performance and return a pre-stored request result"
+          required: false
+          schema:
+            type: string
+            enum:
+              - public
+              - private
       responses:
         200:
           description: successful operation
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/ApiResponseTeamGet'
             application/json:
               schema:
-                $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/ApiResponseTeamGet'
         400:
           description: Invalid ID supplied
           content: {}
@@ -233,7 +258,7 @@ paths:
           description: Invalid input
           content: {}
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
     delete:
@@ -260,7 +285,7 @@ paths:
           description: Team not found
           content: {}
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
   /team/{teamId}/uploadImage:
@@ -296,7 +321,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
       security:
-        - teamstore_auth:
+        - crowdproj_auth:
             - write:teams
             - read:teams
   /store/inventory:
@@ -636,13 +661,13 @@ components:
           type: string
         alias:
           type: string
-        firstName:
+        fName:
           type: string
-        lastName:
+        lName:
+          type: string
+        mName:
           type: string
         email:
-          type: string
-        password:
           type: string
         phone:
           type: string
@@ -711,6 +736,13 @@ components:
             - registeredOnly
             - groupOnly
             - membersOnly
+        joinability:
+          type: string
+          description: How users can join this team
+          enum:
+            - byOwner
+            - byMember
+            - byUser
         status:
           type: string
           description: team status in the store
@@ -721,18 +753,91 @@ components:
             - deleted
       xml:
         name: Team
+
+
+    ApiQuery:
+      type: object
+      description: "Basic query structure that must be sent to request some fuctionality from the server"
+      properties:
+        stub:
+          type: string
+          description: "The request requires not normal operation but a stub data from the server"
+        debug:
+          type: string
+          description: "Request a debug information from the server"
+
+    ApiQueryTeamGet:
+      allOf:
+        - $ref: '#/components/schemas/ApiQuery'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: ID of the team to get
+
+
     ApiResponse:
       type: object
+      description: "Basic response structure that to be received from the server due to API request"
+      properties:
+        timeReceived:
+          type: string
+        timeFinished:
+          type: string
+        status:
+          type: string
+          description: "Result of the request handling by server"
+          enum:
+            - ok
+            - error
+        errors:
+          type: array
+          description: "Errors, warnings and info messages concerning the response"
+          items:
+            $ref: '#/components/schemas/ApiError'
+        debug:
+          type: object
+
+    ApiResponseTeamGet:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Team'
+
+    ApiResponseTeamSave:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+
+
+    ApiError:
+      type: object
+      description: "Error description"
       properties:
         code:
-          type: integer
-          format: int32
-        type:
           type: string
+          description: "Error code"
+        field:
+          type: string
+          description: "Field the error concerns to"
         message:
           type: string
+          description: "Short message describing the error"
+        description:
+          type: string
+          description: "Extended description of the error"
+        level:
+          type: string
+          description: "Error level"
+          enum:
+            - fatal
+            - error
+            - warning
+            - info
+
   securitySchemes:
-    teamstore_auth:
+    crowdproj_auth:
       type: oauth2
       flows:
         implicit:
@@ -740,6 +845,13 @@ components:
           scopes:
             write:teams: modify teams in your account
             read:teams: read your teams
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
     api_key:
       type: apiKey
       name: api_key

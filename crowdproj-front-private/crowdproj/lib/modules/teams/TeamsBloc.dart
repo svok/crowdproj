@@ -3,8 +3,8 @@ import 'package:bloc/bloc.dart';
 import 'package:crowdproj/modules/teams/TeamsEvent.dart';
 import 'package:crowdproj/modules/teams/TeamsService.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart' as rxdart;
 
 import 'models/Team.dart';
 
@@ -43,26 +43,37 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
 
   Stream<TeamsState> _saveEvent(TeamsEventSaveRequested event) async* {
     yield TeamsStateWaiting();
-    final response = service.saveTeam(event.team);
-    yield TeamsStateViewing(team: event.team);
+    final response = await service.saveTeam(event.team);
+    if (response.status == ApiResponseStatuses.success) {
+      yield TeamsStateViewing(team: event.team);
+    } else {
+      yield TeamsStateEditing(
+          team: event.team,
+          errors: response.errors,
+      );
+    }
   }
 
   Stream<TeamsState> _editEvent(TeamsEventEditRequested event) async* {
     if (event.team == null) {
+      // New team creation
       yield TeamsStateEditing(teamEdited: Team());
     } else {
+      // Existing team update
       yield TeamsStateWaiting();
       final response = await service.getTeam(event.team.id);
-      final team = Team.fromExchange(response.data);
-      yield TeamsStateEditing(team: team, teamEdited: team);
+      yield TeamsStateEditing(team: response.team, teamEdited: response.team);
     }
   }
 
   Stream<TeamsState> _viewEvent(TeamsEventViewRequested event) async* {
     yield TeamsStateWaiting();
     final response = await service.getTeam(event.teamId);
-    final team = Team.fromExchange(response.data);
-    yield TeamsStateEditing(team: team, teamEdited: team);
+    if (response.status == ApiResponseStatuses.success) {
+      yield TeamsStateViewing(team: response.team);
+    } else {
+      // Error handling must be here!!
+    }
   }
 
 //  CrowdprojModels crowdprojApi;
