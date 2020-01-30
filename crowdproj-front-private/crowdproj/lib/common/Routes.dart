@@ -1,4 +1,5 @@
 
+import 'package:crowdproj/modules/teams/TeamsPageEdit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
@@ -8,7 +9,7 @@ import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/about/AboutPage.dart';
 import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:crowdproj/modules/auth/ProfilePage.dart';
-import 'package:crowdproj/modules/error/ErrorPathArgs.dart';
+import 'package:crowdproj/modules/error/ErrorPageArgs.dart';
 import 'package:crowdproj/modules/home/HomePage.dart';
 import 'package:crowdproj/modules/platforms/AppPlatform.dart';
 import 'package:crowdproj/modules/promo/PromoPage.dart';
@@ -34,6 +35,7 @@ class Routes {
     AuthPage.route,
     ProfilePage.route,
     TeamsPage.route,
+    TeamsPageEdit.route,
     ErrorPage.route,
   ];
 
@@ -63,7 +65,7 @@ class Routes {
       _updateCurrentRoute(widgetRoute, settings);
       return route;
     }
-    return routeTo(RouteSettings(arguments: ErrorRouteArgs(code: 404, badRoute: settings)));
+    return routeTo(RouteSettings(arguments: ErrorPageArgs(code: 404, badRoute: settings)));
   }
 
   void redirectTo({BuildContext context}) {

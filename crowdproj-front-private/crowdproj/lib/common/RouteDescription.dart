@@ -7,12 +7,14 @@ typedef String RouteFormatter({RouteSettings settings});
 class RouteDescription {
   RouteDescription({
     @required this.id,
+    this.pathName,
     this.builder,
     this.pathFormatter,
     this.titleFormatter,
 }): super();
 
   String id;
+  String pathName;
   WidgetBuilder builder;
   RouteFormatter pathFormatter;
   TitleFormatter titleFormatter;

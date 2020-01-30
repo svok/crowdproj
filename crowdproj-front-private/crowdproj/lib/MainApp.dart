@@ -1,11 +1,17 @@
 import 'dart:ui';
 
+import 'package:crowdproj/modules/navigator/NavigatorAction.dart';
+import 'package:crowdproj/modules/teams/TeamsBloc.dart';
+import 'package:crowdproj/modules/teams/TeamsEvent.dart';
+import 'package:crowdproj/modules/teams/TeamsService.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
 
 import 'common/AppSession.dart';
 import 'modules/home/HomePage.dart';
+import 'modules/navigator/NavigatorBloc.dart';
 import 'translations/AuthLocalizations.dart';
 import 'translations/ErrorLocalizations.dart';
 import 'translations/HomeLocalizations.dart';
@@ -27,46 +33,59 @@ class MainApp extends StatelessWidget {
       );
 
   Widget buildFutured(BuildContext context) {
-    return MaterialApp(
-//      locale: Locale('ru', 'RU'),
-      localizationsDelegates: [
-        TeamsLocalizations.delegate,
-        AuthLocalizations.delegate,
-        HomeLocalizations.delegate,
-        PromoLocalizations.delegate,
-        ErrorLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
+    print("STARTING MainApp");
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<NavigatorBloc>(
+          create: (context) {
+            print("CREATING NavigatorBloc");
+            return NavigatorBloc();
+          },
+        ),
+        BlocProvider<TeamsBloc>(
+          create: (context) {
+            print("CREATING TeamsBloc");
+            return TeamsBloc(
+              service: TeamsService(),
+            )
+              ..add(TeamsEventEditRequested());
+          },
+        ),
       ],
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('ru', 'RU'), // Russian
-      ],
-      localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
-        final currLocale = locale ?? AppSession.get.locale ?? window.locale;
+      child: MaterialApp(
+          localizationsDelegates: [
+            TeamsLocalizations.delegate,
+            AuthLocalizations.delegate,
+            HomeLocalizations.delegate,
+            PromoLocalizations.delegate,
+            ErrorLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: [
+            const Locale('en', 'US'), // English
+            const Locale('ru', 'RU'), // Russian
+          ],
+          localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
+            final currLocale = locale ?? AppSession.get.locale ?? window.locale;
 
-        print(
-            " detecting locale for: $locale, ${AppSession.get.locale}, ${window.locale}");
-        print(" phone languageCode........${currLocale?.languageCode}");
-        print(" phone countryCode........${currLocale?.countryCode}");
+            for (Locale supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == currLocale?.languageCode ||
+                  supportedLocale.countryCode == currLocale?.countryCode) {
+                return supportedLocale;
+              }
+            }
 
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == currLocale?.languageCode ||
-              supportedLocale.countryCode == currLocale?.countryCode) {
-            debugPrint("*language ok $supportedLocale");
-            return supportedLocale;
-          }
-        }
-
-        debugPrint("*language to fallback ${supportedLocales.first}");
-        return supportedLocales.first;
-      },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+            return supportedLocales.first;
+          },
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          onGenerateRoute: AppSession.get.routes.routeTo,
+          home: HomePage()
       ),
-      onGenerateRoute: AppSession.get.routes.routeTo,
-      home: HomePage(),
     );
   }
 }

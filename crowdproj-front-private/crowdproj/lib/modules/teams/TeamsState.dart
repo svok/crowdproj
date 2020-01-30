@@ -23,8 +23,8 @@ class TeamsStateEditing extends TeamsState {
   Team teamEdited;
   List<ApiError> errors;
 
-  String toString() => "Editing team ${team.id}";
-
+  String toString() =>
+      team?.id == null ? "Creating a team" : "Editing team ${team?.id}";
 }
 
 class TeamsStateViewing extends TeamsState {
@@ -35,5 +35,5 @@ class TeamsStateViewing extends TeamsState {
   Team team;
   List<ApiError> errors;
 
-  String toString() => "Viewing team ${team.id}";
+  String toString() => "Viewing team ${team?.id}";
 }

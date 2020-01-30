@@ -6,14 +6,17 @@ import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:flutter/material.dart';
 
+import 'TeamsPageEdit.dart';
 import 'models/Team.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   TeamsBloc({
     @required this.service,
+//    this.navigatorKey,
   }) : super();
 
   final TeamsService service;
+//  final GlobalKey<NavigatorState> navigatorKey;
 
   @override
   TeamsState get initialState => TeamsStateNothing();
@@ -48,8 +51,8 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       yield TeamsStateViewing(team: event.team);
     } else {
       yield TeamsStateEditing(
-          team: event.team,
-          errors: response.errors,
+        team: event.team,
+        errors: response.errors,
       );
     }
   }
@@ -62,11 +65,18 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       // Existing team update
       yield TeamsStateWaiting();
       final response = await service.getTeam(event.team.id);
+      print("_editEvent: ${response.team}");
       yield TeamsStateEditing(team: response.team, teamEdited: response.team);
     }
   }
 
   Stream<TeamsState> _viewEvent(TeamsEventViewRequested event) async* {
+    final routeDescription = TeamsPageEdit.route;
+    final routeSettings = RouteSettings(
+      name: routeDescription.pathName,
+      arguments: TeamsPageEditArguments(teamId: event.teamId),
+    );
+
     yield TeamsStateWaiting();
     final response = await service.getTeam(event.teamId);
     if (response.status == ApiResponseStatuses.success) {

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/error/ErrorPathArgs.dart';
+import 'package:crowdproj/modules/error/ErrorPageArgs.dart';
 import 'package:crowdproj/translations/ErrorLocalizations.dart';
 
 class ErrorPage extends StatelessWidget {
   ErrorPage({Key key, this.args}) : super(key: key);
 
-  final ErrorRouteArgs args;
+  final ErrorPageArgs args;
 
   static String titleFormatter(
           {BuildContext context, RouteSettings settings}) =>
@@ -17,7 +17,7 @@ class ErrorPage extends StatelessWidget {
       "Error";
 
   static String pathFormatter({BuildContext context, RouteSettings settings}) {
-    final args = settings.arguments as ErrorRouteArgs;
+    final args = settings.arguments as ErrorPageArgs;
     return args?.code == null ? "/error" : "/error/${args.code}";
   }
 

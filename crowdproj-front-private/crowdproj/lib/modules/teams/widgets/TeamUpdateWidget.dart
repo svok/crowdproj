@@ -12,21 +12,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../TeamsBloc.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
-  TeamUpdateWidget({
-//    @required this.team,
-    @required this.state,
-  }) : super();
-
-  TeamsStateEditing state;
-
   @override
   _TeamUpdateWidgetState createState() => _TeamUpdateWidgetState();
-
-//  final Team team;
 }
 
 class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+
+  Team team = Team();
   String nameError;
   String summaryError;
   String descriptionError;
@@ -34,13 +27,13 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   _submit(BuildContext context) async {
     final form = _formKey.currentState;
     nameError = summaryError = descriptionError = null;
-    if (! form.validate()) {
+    if (!form.validate()) {
       return;
     }
     form.save();
     // Here we are trying to save data on server
     // If saving fails we set errors
-    if (! false) {
+    if (!false) {
       setState(() {
         nameError = "zzzz";
         WidgetsBinding.instance
@@ -87,38 +80,42 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    final TeamsBloc teamsBloc = BlocProvider.of<TeamsBloc>(context);
-    final team = widget.state.team;
-    final errors = widget.state.errors;
-    return CentralContainerWidget(
-      child: Form(
-        key: _formKey,
-        autovalidate: true,
-        child: new ListView(
-          children: <Widget>[
-            TeamFieldNameWidget(
-              name: widget.state.team.name,
-              error: ApiError.errorString(errors, "name"),
-              onSaved: (String newValue) {
-                team.name = newValue;
-              },
-            ),
-            TeamFieldSummaryWidget(
-              summary: team.summary,
-              error: summaryError,
-              onSaved: (String newValue) {
-                team.summary = newValue;
-              },
-            ),
-            FormSubmitButtonWidget(
-              label: localizer.labelSave,
-              onPressed: () {
-                _submit(context);
-              },
-            ),
-          ],
+    print("_TeamUpdateWidgetState.build - building");
+//    final TeamsBloc teamsBloc = BlocProvider.of<TeamsBloc>(context);
+    return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
+      print("_TeamUpdateWidgetState.build: ${state?.runtimeType} $state");
+      final team = state is TeamsStateEditing ? state.team : this.team;
+      final errors = state is TeamsStateEditing ? state.errors : [];
+      return CentralContainerWidget(
+        child: Form(
+          key: _formKey,
+          autovalidate: true,
+          child: new ListView(
+            children: <Widget>[
+              TeamFieldNameWidget(
+                name: team?.name,
+                error: ApiError.errorString(errors, "name"),
+                onSaved: (String newValue) {
+                  team.name = newValue;
+                },
+              ),
+              TeamFieldSummaryWidget(
+                summary: team?.summary,
+                error: ApiError.errorString(errors, "summary"),
+                onSaved: (String newValue) {
+                  team.summary = newValue;
+                },
+              ),
+              FormSubmitButtonWidget(
+                label: localizer.labelSave,
+                onPressed: () {
+                  _submit(context);
+                },
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    });
   }
 }

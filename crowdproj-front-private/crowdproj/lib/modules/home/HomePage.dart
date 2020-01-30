@@ -1,3 +1,6 @@
+import 'package:crowdproj/modules/navigator/NavigatorAction.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
+import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
@@ -5,6 +8,7 @@ import 'package:crowdproj/common/RouteSettingsArgs.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/HomeLocalizations.dart';
 import 'package:crowdproj/widgets/GridWidget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../auth/AuthPage.dart';
 
@@ -87,14 +91,20 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(4.0),
             child: FloatingActionButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => GridWidget()),
-                );
+                final teamsBloc = BlocProvider.of<TeamsBloc>(context);
+                final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+                print("NAVIGATOR is requested for EditPage");
+                navigatorBloc.add(NavigatorActionTeamsEdit(
+                    Navigator.of(context),
+                ));
+//                Navigator.push(
+//                  context,
+//                  MaterialPageRoute(builder: (context) => GridWidget()),
+//                );
               },
-              heroTag: "grid",
-              tooltip: 'Grid',
-              child: Icon(Icons.grid_on),
+              heroTag: "teamEdit",
+              tooltip: 'Update Team',
+              child: Icon(Icons.group),
             ),
           ),
         ],

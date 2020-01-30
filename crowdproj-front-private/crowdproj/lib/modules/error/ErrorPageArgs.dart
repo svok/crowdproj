@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ErrorRouteArgs {
-  ErrorRouteArgs({
+class ErrorPageArgs {
+  ErrorPageArgs({
     this.code,
     this.badRoute,
     this.description,
