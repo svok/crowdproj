@@ -1,11 +1,9 @@
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/auth/AuthPage.dart';
-import 'package:crowdproj/modules/error/ErrorPage.dart';
-import 'package:crowdproj/modules/error/ErrorPageArgs.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionAuth.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
 import 'package:flutter/material.dart';
 
 abstract class NavigatorAction {
-  NavigatorAction(context) : navigator = Navigator.of(context), super();
 
   String get path;
 
@@ -21,11 +19,7 @@ abstract class NavigatorAction {
       ? AccessResult.allowed
       : AccessResult.loginRequired;
 
-  NavigatorState navigator;
-  final _authRoute = AuthPage.route;
-  final _errorRoute = ErrorPage.route;
-
-  void go() {
+  Future<NavigatorAction> go(NavigatorState navigator) async {
     switch (hasAccess) {
       case AccessResult.allowed:
         navigator.push(MaterialPageRoute(
@@ -34,31 +28,16 @@ abstract class NavigatorAction {
           maintainState: maintainState,
           fullscreenDialog: fullscreenDialog,
         ));
-        return;
+        return null;
       case AccessResult.loginRequired:
-        final settings = RouteSettings(
-          name: _authRoute.pathName,
-          arguments: this,
-        );
-        navigator.push(MaterialPageRoute(
-          builder: _authRoute.builder,
-          settings: settings,
-        ));
-        return;
+        return NavigatorActionAuth(goBack: this);
       case AccessResult.denied:
-        final settings = RouteSettings(
-          name: _errorRoute.pathName,
-          arguments: ErrorPageArgs(
-            code: 403,
-            badRoute: RouteSettings(name: path, arguments: arguments),
-            description: "Access denied to the page due to insufficien access rights",
-          ),
+        return NavigatorActionError(
+          code: 403,
+          badRoute: RouteSettings(name: path, arguments: arguments),
+          description:
+              "Access denied to the page due to insufficien access rights",
         );
-        navigator.push(MaterialPageRoute(
-          builder: _errorRoute.builder,
-          settings: settings,
-        ));
-        return;
       default:
         throw UnimplementedError("Access type ${hasAccess} is not implemented");
     }

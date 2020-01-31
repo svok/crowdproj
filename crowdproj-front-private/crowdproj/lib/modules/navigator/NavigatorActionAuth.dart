@@ -1,10 +1,15 @@
-import 'package:crowdproj/modules/about/AboutPage.dart';
+import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:flutter/material.dart';
 
 import 'NavigatorAction.dart';
 
-class NavigatorActionAbout extends NavigatorAction {
-  final _route = AboutPage.route;
+class NavigatorActionAuth extends NavigatorAction {
+  NavigatorActionAuth({
+    this.goBack,
+  }) : super();
+  NavigatorAction goBack;
+
+  final _route = AuthPage.route;
 
   @override
   String get path {
@@ -20,6 +25,6 @@ class NavigatorActionAbout extends NavigatorAction {
   WidgetBuilder get builder => _route.builder;
 
   @override
-  Object get arguments => null;
+  Object get arguments => goBack;
 
 }

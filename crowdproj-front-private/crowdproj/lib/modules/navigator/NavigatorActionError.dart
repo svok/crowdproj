@@ -5,11 +5,11 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 class NavigatorActionError extends NavigatorAction {
-  NavigatorActionError(BuildContext context, {
+  NavigatorActionError({
     this.code,
     this.badRoute,
     this.description,
-  }) : super(context);
+  }) : super();
 
   int code;
   RouteSettings badRoute;

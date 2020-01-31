@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:crowdproj/modules/navigator/NavigatorAction.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsEvent.dart';
+import 'package:crowdproj/modules/teams/TeamsPage.dart';
 import 'package:crowdproj/modules/teams/TeamsService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,6 +20,8 @@ import 'translations/PromoLocalizations.dart';
 import 'translations/TeamsLocalizations.dart';
 
 class MainApp extends StatelessWidget {
+  final _navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) => FutureBuilder(
         future: AppSession.init(context).then((value) {
@@ -32,14 +35,13 @@ class MainApp extends StatelessWidget {
       );
 
   Widget buildFutured(BuildContext context) {
-    final GlobalKey<NavigatorState> _navigatorKey = GlobalKey();
     print("STARTING MainApp");
     return MultiBlocProvider(
       providers: [
         BlocProvider<NavigatorBloc>(
           create: (context) {
             print("CREATING NavigatorBloc");
-            return NavigatorBloc();
+            return NavigatorBloc(navigatorKey: _navigatorKey);
           },
         ),
         BlocProvider<TeamsBloc>(
@@ -47,43 +49,46 @@ class MainApp extends StatelessWidget {
             print("CREATING TeamsBloc");
             return TeamsBloc(
               service: TeamsService(),
-            )
-              ..add(TeamsEventEditRequested());
+            )..add(TeamsEventEditRequested());
           },
         ),
       ],
       child: MaterialApp(
-          localizationsDelegates: [
-            TeamsLocalizations.delegate,
-            AuthLocalizations.delegate,
-            HomeLocalizations.delegate,
-            PromoLocalizations.delegate,
-            ErrorLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: [
-            const Locale('en', 'US'), // English
-            const Locale('ru', 'RU'), // Russian
-          ],
-          localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
-            final currLocale = locale ?? AppSession.get.locale ?? window.locale;
+        navigatorKey: _navigatorKey,
+        localizationsDelegates: [
+          TeamsLocalizations.delegate,
+          AuthLocalizations.delegate,
+          HomeLocalizations.delegate,
+          PromoLocalizations.delegate,
+          ErrorLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('ru', 'RU'), // Russian
+        ],
+        localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
+          final currLocale = locale ?? AppSession.get.locale ?? window.locale;
 
-            for (Locale supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == currLocale?.languageCode ||
-                  supportedLocale.countryCode == currLocale?.countryCode) {
-                return supportedLocale;
-              }
+          for (Locale supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == currLocale?.languageCode ||
+                supportedLocale.countryCode == currLocale?.countryCode) {
+              return supportedLocale;
             }
+          }
 
-            return supportedLocales.first;
-          },
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-//          onGenerateRoute: AppSession.get.routes.routeTo,
-          home: HomePage()
+          return supportedLocales.first;
+        },
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+//        routes: {
+//          HomePage.route.pathName: HomePage.route.builder,
+//          TeamsPage.route.pathName: TeamsPage.route.builder,
+//        },
+        home: HomePage(),
       ),
     );
   }

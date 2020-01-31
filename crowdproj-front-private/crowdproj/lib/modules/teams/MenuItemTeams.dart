@@ -1,6 +1,5 @@
 import 'package:crowdproj/modules/navigator/NavigatorActionTeams.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,7 +16,6 @@ class MenuItemTeams extends PopupMenuItem<String> {
 
   static callback(BuildContext context) async {
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    final event = NavigatorActionTeams(context);
-    navigatorBloc.add(event);
+    navigatorBloc.add(NavigatorActionTeams());
   }
 }

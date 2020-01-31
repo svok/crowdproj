@@ -89,14 +89,9 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.all(4.0),
             child: FloatingActionButton(
               onPressed: () {
-                final teamsBloc = BlocProvider.of<TeamsBloc>(context);
                 final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
                 print("NAVIGATOR is requested for EditPage");
-                navigatorBloc.add(NavigatorActionTeamsEdit(context));
-//                Navigator.push(
-//                  context,
-//                  MaterialPageRoute(builder: (context) => GridWidget()),
-//                );
+                navigatorBloc.add(NavigatorActionTeamsEdit());
               },
               heroTag: "teamEdit",
               tooltip: 'Update Team',

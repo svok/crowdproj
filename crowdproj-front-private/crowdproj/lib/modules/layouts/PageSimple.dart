@@ -12,9 +12,9 @@ class PageSimple extends StatelessWidget {
     Widget this.floatingActionButton,
   }) : super(key: key);
 
-  String title;
-  Widget body;
-  Widget floatingActionButton;
+  final String title;
+  final Widget body;
+  final Widget floatingActionButton;
 
   @override
   Widget build(BuildContext context) {

@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 class NavigatorActionTeamsEdit extends NavigatorAction {
-  NavigatorActionTeamsEdit(BuildContext context, {
+  NavigatorActionTeamsEdit({
     this.teamId,
-  }) : super(context);
+  }) : super();
   String teamId;
 
   final _route = TeamsPageEdit.route;

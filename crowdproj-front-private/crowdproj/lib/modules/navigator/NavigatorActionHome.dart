@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 class NavigatorActionHome extends NavigatorAction {
-  NavigatorActionHome(BuildContext context, {
-    this.teamId,
-  }) : super(context);
-  String teamId;
-
   final _route = HomePage.route;
 
   @override

@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 class NavigatorActionProfile extends NavigatorAction {
-  NavigatorActionProfile(BuildContext context, {
-    this.teamId,
-  }) : super(context);
-  String teamId;
-
   final _route = ProfilePage.route;
 
   @override

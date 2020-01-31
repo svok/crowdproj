@@ -1,13 +1,10 @@
-import 'package:crowdproj/modules/teams/TeamsPageEdit.dart';
+import 'package:crowdproj/modules/teams/TeamsPage.dart';
 import 'package:flutter/material.dart';
 
 import 'NavigatorAction.dart';
 
 class NavigatorActionTeams extends NavigatorAction {
-  NavigatorActionTeams(BuildContext context) : super(context);
-  String teamId;
-
-  final _route = TeamsPageEdit.route;
+  final _route = TeamsPage.route;
 
   @override
   String get path {
@@ -24,6 +21,6 @@ class NavigatorActionTeams extends NavigatorAction {
   WidgetBuilder get builder => _route.builder;
 
   @override
-  TeamsPageEditArguments get arguments =>
-      TeamsPageEditArguments(teamId: teamId);
+  TeamsPage get arguments => null;
+
 }

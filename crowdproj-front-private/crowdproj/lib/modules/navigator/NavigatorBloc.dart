@@ -1,16 +1,26 @@
 import 'package:bloc/bloc.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionInit.dart';
+import 'package:flutter/cupertino.dart';
 
 import 'NavigatorAction.dart';
 
 class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
 
+  NavigatorBloc({
+    @required this.navigatorKey
+  }): super();
+
+  final GlobalKey<NavigatorState> navigatorKey;
+
   @override
-  dynamic get initialState => NavigatorAction;
+  dynamic get initialState => NavigatorActionInit();
 
   @override
   Stream<dynamic> mapEventToState(NavigatorAction event) async* {
     print("NAVIGATOR mapEventToState for ${event.runtimeType}");
-    event.go();
+    print("NAVIGATOR for ${navigatorKey?.currentState?.runtimeType}");
+    final next = await event.go(navigatorKey?.currentState);
+    if (next != null) add(next);
     yield true;
   }
 }

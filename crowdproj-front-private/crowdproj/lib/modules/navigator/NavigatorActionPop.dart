@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 class NavigatorActionPop extends NavigatorAction {
-  NavigatorActionPop(BuildContext context): super(context);
+  NavigatorActionPop(): super();
   @override
   String get path => null;
 
@@ -13,7 +13,8 @@ class NavigatorActionPop extends NavigatorAction {
   @override
   Object get arguments => null;
 
-  void go() {
-    if (navigator.canPop()) navigator.pop();
+  Future<NavigatorAction> go(NavigatorState navigatorState) async {
+    if (navigatorState.canPop()) navigatorState.pop();
+    return null;
   }
 }

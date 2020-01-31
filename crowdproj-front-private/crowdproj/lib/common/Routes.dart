@@ -57,43 +57,43 @@ class Routes {
 
   RouteDescription findRoute(RouteSettings settings) => widgets.firstWhere((e) => settings?.name == e.pathFormatted(settings: settings), orElse: () => ErrorPage.route);
 
-  Route<dynamic> routeTo(RouteSettings settings) {
-    final widgetRoute = findRoute(settings);
-    if (widgetRoute != null) {
-      final route =
-          MaterialPageRoute(builder: widgetRoute.builder, settings: settings);
-      _updateCurrentRoute(widgetRoute, settings);
-      return route;
-    }
-    return routeTo(RouteSettings(arguments: ErrorPageArgs(code: 404, badRoute: settings)));
-  }
+//  Route<dynamic> routeTo(RouteSettings settings) {
+//    final widgetRoute = findRoute(settings);
+//    if (widgetRoute != null) {
+//      final route =
+//          MaterialPageRoute(builder: widgetRoute.builder, settings: settings);
+//      _updateCurrentRoute(widgetRoute, settings);
+//      return route;
+//    }
+//    return routeTo(RouteSettings(arguments: ErrorPageArgs(code: 404, badRoute: settings)));
+//  }
 
-  void redirectTo({BuildContext context}) {
-    final currentRouteObj = ModalRoute.of(context);
-    if (!currentRouteObj.isCurrent) return;
-    final currentRoute = currentRouteObj.settings.name;
-    String route = currentRoute;
-    route = _routeToPromo(route);
-    route = _routeToAuth(route);
-
-    // If route is not changed we just go out with no action
-    if (currentRoute == route) return;
-
-    final navigator = Navigator.of(context);
-    if (navigator == null) return;
-    final settings = RouteSettings(name: route);
-    final widgetRoute = findRoute(settings);
-    if (widgetRoute != null) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        if (!_updateCurrentRoute(widgetRoute, settings)) return;
-        final routeObj = MaterialPageRoute(
-            builder: widgetRoute.builder, settings: settings);
-//        if (routeObj == _currentRoute) return;
-        if (navigator.canPop() == true) navigator.pop();
-        navigator.push(routeObj);
-      });
-    }
-  }
+//  void redirectTo({BuildContext context}) {
+//    final currentRouteObj = ModalRoute.of(context);
+//    if (!currentRouteObj.isCurrent) return;
+//    final currentRoute = currentRouteObj.settings.name;
+//    String route = currentRoute;
+//    route = _routeToPromo(route);
+//    route = _routeToAuth(route);
+//
+//    // If route is not changed we just go out with no action
+//    if (currentRoute == route) return;
+//
+//    final navigator = Navigator.of(context);
+//    if (navigator == null) return;
+//    final settings = RouteSettings(name: route);
+//    final widgetRoute = findRoute(settings);
+//    if (widgetRoute != null) {
+//      SchedulerBinding.instance.addPostFrameCallback((_) {
+//        if (!_updateCurrentRoute(widgetRoute, settings)) return;
+//        final routeObj = MaterialPageRoute(
+//            builder: widgetRoute.builder, settings: settings);
+////        if (routeObj == _currentRoute) return;
+//        if (navigator.canPop() == true) navigator.pop();
+//        navigator.push(routeObj);
+//      });
+//    }
+//  }
 
   String _routeToPromo(String route) {
     if (route != HomePage.route.pathFormatted(settings: RouteSettings(name: route))) return route;

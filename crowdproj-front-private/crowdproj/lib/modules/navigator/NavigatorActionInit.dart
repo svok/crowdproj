@@ -1,10 +1,11 @@
-
+import 'package:crowdproj/common/AppSession.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionHome.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionPromo.dart';
 import 'package:flutter/material.dart';
 
 import 'NavigatorAction.dart';
 
 class NavigatorActionInit extends NavigatorAction {
-  NavigatorActionInit(BuildContext context) : super(context);
 
   @override
   Object get arguments => null;
@@ -16,7 +17,19 @@ class NavigatorActionInit extends NavigatorAction {
   String get path => null;
 
   @override
-  void go() {
+  Future<NavigatorAction> go(NavigatorState navigatorState) async {
+    final _securePrefs = AppSession.get.securePrefs;
+    final isPromoShown =
+        _securePrefs.getString(key_promo_shown, defaultValue: "false") ==
+            "true";
+
+    if (!isPromoShown) {
+      await _securePrefs.setString(key_promo_shown, "true");
+      return NavigatorActionPromo();
+    } else {
+      return NavigatorActionHome();
+    }
   }
 
+  static const key_promo_shown = "promo_shown";
 }

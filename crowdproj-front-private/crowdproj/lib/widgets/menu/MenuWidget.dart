@@ -1,28 +1,21 @@
-import 'package:crowdproj/modules/navigator/NavigatorActionAbout.dart';
-import 'package:crowdproj/modules/navigator/NavigatorActionTeams.dart';
-import 'package:crowdproj/modules/navigator/NavigatorActionTeamsEdit.dart';
-import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/about/MenuItemAbout.dart';
 import 'package:crowdproj/modules/auth/widgets/MenuItemProfile.dart';
 import 'package:crowdproj/modules/auth/widgets/MenuItemSignOut.dart';
 import 'package:crowdproj/modules/teams/MenuItemTeams.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuWidget extends StatefulWidget implements PreferredSizeWidget {
   MenuWidget({
     Key key,
     this.title,
-  }) : super(
-          key: key,
-        ) {
+  }) : super(key: key) {
     final bottom = null;
     preferredSize = Size.fromHeight(
         kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0));
   }
 
-  String title;
+  final String title;
 
   @override
   State<StatefulWidget> createState() => _MenuWidgetState();
@@ -32,15 +25,14 @@ class MenuWidget extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _MenuWidgetState extends State<MenuWidget> {
-  @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
-    AppSession.get.routes.redirectTo(context: context);
-  }
+//  @override
+//  didChangeDependencies() {
+//    super.didChangeDependencies();
+//    AppSession.get.routes.redirectTo(context: context);
+//  }
 
   @override
   Widget build(BuildContext context) {
-    final navigatorBlock = BlocProvider.of<NavigatorBloc>(context);
     return AppBar(
       title: Text(widget.title),
       actions: <Widget>[
@@ -49,7 +41,6 @@ class _MenuWidgetState extends State<MenuWidget> {
             print("MenuItem $valueSelected");
             switch (valueSelected) {
               case MenuItemTeams.id:
-//                navigatorBlock.add(NavigatorActionTeams(context));
                 await MenuItemTeams.callback(context);
                 break;
               case MenuItemSignOut.id:
@@ -62,7 +53,6 @@ class _MenuWidgetState extends State<MenuWidget> {
                 break;
               case MenuItemAbout.id:
                 await MenuItemAbout.callback(context);
-//                navigatorBlock.add(NavigatorActionAbout(context));
                 break;
             }
           },
