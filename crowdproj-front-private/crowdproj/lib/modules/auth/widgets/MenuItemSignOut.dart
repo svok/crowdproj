@@ -15,6 +15,7 @@ class MenuItemSignOut extends PopupMenuItem<String> {
               .signoutFor(AppSession.get.authService.currentUser?.name ?? "--")),
         );
   static const String id = "signuot";
+
   static callback(BuildContext context) async {
     await AppSession.get.authService.signOut();
   }

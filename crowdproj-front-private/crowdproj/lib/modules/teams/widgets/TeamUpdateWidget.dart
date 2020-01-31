@@ -85,7 +85,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
       print("_TeamUpdateWidgetState.build: ${state?.runtimeType} $state");
       final team = state is TeamsStateEditing ? state.team : this.team;
-      final errors = state is TeamsStateEditing ? state.errors : [];
+      final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
       return CentralContainerWidget(
         child: Form(
           key: _formKey,

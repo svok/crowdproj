@@ -27,8 +27,7 @@ class MainApp extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
           return snapshot?.data == true
               ? buildFutured(context)
-//              : ActivitySpinner();
-              : CircularProgressIndicator();
+              : ActivitySpinner();
         },
       );
 
@@ -83,7 +82,7 @@ class MainApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          onGenerateRoute: AppSession.get.routes.routeTo,
+//          onGenerateRoute: AppSession.get.routes.routeTo,
           home: HomePage()
       ),
     );

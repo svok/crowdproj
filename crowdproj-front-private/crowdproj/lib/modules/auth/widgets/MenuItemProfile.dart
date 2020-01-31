@@ -1,7 +1,9 @@
 
+import 'package:crowdproj/modules/navigator/NavigatorActionProfile.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:flutter/material.dart';
-import 'package:crowdproj/modules/auth/ProfilePage.dart';
 import 'package:crowdproj/translations/AuthLocalizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuItemProfile extends PopupMenuItem<String> {
   MenuItemProfile({Key key, bool enabled = true, @required BuildContext context})
@@ -16,10 +18,9 @@ class MenuItemProfile extends PopupMenuItem<String> {
 
   static const String id = "profile";
   static callback(BuildContext context) async {
-    final navigator = Navigator.of(context);
-    if (navigator == null) return;
-    if (navigator.canPop()) navigator.pop();
-    navigator.pushNamed(ProfilePage.route.pathFormatted());
+    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+    final event = NavigatorActionProfile(context);
+    navigatorBloc.add(event);
   }
 
 }

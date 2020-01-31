@@ -4,9 +4,6 @@ import 'NavigatorAction.dart';
 
 class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
 
-//  final GlobalKey<NavigatorState> navigatorKey;
-//  NavigatorBloc({this.navigatorKey});
-
   @override
   dynamic get initialState => NavigatorAction;
 

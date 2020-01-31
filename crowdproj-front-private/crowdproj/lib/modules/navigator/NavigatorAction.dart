@@ -1,84 +1,72 @@
+import 'package:crowdproj/common/AppSession.dart';
+import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:crowdproj/modules/error/ErrorPage.dart';
 import 'package:crowdproj/modules/error/ErrorPageArgs.dart';
-import 'package:crowdproj/modules/teams/TeamsPageEdit.dart';
 import 'package:flutter/material.dart';
 
 abstract class NavigatorAction {
-
-  NavigatorAction(this._navigator): super();
+  NavigatorAction(context) : navigator = Navigator.of(context), super();
 
   String get path;
+
   Object get arguments;
-  NavigatorState _navigator;
+
+  WidgetBuilder get builder;
+
+  bool get maintainState => true;
+
+  bool get fullscreenDialog => false;
+
+  AccessResult get hasAccess => AppSession.get.authService.isAuthenticated()
+      ? AccessResult.allowed
+      : AccessResult.loginRequired;
+
+  NavigatorState navigator;
+  final _authRoute = AuthPage.route;
+  final _errorRoute = ErrorPage.route;
 
   void go() {
-    print("NavigatorAction.go");
-    print("REDIRECTING to $path");
-    _navigator.pushNamed(path, arguments: arguments);
+    switch (hasAccess) {
+      case AccessResult.allowed:
+        navigator.push(MaterialPageRoute(
+          builder: builder,
+          settings: RouteSettings(name: path, arguments: arguments),
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+        ));
+        return;
+      case AccessResult.loginRequired:
+        final settings = RouteSettings(
+          name: _authRoute.pathName,
+          arguments: this,
+        );
+        navigator.push(MaterialPageRoute(
+          builder: _authRoute.builder,
+          settings: settings,
+        ));
+        return;
+      case AccessResult.denied:
+        final settings = RouteSettings(
+          name: _errorRoute.pathName,
+          arguments: ErrorPageArgs(
+            code: 403,
+            badRoute: RouteSettings(name: path, arguments: arguments),
+            description: "Access denied to the page due to insufficien access rights",
+          ),
+        );
+        navigator.push(MaterialPageRoute(
+          builder: _errorRoute.builder,
+          settings: settings,
+        ));
+        return;
+      default:
+        throw UnimplementedError("Access type ${hasAccess} is not implemented");
+    }
   }
 }
 
-class NavigatorActionPop extends NavigatorAction {
-  NavigatorActionPop(NavigatorState navigatorState): super(navigatorState);
-  @override
-  Object get arguments => null;
-
-  @override
-  String get path => null;
-  void go() {
-    if (_navigator.canPop()) _navigator.pop();
-  }
-}
-
-class NavigatorActionError extends NavigatorAction {
-  NavigatorActionError(NavigatorState navigatorState, {
-    this.code,
-    this.badRoute,
-    this.description,
-  }) : super(navigatorState);
-
-  int code;
-  RouteSettings badRoute;
-  String description;
-
-  final _route = ErrorPage.route;
-
-  @override
-  String get path => _route.pathFormatted(
-        settings: RouteSettings(
-          name: _route.pathName,
-          arguments: arguments,
-        ),
-      );
-
-  @override
-  Object get arguments => ErrorPageArgs(
-        code: code,
-        badRoute: badRoute,
-        description: description,
-      );
-}
-
-class NavigatorActionTeamsEdit extends NavigatorAction {
-  NavigatorActionTeamsEdit(NavigatorState navigatorState, {
-    this.teamId,
-  }) : super(navigatorState);
-  String teamId;
-
-  final _route = TeamsPageEdit.route;
-
-  @override
-  String get path {
-    print("NavigatorActionTeamsEdit.path: ${_route.pathName}");
-    return _route.pathFormatted(
-      settings: RouteSettings(
-        name: _route.pathName,
-        arguments: arguments,
-      ),
-    );
-  }
-
-  @override
-  TeamsPageEditArguments get arguments =>
-      TeamsPageEditArguments(teamId: teamId);
+enum AccessResult {
+  allowed,
+  loginRequired,
+  denied,
 }

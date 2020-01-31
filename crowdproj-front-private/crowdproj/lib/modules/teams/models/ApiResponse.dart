@@ -64,7 +64,7 @@ class ApiError {
       errors?.where((element) => element.field == field)?.toList();
 
   static String errorString(Iterable errors, String field) =>
-      errorsForField(errors, field)?.map((e) => e.message)?.join("\n") ?? "";
+      errorsForField(errors, field)?.map((e) => e.message)?.join("\n");
 }
 
 enum ErrorLevels { fatal, error, warning, info }

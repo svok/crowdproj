@@ -1,7 +1,9 @@
+import 'package:crowdproj/modules/navigator/NavigatorActionTeams.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:crowdproj/modules/teams/TeamsPage.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuItemTeams extends PopupMenuItem<String> {
   MenuItemTeams({Key key, bool enabled = true, @required BuildContext context})
@@ -14,9 +16,8 @@ class MenuItemTeams extends PopupMenuItem<String> {
   static const String id = "teams";
 
   static callback(BuildContext context) async {
-    final navigator = Navigator.of(context);
-    if (navigator == null) return;
-    if (navigator.canPop()) navigator.pop();
-    navigator.pushNamed(TeamsPage.route.pathFormatted());
+    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+    final event = NavigatorActionTeams(context);
+    navigatorBloc.add(event);
   }
 }

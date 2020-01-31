@@ -13,16 +13,17 @@ class ActivitySpinner extends StatelessWidget {
         child: Column(
           children: [
             Expanded(child: Container()),
-            Image.asset(
-              'assets/img/activity-spinner.gif',
-              fit: BoxFit.scaleDown,
-              width: 84.0,
-              height: 84.0,
-            ),
+            CircularProgressIndicator(),
+//            Image.asset(
+//              'assets/img/activity-spinner.gif',
+//              fit: BoxFit.scaleDown,
+//              width: 84.0,
+//              height: 84.0,
+//            ),
             Text(
               'Loading...',
               textAlign: TextAlign.center,
-              style: theme.textTheme.title,
+              style: theme.textTheme.headline6,
             ),
             Expanded(child: Container()),
           ],
