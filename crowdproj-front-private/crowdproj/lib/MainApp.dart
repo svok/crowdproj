@@ -35,64 +35,50 @@ class MainApp extends StatelessWidget {
       );
 
   Widget buildFutured(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: _navigatorKey,
-      localizationsDelegates: [
-        TeamsLocalizations.delegate,
-        AuthLocalizations.delegate,
-        HomeLocalizations.delegate,
-        PromoLocalizations.delegate,
-        ErrorLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
+    return MultiProvider(
+      providers: [
+        BlocProvider<NavigatorBloc>(
+          create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
+        ),
+        BlocProvider<TeamsBloc>(
+          create: (context) => TeamsBloc(service: TeamsService()),
+        ),
+        ChangeNotifierProvider.value(value: AppSession.get.authService),
       ],
-      supportedLocales: [
-        const Locale('en', 'US'), // English
-        const Locale('ru', 'RU'), // Russian
-      ],
-      localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
-        final currLocale = locale ?? AppSession.get.locale ?? window.locale;
-
-        for (Locale supportedLocale in supportedLocales) {
-          if (supportedLocale.languageCode == currLocale?.languageCode ||
-              supportedLocale.countryCode == currLocale?.countryCode) {
-            return supportedLocale;
-          }
-        }
-        return supportedLocales.first;
-      },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MultiProvider(
-        providers: [
-          BlocProvider<NavigatorBloc>(
-            create: (context) {
-              print("CREATING NavigatorBloc");
-              return NavigatorBloc(navigatorKey: _navigatorKey);
-            },
-          ),
-          BlocProvider<TeamsBloc>(
-            create: (context) {
-              print("CREATING TeamsBloc");
-              return TeamsBloc(service: TeamsService());
-            },
-          ),
-          ChangeNotifierProvider<AuthService>(
-            create: (context) {
-              print("CREATING AuthService");
-              return AppSession.get.authService;
-            },
-          ),
+      child: MaterialApp(
+        navigatorKey: _navigatorKey,
+        localizationsDelegates: [
+          TeamsLocalizations.delegate,
+          AuthLocalizations.delegate,
+          HomeLocalizations.delegate,
+          PromoLocalizations.delegate,
+          ErrorLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
-        child: Consumer<AuthService>(builder: (context, value, child) {
+        supportedLocales: [
+          const Locale('en', 'US'), // English
+          const Locale('ru', 'RU'), // Russian
+        ],
+        localeResolutionCallback: (Locale locale, Iterable supportedLocales) {
+          final currLocale = locale ?? AppSession.get.locale ?? window.locale;
+
+          for (Locale supportedLocale in supportedLocales) {
+            if (supportedLocale.languageCode == currLocale?.languageCode ||
+                supportedLocale.countryCode == currLocale?.countryCode) {
+              return supportedLocale;
+            }
+          }
+          return supportedLocales.first;
+        },
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Consumer<AuthService>(builder: (context, value, child) {
           final teamsBloc = BlocProvider.of<TeamsBloc>(context);
-          print("TEAMS STATE: ${teamsBloc?.state}");
           final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-          print("CONSUMER - CHILD: ${child?.runtimeType} VALUE: ${value?.runtimeType}");
           final home = AppSession.get.resolveHome();
-          print("DROWING HOME: ${home.runtimeType}");
           return home;
         }),
       ),

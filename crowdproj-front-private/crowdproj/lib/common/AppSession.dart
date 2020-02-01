@@ -55,14 +55,11 @@ class AppSession {
   Widget resolveHome() {
     final isPromoShown =
         securePrefs.getString(key_promo_shown, defaultValue: "false") == "true";
-    print("IS PROMO SHOWN: ${isPromoShown}");
     if (!isPromoShown) {
-      print("SHOW PROMO");
       return PromoPage();
     }
 
     final isAuthenticated = authService.isAuthenticated();
-    print("IS AUTHENTICATED: ${isAuthenticated}");
     return isAuthenticated ? HomePage() : AuthPage();
   }
 

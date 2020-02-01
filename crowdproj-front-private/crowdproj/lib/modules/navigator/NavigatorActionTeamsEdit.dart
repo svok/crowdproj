@@ -13,7 +13,6 @@ class NavigatorActionTeamsEdit extends NavigatorAction {
 
   @override
   String get path {
-    print("NavigatorActionTeamsEdit.path: ${_route.pathName}");
     return _route.pathFormatted(
       settings: RouteSettings(
         name: _route.pathName,

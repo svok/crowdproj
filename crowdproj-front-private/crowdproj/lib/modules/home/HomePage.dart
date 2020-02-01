@@ -90,7 +90,6 @@ class _HomePageState extends State<HomePage> {
             child: FloatingActionButton(
               onPressed: () {
                 final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-                print("NAVIGATOR is requested for EditPage");
                 navigatorBloc.add(NavigatorActionTeamsEdit());
               },
               heroTag: "teamEdit",
