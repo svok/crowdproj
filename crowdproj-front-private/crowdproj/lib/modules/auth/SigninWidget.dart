@@ -35,10 +35,12 @@ class _SigninWidgetState extends State<SigninWidget> {
   User _user = new User();
 
   submit(BuildContext context) async {
-    _formKey.currentState.save();
+    final form = _formKey.currentState;
+    if (! form.validate()) return;
+    form.save();
     String message;
     try {
-      _user = await _userService.login(_user.email, _user.password);
+      _user = await _userService.signIn(_user.email, _user.password);
       message = 'User sucessfully logged in!';
       if (!_user.confirmed) {
         message = 'Please confirm user account';
@@ -90,7 +92,7 @@ class _SigninWidgetState extends State<SigninWidget> {
       builder: (BuildContext context) {
         return CentralContainerWidget(
           child: Form(
-            autovalidate: true,
+//            autovalidate: true,
             key: _formKey,
             child: new ListView(
               children: <Widget>[

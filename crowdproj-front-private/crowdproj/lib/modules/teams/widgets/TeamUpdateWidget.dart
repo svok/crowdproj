@@ -1,4 +1,5 @@
 import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:crowdproj/modules/teams/models/Team.dart';
@@ -8,6 +9,7 @@ import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 import '../TeamsBloc.dart';
 
@@ -81,7 +83,8 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     print("_TeamUpdateWidgetState.build - building");
-//    final TeamsBloc teamsBloc = BlocProvider.of<TeamsBloc>(context);
+    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
       print("_TeamUpdateWidgetState.build: ${state?.runtimeType} $state");
       final team = state is TeamsStateEditing ? state.team : this.team;

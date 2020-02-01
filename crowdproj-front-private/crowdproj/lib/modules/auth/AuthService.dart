@@ -1,9 +1,10 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
 import 'package:crowdproj/modules/auth/CognitoConfig.dart';
+import 'package:flutter/material.dart';
 
 import 'User.dart';
 
-class AuthService {
+class AuthService with ChangeNotifier {
 
   AuthService(this._userPool);
 
@@ -24,6 +25,8 @@ class AuthService {
     _session = await _cognitoUser.getSession();
     _currentUser = await getCurrentUser();
   }
+
+  void notify() => notifyListeners();
 
   /// Get existing user from session with his/her attributes
   Future<User> getCurrentUser() async {
@@ -62,7 +65,7 @@ class AuthService {
   }
 
   /// Login user
-  Future<User> login(String email, String password) async {
+  Future<User> signIn(String email, String password) async {
     _cognitoUser = CognitoUser(email, _userPool, storage: _userPool.storage);
 
     final authDetails = new AuthenticationDetails(
@@ -94,6 +97,7 @@ class AuthService {
     user.hasAccess = true;
 
     _currentUser = user;
+    notifyListeners();
     return user;
   }
 
@@ -151,6 +155,7 @@ class AuthService {
     print("User is logged out");
     _currentUser = null;
     _cognitoUser = null;
+    notifyListeners();
   }
 
   Future<void> updateUser(User user) async {

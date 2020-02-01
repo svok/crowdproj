@@ -1,5 +1,4 @@
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/navigator/NavigatorActionAuth.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +21,7 @@ abstract class NavigatorAction {
   Future<NavigatorAction> go(NavigatorState navigator) async {
     switch (hasAccess) {
       case AccessResult.allowed:
+//        navigator.pushNamed(path, arguments: arguments);
         navigator.push(MaterialPageRoute(
           builder: builder,
           settings: RouteSettings(name: path, arguments: arguments),
@@ -29,8 +29,8 @@ abstract class NavigatorAction {
           fullscreenDialog: fullscreenDialog,
         ));
         return null;
-      case AccessResult.loginRequired:
-        return NavigatorActionAuth(goBack: this);
+//      case AccessResult.loginRequired:
+//        return NavigatorActionAuth(goBack: this);
       case AccessResult.denied:
         return NavigatorActionError(
           code: 403,

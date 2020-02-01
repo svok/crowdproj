@@ -17,7 +17,6 @@ class MenuItemAbout extends PopupMenuItem<String> {
 
   static callback(BuildContext context) async {
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    final event = NavigatorActionAbout();
-    navigatorBloc.add(event);
+    navigatorBloc.add(NavigatorActionAbout());
   }
 }

@@ -1,4 +1,7 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
+import 'package:crowdproj/modules/auth/AuthPage.dart';
+import 'package:crowdproj/modules/home/HomePage.dart';
+import 'package:crowdproj/modules/promo/PromoPage.dart';
 import 'package:crypted_preferences/crypted_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crowdproj/common/Routes.dart';
@@ -42,12 +45,25 @@ class AppSession {
       locale: _locale,
     );
 
-//    print("RESOLVING location");
-//    final location = await AppPlatform.initLocation();
-//    print("RESOLVING location: $location");
-//    if (location != null) {
-//      Navigator.of(context).pushNamed(location);
-//    }
+    await _instance.resolveHome();
+  }
+
+  void setPromoShown() {
+    securePrefs.setString(key_promo_shown, "true");
+  }
+
+  Widget resolveHome() {
+    final isPromoShown =
+        securePrefs.getString(key_promo_shown, defaultValue: "false") == "true";
+    print("IS PROMO SHOWN: ${isPromoShown}");
+    if (!isPromoShown) {
+      print("SHOW PROMO");
+      return PromoPage();
+    }
+
+    final isAuthenticated = authService.isAuthenticated();
+    print("IS AUTHENTICATED: ${isAuthenticated}");
+    return isAuthenticated ? HomePage() : AuthPage();
   }
 
   final CognitoSecureStorage cognitoSecureStorage;
@@ -65,5 +81,7 @@ class AppSession {
     if (language != null) return Locale(language, country);
     return null;
   }
+
   static final localeRegex = RegExp(r"^([a-z]{2})[-_]?([A-Z]{2})?(?:\..*|)$");
+  static const key_promo_shown = "promo_shown";
 }

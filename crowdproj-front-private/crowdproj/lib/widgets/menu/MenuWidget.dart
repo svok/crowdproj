@@ -44,9 +44,7 @@ class _MenuWidgetState extends State<MenuWidget> {
                 await MenuItemTeams.callback(context);
                 break;
               case MenuItemSignOut.id:
-                await MenuItemSignOut.callback(context).then((_) async {
-                  didChangeDependencies();
-                });
+                await MenuItemSignOut.callback(context);
                 break;
               case MenuItemProfile.id:
                 await MenuItemProfile.callback(context);

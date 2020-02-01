@@ -19,8 +19,7 @@ class MenuItemProfile extends PopupMenuItem<String> {
   static const String id = "profile";
   static callback(BuildContext context) async {
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    final event = NavigatorActionProfile();
-    navigatorBloc.add(event);
+    navigatorBloc.add(NavigatorActionProfile());
   }
 
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/auth/ConfirmWidget.dart';
@@ -72,11 +71,10 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
           children: [
             SigninWidget(
               onSignediInCallback: () {
-                SchedulerBinding.instance.addPostFrameCallback((_){
-                  final navigator = Navigator.of(context);
-                  if (navigator == null) return;
-                  if (navigator.canPop()) navigator.pop();
-                });
+//                SchedulerBinding.instance.addPostFrameCallback((_){
+//                  final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+//                  navigatorBloc.add(NavigatorActionAuthDone());
+//                });
                 return Container();
               },
               onUnconfirmedCallback: () {

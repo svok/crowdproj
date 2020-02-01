@@ -27,4 +27,7 @@ class NavigatorActionAuth extends NavigatorAction {
   @override
   Object get arguments => goBack;
 
+  @override
+  AccessResult get hasAccess => AccessResult.allowed;
+
 }
