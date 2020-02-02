@@ -2,6 +2,7 @@ import org.gradle.api.DefaultTask
 import org.gradle.api.Project
 import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.named
@@ -13,6 +14,10 @@ open class FlutterPubUpgradeTask : DefaultTask() {
         group = FlutterDescription.FLUTTER_GROUP
         description = "Updating all packages of the ${project.name} project"
     }
+
+    @OutputDirectory
+    val generatedUpgradesDir = project.objects.directoryProperty()
+        .apply { set(project.file("${project.projectDir}/.dart_tool")) }
 
     @Input
     val flutterCommand: Property<String> = project.objects.property(String::class.java)
@@ -26,8 +31,6 @@ open class FlutterPubUpgradeTask : DefaultTask() {
 //        project.exec {
 //            workingDir = File(flutterProjectDir.get())
 //            commandLine("env")
-////            executable = flutterCommand.get()
-////            args = listOf("-c", "env")
 //        }
         project.exec {
             workingDir = File(flutterProjectDir.get())
@@ -46,5 +49,5 @@ open class FlutterPubUpgradeTask : DefaultTask() {
         }
 }
 
-val Project.flutterPubUpgrade: TaskProvider<FlutterBuildRunnerTask>
-    get() = tasks.named<FlutterBuildRunnerTask>(FlutterBuildRunnerTask.TASK_NAME)
+val Project.flutterPubUpgrade: TaskProvider<FlutterPubUpgradeTask>
+    get() = tasks.named<FlutterPubUpgradeTask>(FlutterPubUpgradeTask.TASK_NAME)

@@ -33,7 +33,7 @@ class AppSession {
     final _cognitoSecureStorage = CognitoSecureStorage(_securePrefs);
     final _userPool = CognitoConfig.userPool(_cognitoSecureStorage);
     final _auth = AuthService(_userPool);
-    final _routes = Routes(_securePrefs);
+    final _routes = Routes();
     final _locale = _parseLocale(await AppPlatform.getLanguage());
     await _auth.init();
 

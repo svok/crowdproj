@@ -16,8 +16,6 @@ class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
 
   @override
   Stream<dynamic> mapEventToState(NavigatorAction event) async* {
-    print("NAVIGATOR mapEventToState for ${event.runtimeType}");
-    print("NAVIGATOR for ${navigatorKey?.currentState?.runtimeType}");
     final next = await event.go(navigatorKey?.currentState);
     if (next != null) add(next);
     yield true;

@@ -11,7 +11,7 @@ flutter {
 
 tasks {
 
-    val generateModles by creating {
+    val generateModels by creating {
         dependsOn(
             rootProject.getTasksByName(
                 "generateDartModels",
@@ -21,7 +21,7 @@ tasks {
     }
 
     flutterPubUpgrade {
-        dependsOn(generateModles)
+        dependsOn(generateModels)
     }
 
     create("build") {

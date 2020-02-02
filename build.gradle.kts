@@ -59,8 +59,8 @@ tasks {
         group = "openapi"
         val specFile = "$rootDir/spec/crowdproj-spec.yaml"
         val destDir = "$rootDir/crowdproj-front-private/crowdproj_models"
-//        inputs.files(spec)
-//        outputs.files(fileTree(dest))
+        inputs.files(specFile)
+        outputs.files(fileTree(destDir), file("$destDir/pubspec.yaml"))
         generatorName.set("dart-dio")
         inputSpec.set(specFile)
         outputDir.set(destDir)
