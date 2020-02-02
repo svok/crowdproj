@@ -7,6 +7,8 @@ import 'package:crowdproj/modules/teams/models/Team.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../TeamsBloc.dart';
+
 class TeamsEventSaveRequested extends TeamsEvent {
   TeamsEventSaveRequested({
     this.team,
@@ -17,11 +19,14 @@ class TeamsEventSaveRequested extends TeamsEvent {
   @override
   Stream<TeamsState> handle(BuildContext context) async* {
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     final service = AppSession.get.teamsService;
-    yield TeamsStateWaiting();
+
+    yield teamsBloc.state..isWaiting = true;
+
     final response = await service.saveTeam(team);
     if (response.status == ApiResponseStatuses.success) {
-      yield TeamsStateViewing(team: team);
+      yield TeamsStateViewing(team: response.team);
     } else {
       yield TeamsStateEditing(
         team: team,

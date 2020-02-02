@@ -809,6 +809,10 @@ components:
     ApiResponseTeamSave:
       allOf:
         - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Team'
 
 
     ApiError:

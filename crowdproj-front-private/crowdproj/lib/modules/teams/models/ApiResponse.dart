@@ -38,12 +38,14 @@ class ApiResponseTeamSave extends ApiResponse {
     List<ApiError> errors,
     DateTime timeRequested,
     DateTime timeFinished,
+    this.team,
   }) : super(
           status: status,
           errors: errors,
           timeRequested: timeRequested,
           timeFinished: timeFinished,
         );
+  Team team;
 }
 
 class ApiError {

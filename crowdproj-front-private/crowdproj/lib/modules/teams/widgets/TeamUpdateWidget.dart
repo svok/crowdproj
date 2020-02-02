@@ -93,7 +93,6 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
       return CentralContainerWidget(
         child: Form(
           key: _formKey,
-          autovalidate: true,
           child: new ListView(
             children: <Widget>[
               TeamFieldNameWidget(

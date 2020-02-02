@@ -2,14 +2,13 @@ import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 
 import 'models/Team.dart';
 
-abstract class TeamsState {}
+abstract class TeamsState {
+  TeamsState({this.isWaiting = false}): super();
+  bool isWaiting;
+}
 
 class TeamsStateNothing extends TeamsState {
   String toString() => "Nothing to do";
-}
-
-class TeamsStateWaiting extends TeamsState {
-  String toString() => "Waiting for result";
 }
 
 class TeamsStateEditing extends TeamsState {
@@ -17,7 +16,8 @@ class TeamsStateEditing extends TeamsState {
     this.team,
     this.teamEdited,
     this.errors,
-  }) : super();
+    bool isWaiting,
+  }) : super(isWaiting: isWaiting);
 
   Team team;
   Team teamEdited;
@@ -31,7 +31,8 @@ class TeamsStateViewing extends TeamsState {
   TeamsStateViewing({
     this.team,
     this.errors,
-  }) : super();
+    bool isWaiting,
+  }) : super(isWaiting: isWaiting);
   Team team;
   List<ApiError> errors;
 

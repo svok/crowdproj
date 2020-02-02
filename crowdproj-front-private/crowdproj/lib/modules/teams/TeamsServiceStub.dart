@@ -1,4 +1,5 @@
 import 'package:crowdproj/modules/teams/ITeamsService.dart';
+import 'package:uuid/uuid.dart';
 
 import 'models/Team.dart' as local;
 import 'models/Profile.dart' as local;
@@ -10,6 +11,7 @@ class TeamsServiceStub implements ITeamsService {
 
   Future<local.ApiResponseTeamSave> saveTeam(local.Team team) async {
     return local.ApiResponseTeamSave(
+      team: team..id = Uuid().v4(),
       status: local.ApiResponseStatuses.success,
       errors: [],
       timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),

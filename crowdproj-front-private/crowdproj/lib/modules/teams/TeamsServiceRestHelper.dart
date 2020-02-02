@@ -9,6 +9,7 @@ class TeamsServiceRestHelper {
   static local.ApiResponseTeamSave fromApiResponseTeamSave(
           remote.ApiResponseTeamSave remote) =>
       local.ApiResponseTeamSave(
+        team: Team.fromExchange(remote.data),
         status: fromResponseStatus(remote.status),
         errors: remote.errors.map((el) => fromApiError(el)),
         timeRequested: DateTime.tryParse(remote.timeReceived),
