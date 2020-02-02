@@ -1,26 +1,12 @@
+import 'package:crowdproj/common/RouteDescription.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionDefaultAbstarct.dart';
 import 'package:crowdproj/modules/promo/PromoPage.dart';
-import 'package:flutter/material.dart';
 
 import 'NavigatorAction.dart';
 
-class NavigatorActionPromo extends NavigatorAction {
-  final _route = PromoPage.route;
-
+class NavigatorActionPromo extends NavigatorActionDefaultAbstract {
   @override
-  String get path {
-    return _route.pathFormatted(
-      settings: RouteSettings(
-        name: _route.pathName,
-        arguments: arguments,
-      ),
-    );
-  }
-
-  @override
-  WidgetBuilder get builder => _route.builder;
-
-  @override
-  Object get arguments => null;
+  RouteDescription get route=> PromoPage.route;
 
   @override
   AccessResult get hasAccess => AccessResult.allowed;

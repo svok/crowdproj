@@ -1,8 +1,6 @@
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class NavigatorAction {
 

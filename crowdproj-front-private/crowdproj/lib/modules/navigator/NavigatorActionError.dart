@@ -1,10 +1,12 @@
+import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/error/ErrorPage.dart';
 import 'package:crowdproj/modules/error/ErrorPageArgs.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionDefaultAbstarct.dart';
 import 'package:flutter/material.dart';
 
 import 'NavigatorAction.dart';
 
-class NavigatorActionError extends NavigatorAction {
+class NavigatorActionError extends NavigatorActionDefaultAbstract {
   NavigatorActionError({
     this.code,
     this.badRoute,
@@ -15,18 +17,8 @@ class NavigatorActionError extends NavigatorAction {
   RouteSettings badRoute;
   String description;
 
-  final _route = ErrorPage.route;
-
   @override
-  String get path => _route.pathFormatted(
-    settings: RouteSettings(
-      name: _route.pathName,
-      arguments: arguments,
-    ),
-  );
-
-  @override
-  WidgetBuilder get builder => _route.builder;
+  RouteDescription get route=> ErrorPage.route;
 
   @override
   Object get arguments => ErrorPageArgs(

@@ -1,28 +1,16 @@
+import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/teams/TeamsPageEdit.dart';
-import 'package:flutter/material.dart';
 
-import 'NavigatorAction.dart';
+import 'NavigatorActionDefaultAbstarct.dart';
 
-class NavigatorActionTeamsEdit extends NavigatorAction {
+class NavigatorActionTeamsEdit extends NavigatorActionDefaultAbstract {
   NavigatorActionTeamsEdit({
     this.teamId,
   }) : super();
   String teamId;
 
-  final _route = TeamsPageEdit.route;
-
   @override
-  String get path {
-    return _route.pathFormatted(
-      settings: RouteSettings(
-        name: _route.pathName,
-        arguments: arguments,
-      ),
-    );
-  }
-
-  @override
-  WidgetBuilder get builder => _route.builder;
+  RouteDescription get route=> TeamsPageEdit.route;
 
   @override
   TeamsPageEditArguments get arguments =>

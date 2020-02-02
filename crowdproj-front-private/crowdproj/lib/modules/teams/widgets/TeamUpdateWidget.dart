@@ -82,11 +82,9 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    print("_TeamUpdateWidgetState.build - building");
     final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
     final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
-      print("_TeamUpdateWidgetState.build: ${state?.runtimeType} $state");
       final team = state is TeamsStateEditing ? state.team : this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
       return CentralContainerWidget(

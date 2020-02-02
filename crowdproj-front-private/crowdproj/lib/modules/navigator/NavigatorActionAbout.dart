@@ -1,25 +1,9 @@
+import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/about/AboutPage.dart';
-import 'package:flutter/material.dart';
 
-import 'NavigatorAction.dart';
+import 'NavigatorActionDefaultAbstarct.dart';
 
-class NavigatorActionAbout extends NavigatorAction {
-  final _route = AboutPage.route;
-
+class NavigatorActionAbout extends NavigatorActionDefaultAbstract {
   @override
-  String get path {
-    return _route.pathFormatted(
-      settings: RouteSettings(
-        name: _route.pathName,
-        arguments: arguments,
-      ),
-    );
-  }
-
-  @override
-  WidgetBuilder get builder => _route.builder;
-
-  @override
-  Object get arguments => null;
-
+  RouteDescription get route=> AboutPage.route;
 }

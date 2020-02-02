@@ -38,7 +38,6 @@ class _MenuWidgetState extends State<MenuWidget> {
       actions: <Widget>[
         new PopupMenuButton(
           onSelected: (String valueSelected) async {
-            print("MenuItem $valueSelected");
             switch (valueSelected) {
               case MenuItemTeams.id:
                 await MenuItemTeams.callback(context);

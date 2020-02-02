@@ -16,9 +16,13 @@ class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
 
   @override
   Stream<dynamic> mapEventToState(NavigatorAction event) async* {
-    final next = await event.go(navigatorKey?.currentState);
-    if (next != null) add(next);
-    yield true;
+    try {
+      final next = await event.go(navigatorKey?.currentState);
+      if (next != null) add(next);
+      yield true;
+    } catch (e) {
+      print("NavigatorBloc.mapEventToState.EXCEPTION: $e");
+    }
   }
 }
 

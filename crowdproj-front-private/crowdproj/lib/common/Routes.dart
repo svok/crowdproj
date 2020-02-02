@@ -57,6 +57,6 @@ class Routes {
     final pagePath = currentRoute?.path();
     final title =
         pageName == null ? homePageTitle : "${pageName} - $homePageTitle";
-    AppPlatform.configWindow("", title, pagePath);
+//    AppPlatform.configWindow("", title, pagePath);
   }
 }
