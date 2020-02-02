@@ -2,6 +2,8 @@ import 'package:amazon_cognito_identity_dart/cognito.dart';
 import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:crowdproj/modules/home/HomePage.dart';
 import 'package:crowdproj/modules/promo/PromoPage.dart';
+import 'package:crowdproj/modules/teams/ITeamsService.dart';
+import 'package:crowdproj/modules/teams/TeamsServiceStub.dart';
 import 'package:crypted_preferences/crypted_preferences.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:crowdproj/common/Routes.dart';
@@ -23,6 +25,9 @@ class AppSession {
   static AppSession _instance;
 
   static AppSession get get => _instance;
+
+  ITeamsService _teamsService = TeamsServiceStub();
+  ITeamsService get teamsService => _teamsService;
 
   static Future<void> init(BuildContext context) async {
     final _securePrefs = await Preferences.preferences(path: 'crowdproj.prefs');

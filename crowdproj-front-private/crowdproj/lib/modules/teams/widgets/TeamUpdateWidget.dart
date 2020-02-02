@@ -82,8 +82,6 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
       final team = state is TeamsStateEditing ? state.team : this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];

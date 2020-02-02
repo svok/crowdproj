@@ -1,10 +1,7 @@
 import 'dart:ui';
 
 import 'package:crowdproj/modules/home/PreloadedPage.dart';
-import 'package:crowdproj/modules/navigator/NavigatorActionPromo.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/TeamsService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -41,7 +38,7 @@ class MainApp extends StatelessWidget {
           create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
         ),
         BlocProvider<TeamsBloc>(
-          create: (context) => TeamsBloc(service: TeamsService()),
+          create: (context) => TeamsBloc(navigatorKey: _navigatorKey),
         ),
         ChangeNotifierProvider.value(value: AppSession.get.authService),
       ],
