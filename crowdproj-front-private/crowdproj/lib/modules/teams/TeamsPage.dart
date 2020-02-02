@@ -1,10 +1,13 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'models/Team.dart';
 
@@ -42,6 +45,23 @@ class _TeamsPageState extends State<TeamsPage> {
           return Container();
         },
       ),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.all(4.0),
+            child: FloatingActionButton(
+              onPressed: () {
+                final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+                navigatorBloc.add(NavigatorActionTeam());
+              },
+              heroTag: "teamEdit",
+              tooltip: localizer.title,
+              child: Icon(Icons.group_add),
+            ),
+          ),
+        ],
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

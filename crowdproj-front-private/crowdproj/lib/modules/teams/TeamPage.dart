@@ -1,18 +1,15 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamUpdateWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamsPage.dart';
 import 'models/Team.dart';
 
-class TeamsPageEdit extends StatefulWidget {
+class TeamPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() => _TeamsPageEditState();
+  State<StatefulWidget> createState() => _TeamPageState();
 
   final team = Team();
 
@@ -31,14 +28,14 @@ class TeamsPageEdit extends StatefulWidget {
   static final route = RouteDescription(
       id: "TeamsPage",
       pathName: "${TeamsPage.route.pathName}/update",
-      pathFormatter: TeamsPageEdit.pathFormatter,
-      titleFormatter: TeamsPageEdit.titleFormatter,
+      pathFormatter: TeamPage.pathFormatter,
+      titleFormatter: TeamPage.titleFormatter,
       builder: (BuildContext context) {
-        return TeamsPageEdit();
+        return TeamPage();
       });
 }
 
-class _TeamsPageEditState extends State<TeamsPageEdit> {
+class _TeamPageState extends State<TeamPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);

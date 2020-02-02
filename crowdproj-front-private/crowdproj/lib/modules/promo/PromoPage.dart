@@ -1,11 +1,9 @@
-import 'package:crowdproj/modules/auth/AuthService.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/translations/PromoLocalizations.dart';
 import 'package:crowdproj/widgets/slider/CpCarousel.dart';
 import 'package:crowdproj/widgets/slider/CpSlide.dart';
-import 'package:provider/provider.dart';
 
 class PromoPage extends StatefulWidget {
   @override
@@ -36,7 +34,7 @@ class _Slide {
 class _PromoPageState extends State<PromoPage> {
   @override
   Widget build(BuildContext context) {
-    AppSession.get.routes.setWindow(context);
+//    AppSession.get.routes.setWindow(context);
     return new Scaffold(
       body: Container(
         constraints: BoxConstraints.expand(

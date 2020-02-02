@@ -1,12 +1,8 @@
-import 'package:crowdproj/modules/navigator/NavigatorActionTeamsEdit.dart';
-import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/HomeLocalizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../auth/AuthPage.dart';
 
@@ -83,18 +79,6 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: Icon(Icons.navigate_next),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.all(4.0),
-            child: FloatingActionButton(
-              onPressed: () {
-                final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-                navigatorBloc.add(NavigatorActionTeamsEdit());
-              },
-              heroTag: "teamEdit",
-              tooltip: 'Update Team',
-              child: Icon(Icons.group),
             ),
           ),
         ],

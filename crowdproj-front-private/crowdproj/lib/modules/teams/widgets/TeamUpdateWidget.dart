@@ -1,6 +1,8 @@
+import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
-import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/modules/teams/events/TeamsEvent.dart';
+import 'package:crowdproj/modules/teams/events/TeamsEventSaveRequested.dart';
 import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:crowdproj/modules/teams/models/Team.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldNameWidget.dart';
@@ -9,7 +11,6 @@ import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 import '../TeamsBloc.dart';
 
@@ -34,15 +35,19 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     }
     form.save();
     // Here we are trying to save data on server
+    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
+    teamsBloc.add(TeamsEventSaveRequested(team: team));
     // If saving fails we set errors
-    if (!false) {
-      setState(() {
-        nameError = "zzzz";
-        WidgetsBinding.instance
-            .addPostFrameCallback((_) => _formKey.currentState.validate());
-      });
-    }
-//    _formKey.currentState.save();
+//    final response = AppSession.get.teamsService.saveTeam(team);
+//    if (!false) {
+//      setState(() {
+//        WidgetsBinding.instance
+//            .addPostFrameCallback((_) => _formKey.currentState.validate());
+//      });
+//    }
+
+
+    //    _formKey.currentState.save();
 //    bool accountConfirmed;
 //    String message;
 //    try {
@@ -83,7 +88,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
-      final team = state is TeamsStateEditing ? state.team : this.team;
+      team = state is TeamsStateEditing ? state.team : this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
       return CentralContainerWidget(
         child: Form(

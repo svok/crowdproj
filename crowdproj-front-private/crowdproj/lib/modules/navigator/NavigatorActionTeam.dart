@@ -1,16 +1,16 @@
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/teams/TeamsPageEdit.dart';
+import 'package:crowdproj/modules/teams/TeamPage.dart';
 
 import 'NavigatorActionDefaultAbstarct.dart';
 
-class NavigatorActionTeamsEdit extends NavigatorActionDefaultAbstract {
-  NavigatorActionTeamsEdit({
+class NavigatorActionTeam extends NavigatorActionDefaultAbstract {
+  NavigatorActionTeam({
     this.teamId,
   }) : super();
   String teamId;
 
   @override
-  RouteDescription get route=> TeamsPageEdit.route;
+  RouteDescription get route=> TeamPage.route;
 
   @override
   TeamsPageEditArguments get arguments =>

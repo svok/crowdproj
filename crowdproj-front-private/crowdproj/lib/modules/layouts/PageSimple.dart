@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/common/Routes.dart';
 import 'package:crowdproj/widgets/menu/MenuWidget.dart';
 
 class PageSimple extends StatelessWidget {
@@ -18,7 +16,7 @@ class PageSimple extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppSession.get.routes.setWindow(context);
+//    AppSession.get.routes.setWindow(context);
     return Scaffold(
         appBar: MenuWidget(
           title: title,

@@ -3,7 +3,7 @@ import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
 import 'package:flutter/material.dart';
 
-import '../TeamsPageEdit.dart';
+import '../TeamPage.dart';
 import 'TeamsEvent.dart';
 
 class TeamsEventViewRequested extends TeamsEvent {
@@ -16,7 +16,7 @@ class TeamsEventViewRequested extends TeamsEvent {
   @override
   Stream<TeamsState> handle(BuildContext context) async* {
     final service = AppSession.get.teamsService;
-    final routeDescription = TeamsPageEdit.route;
+    final routeDescription = TeamPage.route;
     final routeSettings = RouteSettings(
       name: routeDescription.pathName,
       arguments: TeamsPageEditArguments(teamId: teamId),

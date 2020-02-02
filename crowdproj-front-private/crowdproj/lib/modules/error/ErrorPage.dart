@@ -32,7 +32,7 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizer = ErrorLocalizations.of(context);
-    AppSession.get.routes.setWindow(context);
+//    AppSession.get.routes.setWindow(context);
     final text = "**${localizer.labelFailedPage}**: ${args?.badRoute}\n\n"
         "**${localizer.labelErrorDescription}**: ${_textForCode(localizer,)}";
     return Scaffold(

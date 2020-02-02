@@ -45,6 +45,21 @@ class TeamsLocalizations {
         locale: localeName,
       );
 
+  String get titleCreate => Intl.message(
+        'Create Team',
+        name: "TeamsLocalizations_titleCreate",
+        desc: 'Title for the team creation',
+        locale: localeName,
+      );
+
+  String titleUpdate(String name) => Intl.message(
+        'Update Team: $name',
+        name: "TeamsLocalizations_titleUpdate",
+        desc: 'Title for the team update',
+        locale: localeName,
+        args: [name],
+      );
+
   String get titleMyTeams => Intl.message(
         'My Teams',
         name: "TeamsLocalizations_titleMyTeams",

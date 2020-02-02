@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/auth/ConfirmWidget.dart';
 import 'package:crowdproj/modules/auth/SignupWidget.dart';
@@ -48,7 +47,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final localizer = AuthLocalizations.of(context);
-    AppSession.get.routes.setWindow(context);
+//    AppSession.get.routes.setWindow(context);
     return DefaultTabController(
       initialIndex: _tab,
       length: 3,
