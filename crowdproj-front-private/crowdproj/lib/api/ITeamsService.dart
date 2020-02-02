@@ -10,6 +10,6 @@ import 'models/Profile.dart' as local;
 import 'models/ApiResponse.dart' as local;
 
 abstract class ITeamsService {
-  Future<local.ApiResponseTeamSave> saveTeam(local.Team team);
-  Future<local.ApiResponseTeamGet> getTeam(String teamId);
+  Future<local.ApiResponseTeam> saveTeam(local.Team team);
+  Future<local.ApiResponseTeam> getTeam(String teamId);
 }

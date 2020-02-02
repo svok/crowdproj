@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'models/Team.dart';
+import '../../api/models/Team.dart';
 
 class TeamsPage extends StatefulWidget {
   @override

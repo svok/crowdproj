@@ -12,7 +12,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamsPage.dart';
 import 'events/TeamsEventTeamInit.dart';
-import 'models/Team.dart';
+import '../../api/models/Team.dart';
 
 class TeamPage extends StatefulWidget {
   @override

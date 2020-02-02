@@ -16,36 +16,22 @@ class ApiResponse {
   List<ApiError> errors;
 }
 
-class ApiResponseTeamGet extends ApiResponse {
-  ApiResponseTeamGet({
-    this.team,
+class ApiResponseTeam extends ApiResponse {
+  ApiResponseTeam({
     ApiResponseStatuses status,
     List<ApiError> errors,
     DateTime timeRequested,
     DateTime timeFinished,
+    this.teams,
   }) : super(
           status: status,
           errors: errors,
           timeRequested: timeRequested,
           timeFinished: timeFinished,
         );
-  Team team;
-}
+  List<Team> teams;
 
-class ApiResponseTeamSave extends ApiResponse {
-  ApiResponseTeamSave({
-    ApiResponseStatuses status,
-    List<ApiError> errors,
-    DateTime timeRequested,
-    DateTime timeFinished,
-    this.team,
-  }) : super(
-          status: status,
-          errors: errors,
-          timeRequested: timeRequested,
-          timeFinished: timeFinished,
-        );
-  Team team;
+  Team get team => teams.first;
 }
 
 class ApiError {

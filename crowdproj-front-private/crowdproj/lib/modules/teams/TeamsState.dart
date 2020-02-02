@@ -1,6 +1,6 @@
-import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
+import 'package:crowdproj/api/models/ApiResponse.dart';
 
-import 'models/Team.dart';
+import '../../api/models/Team.dart';
 
 abstract class TeamsState {
   TeamsState({this.isWaiting = false}): super();

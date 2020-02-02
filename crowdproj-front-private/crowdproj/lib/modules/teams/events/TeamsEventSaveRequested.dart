@@ -2,8 +2,8 @@ import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/events/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/models/ApiResponse.dart';
-import 'package:crowdproj/modules/teams/models/Team.dart';
+import 'package:crowdproj/api/models/ApiResponse.dart';
+import 'package:crowdproj/api/models/Team.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

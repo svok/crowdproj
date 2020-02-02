@@ -14,7 +14,7 @@ info:
 #   url: http://swagger.io
 servers:
   - url: https://crowdproj.com/v1
-  - url: http://localhost/
+  - url: http://localhost:8080
 tags:
   - name: teams
     description: Full description of the teams
@@ -56,12 +56,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTeamSave'
+                  $ref: '#/components/schemas/ApiResponseTeam'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTeamSave'
+                  $ref: '#/components/schemas/ApiResponseTeam'
             text/plain:
               schema:
                 type: string
@@ -103,63 +103,28 @@ paths:
             - write:teams
             - read:teams
       x-codegen-request-body-name: body
-  /team/findByStatus:
+  /team/getUserTeams:
     get:
       tags:
         - team
-      summary: Finds Teams by status
-      description: Multiple status values can be provided with comma separated strings
-      operationId: findTeamsByStatus
+      summary: "Get user's teams"
+      description: "Get teams the user relates to with the ability to filter them by status, tags and other parameters"
+      operationId: getUserTeams
       parameters:
         - name: status
           in: query
           description: Status values that need to be considered for filter
-          required: true
+          required: false
           style: form
           explode: true
           schema:
             type: array
             items:
-              type: string
-              default: available
-              enum:
-                - available
-                - pending
-                - sold
-      responses:
-        200:
-          description: successful operation
-          content:
-            application/xml:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Team'
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Team'
-        400:
-          description: Invalid status value
-          content: {}
-      security:
-        - crowdproj_auth:
-            - write:teams
-            - read:teams
-  /team/findByTags:
-    get:
-      tags:
-        - team
-      summary: Finds Teams by tags
-      description: Muliple tags can be provided with comma separated strings. Use         tag1,
-        tag2, tag3 for testing.
-      operationId: findTeamsByTags
-      parameters:
+              $ref: '#/components/schemas/TeamStatus'
         - name: tags
           in: query
           description: Tags to filter by
-          required: true
+          required: false
           style: form
           explode: true
           schema:
@@ -172,18 +137,13 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/ApiResponseTeam'
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/ApiResponseTeam'
         400:
-          description: Invalid tag value
+          description: Invalid status value
           content: {}
-      deprecated: true
       security:
         - crowdproj_auth:
             - write:teams
@@ -217,10 +177,10 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeamGet'
+                $ref: '#/components/schemas/ApiResponseTeam'
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeamGet'
+                $ref: '#/components/schemas/ApiResponseTeam'
         400:
           description: Invalid ID supplied
           content: {}
@@ -618,42 +578,6 @@ paths:
           content: {}
 components:
   schemas:
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        teamId:
-          type: string
-        quantity:
-          type: integer
-          format: int32
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-          default: false
-      xml:
-        name: Order
-    # Category:
-    #   type: object
-    #   properties:
-    #     id:
-    #       type: integer
-    #       format: int64
-    #     name:
-    #       type: string
-    #   xml:
-    #     name: Category
     Profile:
       type: object
       properties:
@@ -680,16 +604,22 @@ components:
             - deleted
       xml:
         name: Profile
+
     Tag:
       type: object
       properties:
         id:
-          type: integer
-          format: int64
+          type: string
+          description: "Tag's ID that is used in DB and communications"
         name:
           type: string
+          description: "The tag name that is shown to users"
+        description:
+          type: string
+          description: "The description of the tag"
       xml:
         name: Tag
+
     Team:
       required:
         - name
@@ -729,30 +659,39 @@ components:
           items:
             $ref: '#/components/schemas/Tag'
         visibility:
-          type: string
-          description: Visibility type of the team
-          enum:
-            - public
-            - registeredOnly
-            - groupOnly
-            - membersOnly
+          $ref: '#/components/schemas/TeamVisibility'
         joinability:
-          type: string
-          description: How users can join this team
-          enum:
-            - byOwner
-            - byMember
-            - byUser
+          $ref: '#/components/schemas/TeamJoinability'
         status:
-          type: string
-          description: team status in the store
-          enum:
-            - active
-            - pending
-            - closed
-            - deleted
+          $ref: '#/components/schemas/TeamStatus'
       xml:
         name: Team
+
+    TeamVisibility:
+      type: string
+      description: Visibility type of the team
+      enum:
+        - public
+        - registeredOnly
+        - groupOnly
+        - membersOnly
+
+    TeamJoinability:
+      type: string
+      description: How users can join this team
+      enum:
+        - byOwner
+        - byMember
+        - byUser
+
+    TeamStatus:
+      type: string
+      description: team status in the store
+      enum:
+        - active
+        - pending
+        - closed
+        - deleted
 
 
     ApiQuery:
@@ -765,15 +704,6 @@ components:
         debug:
           type: string
           description: "Request a debug information from the server"
-
-    ApiQueryTeamGet:
-      allOf:
-        - $ref: '#/components/schemas/ApiQuery'
-        - type: object
-          properties:
-            id:
-              type: string
-              description: ID of the team to get
 
 
     ApiResponse:
@@ -798,21 +728,15 @@ components:
         debug:
           type: object
 
-    ApiResponseTeamGet:
+    ApiResponseTeam:
       allOf:
         - $ref: '#/components/schemas/ApiResponse'
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/Team'
-
-    ApiResponseTeamSave:
-      allOf:
-        - $ref: '#/components/schemas/ApiResponse'
-        - type: object
-          properties:
-            data:
-              $ref: '#/components/schemas/Team'
+              type: array
+              items:
+                $ref: '#/components/schemas/Team'
 
 
     ApiError:
