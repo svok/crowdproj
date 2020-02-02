@@ -91,7 +91,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
       if (!(state is TeamsStateEditing)) return Container();
       final tm = (state as TeamsStateEditing)?.team ?? this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
-      return CentralContainerWidget(
+      return Container(
         child: Form(
           key: _formKey,
           child: new ListView(
@@ -108,6 +108,15 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
                 error: ApiError.errorString(errors, "summary"),
                 onSaved: (String newValue) {
                   team.summary = newValue;
+                },
+              ),
+              TextFormField(
+                initialValue: tm.description,
+                keyboardType: TextInputType.multiline,
+                minLines: 3,
+                maxLines: null,
+                onSaved: (String text) {
+                  team.description = text;
                 },
               ),
               FormSubmitButtonWidget(

@@ -51,7 +51,7 @@ class _TeamPageState extends State<TeamPage> {
     final localizer = TeamsLocalizations.of(context);
     return PageSimple(
       title: localizer.title,
-      body: CentralContainerWidget(
+      body: Container(
         child: BlocBuilder<TeamsBloc, TeamsState>(
           builder: (context, state) {
             switch (state.runtimeType) {

@@ -52,12 +52,11 @@ class TeamsLocalizations {
         locale: localeName,
       );
 
-  String titleUpdate(String name) => Intl.message(
-        'Update Team: $name',
+  String get titleUpdate => Intl.message(
+        'Update Team',
         name: "TeamsLocalizations_titleUpdate",
         desc: 'Title for the team update',
         locale: localeName,
-        args: [name],
       );
 
   String get titleMyTeams => Intl.message(
