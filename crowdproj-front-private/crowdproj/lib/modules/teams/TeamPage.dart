@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamsPage.dart';
+import 'events/TeamsEventTeamInit.dart';
 import 'models/Team.dart';
 
 class TeamPage extends StatefulWidget {
@@ -46,7 +47,7 @@ class _TeamPageState extends State<TeamPage> {
         ModalRoute.of(context).settings?.arguments as TeamsPageEditArguments;
     final teamId = args?.teamId;
     BlocProvider.of<TeamsBloc>(context)
-        .add(TeamsEventViewRequested(teamId: teamId));
+        .add(TeamsEventTeamInit(teamId: teamId));
     final localizer = TeamsLocalizations.of(context);
     return PageSimple(
       title: localizer.title,

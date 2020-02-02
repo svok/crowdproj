@@ -88,7 +88,8 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
-      team = state is TeamsStateEditing ? state.team : this.team;
+      if (!(state is TeamsStateEditing)) return Container();
+      final tm = (state as TeamsStateEditing)?.team ?? this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
       return CentralContainerWidget(
         child: Form(
@@ -96,14 +97,14 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
           child: new ListView(
             children: <Widget>[
               TeamFieldNameWidget(
-                name: team?.name,
+                name: tm.name,
                 error: ApiError.errorString(errors, "name"),
                 onSaved: (String newValue) {
                   team.name = newValue;
                 },
               ),
               TeamFieldSummaryWidget(
-                summary: team?.summary,
+                summary: tm.summary,
                 error: ApiError.errorString(errors, "summary"),
                 onSaved: (String newValue) {
                   team.summary = newValue;

@@ -25,8 +25,8 @@ class _TeamViewWidgetState extends State<TeamViewWidget> {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
-      final team = state is TeamsStateEditing ? state.team : Team();
-      final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
+      final team = state is TeamsStateViewing ? state.team : Team();
+      final List<ApiError> errors = state is TeamsStateViewing ? state.errors : [];
       return CentralContainerWidget(
         child: Card(
           child: new ListView(
