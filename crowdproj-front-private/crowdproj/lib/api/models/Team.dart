@@ -1,6 +1,7 @@
-import 'package:crowdproj_models/model/team.dart' as exchange;
-
 import 'Profile.dart';
+import 'TeamJoinability.dart';
+import 'TeamStatus.dart';
+import 'TeamVisibility.dart';
 
 class Team {
   Team({
@@ -52,9 +53,3 @@ class Team {
   TeamStatus status;
 
 }
-
-enum TeamVisibility { public, registeredOnly, groupOnly, membersOnly }
-
-enum TeamStatus { active, pending, closed, deleted }
-
-enum TeamJoinability { byOwner, byMember, byUser }

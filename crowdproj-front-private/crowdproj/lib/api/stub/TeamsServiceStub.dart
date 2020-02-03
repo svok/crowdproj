@@ -1,4 +1,7 @@
 import 'package:crowdproj/api/ITeamsService.dart';
+import 'package:crowdproj/api/models/TeamJoinability.dart';
+import 'package:crowdproj/api/models/TeamStatus.dart';
+import 'package:crowdproj/api/models/TeamVisibility.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/Team.dart';
