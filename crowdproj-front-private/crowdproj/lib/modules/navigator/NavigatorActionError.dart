@@ -13,9 +13,9 @@ class NavigatorActionError extends NavigatorActionDefaultAbstract {
     this.description,
   }) : super();
 
-  int code;
-  RouteSettings badRoute;
-  String description;
+  final int code;
+  final RouteSettings badRoute;
+  final String description;
 
   @override
   RouteDescription get route=> ErrorPage.route;
@@ -29,5 +29,8 @@ class NavigatorActionError extends NavigatorActionDefaultAbstract {
 
   @override
   AccessResult get hasAccess => AccessResult.allowed;
+
+  @override
+  List<Object> get props => [code, badRoute, description];
 
 }

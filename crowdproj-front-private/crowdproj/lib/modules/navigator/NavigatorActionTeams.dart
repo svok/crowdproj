@@ -5,4 +5,7 @@ import 'package:crowdproj/modules/teams/TeamsPage.dart';
 class NavigatorActionTeams extends NavigatorActionDefaultAbstract {
   @override
   RouteDescription get route=> TeamsPage.route;
+
+  @override
+  List<Object> get props => [];
 }

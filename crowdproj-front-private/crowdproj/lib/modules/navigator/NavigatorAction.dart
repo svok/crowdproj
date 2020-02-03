@@ -1,8 +1,9 @@
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
-abstract class NavigatorAction {
+abstract class NavigatorAction extends Equatable {
 
   String get path;
 

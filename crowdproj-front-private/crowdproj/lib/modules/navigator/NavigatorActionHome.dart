@@ -6,4 +6,7 @@ class NavigatorActionHome extends NavigatorActionDefaultAbstract {
   @override
   RouteDescription get route=> HomePage.route;
 
+  @override
+  List<Object> get props => [];
+
 }

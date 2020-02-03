@@ -11,4 +11,7 @@ class NavigatorActionPromo extends NavigatorActionDefaultAbstract {
   @override
   AccessResult get hasAccess => AccessResult.allowed;
 
+  @override
+  List<Object> get props => [];
+
 }

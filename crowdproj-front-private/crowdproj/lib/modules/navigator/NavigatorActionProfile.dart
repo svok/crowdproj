@@ -7,4 +7,7 @@ class NavigatorActionProfile extends NavigatorActionDefaultAbstract {
   @override
   RouteDescription get route=> ProfilePage.route;
 
+  @override
+  List<Object> get props => [];
+
 }

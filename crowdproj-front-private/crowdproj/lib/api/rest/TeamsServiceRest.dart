@@ -1,4 +1,5 @@
 import 'package:crowdproj/api/ITeamsService.dart';
+import 'package:crowdproj/api/models/TeamsQuery.dart';
 import 'package:crowdproj/api/rest/TeamsServiceRestHelper.dart';
 import 'package:crowdproj_models/api.dart';
 import 'package:crowdproj_models/api/team_api.dart';
@@ -34,6 +35,15 @@ class TeamsServiceRest implements ITeamsService {
   @override
   Future<local.ApiResponseTeam> getTeam(String teamId) async {
     final webRes = await _api.getTeamById(teamId);
+    final res = webRes.data;
+    return TeamsServiceRestHelper.fromApiResponseTeam(res);
+  }
+
+  Future<local.ApiResponseTeam> getTeams(TeamsQuery query) async {
+    final webRes = await _api.getUserTeams(
+      status: query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
+      tags: query.tagIds,
+    );
     final res = webRes.data;
     return TeamsServiceRestHelper.fromApiResponseTeam(res);
   }

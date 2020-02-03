@@ -17,4 +17,7 @@ class NavigatorActionPop extends NavigatorAction {
     if (navigatorState.canPop()) navigatorState.pop();
     return null;
   }
+
+  @override
+  List<Object> get props => [];
 }

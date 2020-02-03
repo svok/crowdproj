@@ -1,15 +1,11 @@
-import 'package:crowdproj_models/api.dart';
-import 'package:crowdproj_models/api/team_api.dart';
-import 'package:crowdproj_models/model/api_response_team_save.dart';
-import 'package:crowdproj_models/model/profile.dart';
-//import 'package:crowdproj_models/model/team.dart';
-import 'package:dio/dio.dart';
-
-import 'models/Team.dart' as local;
-import 'models/Profile.dart' as local;
-import 'models/ApiResponse.dart' as local;
+import 'models/Team.dart';
+import 'models/ApiResponse.dart';
+import 'models/TeamsQuery.dart';
 
 abstract class ITeamsService {
-  Future<local.ApiResponseTeam> saveTeam(local.Team team);
-  Future<local.ApiResponseTeam> getTeam(String teamId);
+  Future<ApiResponseTeam> getTeams(TeamsQuery query);
+
+  Future<ApiResponseTeam> saveTeam(Team team);
+
+  Future<ApiResponseTeam> getTeam(String teamId);
 }
