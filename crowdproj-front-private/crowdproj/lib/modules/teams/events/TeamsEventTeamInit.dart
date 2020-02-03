@@ -15,8 +15,7 @@ class TeamsEventTeamInit extends TeamsEvent {
   final String teamId;
 
   @override
-  Stream<TeamsState> handle(BuildContext context) async* {
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
+  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
     if (teamId == null) {
       teamsBloc.add(TeamsEventEditRequested());
     } else {

@@ -37,9 +37,9 @@ class MainApp extends StatelessWidget {
         BlocProvider<NavigatorBloc>(
           create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
         ),
-        BlocProvider<TeamsBloc>(
-          create: (context) => TeamsBloc(navigatorKey: _navigatorKey),
-        ),
+//        BlocProvider<TeamsBloc>(
+//          create: (context) => TeamsBloc(navigatorKey: _navigatorKey),
+//        ),
         ChangeNotifierProvider.value(value: AppSession.get.authService),
       ],
       child: MaterialApp(
@@ -73,7 +73,7 @@ class MainApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Consumer<AuthService>(builder: (context, value, child) {
-          final teamsBloc = BlocProvider.of<TeamsBloc>(context);
+//          final teamsBloc = BlocProvider.of<TeamsBloc>(context);
           final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
           final home = AppSession.get.resolveHome();
           return home;

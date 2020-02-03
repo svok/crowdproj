@@ -37,14 +37,14 @@ class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    final TeamsBloc teamsBloc = BlocProvider.of<TeamsBloc>(context);
     return PageSimple(
       title: localizer.title,
-      body: BlocBuilder<TeamsBloc, TeamsState>(
-        builder: (context, state) {
-          return Container();
-        },
-      ),
+//      body: BlocBuilder<TeamsBloc, TeamsState>(
+//        builder: (context, state) {
+//          return Container();
+//        },
+//      ),
+      body: Container(),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

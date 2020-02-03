@@ -16,9 +16,8 @@ class TeamsEventViewRequested extends TeamsEvent {
   final String teamId;
 
   @override
-  Stream<TeamsState> handle(BuildContext context) async* {
+  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
     final service = AppSession.get.teamsService;
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     final routeDescription = TeamPage.route;
     final routeSettings = RouteSettings(
       name: routeDescription.pathName,

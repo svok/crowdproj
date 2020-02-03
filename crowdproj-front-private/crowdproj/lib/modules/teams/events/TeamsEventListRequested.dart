@@ -15,9 +15,8 @@ class TeamsEventSaveRequested extends TeamsEvent {
   final TeamsQuery query;
 
   @override
-  Stream<TeamsState> handle(BuildContext context) async* {
+  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
 //    final navigatorBloc = BlocPr41.ovider.of<NavigatorBloc>(context);
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     final service = AppSession.get.teamsService;
 
     final state = teamsBloc.state as TeamsStateListing;

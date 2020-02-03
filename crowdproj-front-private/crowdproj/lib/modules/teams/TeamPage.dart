@@ -43,22 +43,16 @@ class TeamPage extends StatefulWidget {
 class _TeamPageState extends State<TeamPage> {
 
   @override
-  void initState() {
-    super.initState();
-//    final args =
-//    ModalRoute.of(context).settings?.arguments as TeamsPageEditArguments;
-//    final teamId = args?.teamId;
-//    BlocProvider.of<TeamsBloc>(context)
-//        .add(TeamsEventTeamInit(teamId: teamId));
-  }
-
-  @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
+    final args = ModalRoute.of(context).settings.arguments as TeamsPageEditArguments;
     return PageSimple(
       title: localizer.title,
       body: Container(
-        child: BlocBuilder<TeamsBloc, TeamsState>(
+        child: BlocProvider(
+          create: (context) => TeamsBloc(context: context)
+          ..add(TeamsEventTeamInit(teamId: args?.teamId)),
+          child: BlocBuilder<TeamsBloc, TeamsState>(
           builder: (context, state) {
             switch (state.runtimeType) {
               case TeamsStateEditing:
@@ -69,6 +63,7 @@ class _TeamPageState extends State<TeamPage> {
                 return Container();
             }
           },
+        ),
         ),
       ),
     );

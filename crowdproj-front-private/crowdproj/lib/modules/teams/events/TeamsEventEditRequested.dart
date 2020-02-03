@@ -15,9 +15,8 @@ class TeamsEventEditRequested extends TeamsEvent {
   final Team team;
 
   @override
-  Stream<TeamsState> handle(BuildContext context) async* {
+  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
     final service = AppSession.get.teamsService;
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     if (team == null) {
       // New team creation
       yield TeamsStateEditing(teamEdited: Team());

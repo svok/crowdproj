@@ -7,17 +7,17 @@ import 'events/TeamsEvent.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   TeamsBloc({
-    @required this.navigatorKey,
+    @required this.context,
   }) : super();
 
-  final GlobalKey<NavigatorState> navigatorKey;
+  final BuildContext context;
 
   @override
   TeamsState get initialState => TeamsStateNothing();
 
   @override
   Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
-    yield* event.handle(navigatorKey.currentContext);
+    yield* event.handle(this);
   }
 
   @override
