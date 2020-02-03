@@ -1,8 +1,9 @@
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/TeamBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/modules/team/states/TeamState.dart';
+import 'package:crowdproj/modules/team/states/TeamStateEditing.dart';
 import 'package:crowdproj/api/models/Team.dart';
 
+import '../TeamBloc.dart';
 import 'TeamEvent.dart';
 
 class TeamEventEditRequested extends TeamEvent {
@@ -13,17 +14,17 @@ class TeamEventEditRequested extends TeamEvent {
   final Team team;
 
   @override
-  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
+  Stream<TeamState> handle(TeamBloc TeamBloc) async* {
     final service = AppSession.get.teamsService;
     if (team == null) {
       // New team creation
-      yield TeamsStateEditing(teamEdited: Team());
+      yield TeamStateEditing(teamEdited: Team());
     } else {
       // Existing team update
-      yield TeamsStateEditing(team: team, teamEdited: team, isWaiting: true);
+      yield TeamStateEditing(team: team, teamEdited: team, isWaiting: true);
       final response = await service.getTeam(team.id);
       print("_editEvent: ${response.team}");
-      yield TeamsStateEditing(team: response.team, teamEdited: response.team);
+      yield TeamStateEditing(team: response.team, teamEdited: response.team);
     }
   }
 }

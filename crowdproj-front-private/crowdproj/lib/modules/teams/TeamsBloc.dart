@@ -3,26 +3,25 @@ import 'package:bloc/bloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:flutter/material.dart';
 
-import 'events/TeamEvent.dart';
+import 'TeamsEvent.dart';
 
-class TeamBloc extends Bloc<TeamEvent, TeamsState> {
-  TeamBloc({
+class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
+  TeamsBloc({
     @required this.context,
   }) : super();
 
   final BuildContext context;
 
   @override
-  TeamsState get initialState => TeamsStateNothing();
+  TeamsState get initialState => TeamsState();
 
   @override
-  Stream<TeamsState> mapEventToState(TeamEvent event) async* {
-    yield* event.handle(this);
+  Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
   }
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    print('TeamBloc - Error\'s occured: $error, $stackTrace');
+    print('TeamsBloc - Error\'s occured: $error, $stackTrace');
   }
 
 }

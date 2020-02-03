@@ -1,6 +1,7 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/navigator/NavigatorAction.dart';
-import 'package:crowdproj/modules/teams/TeamPage.dart';
+import 'package:crowdproj/modules/team/TeamPage.dart';
+import 'package:crowdproj/modules/team/TeamPageArguments.dart';
 import 'package:flutter/material.dart';
 
 import 'NavigatorActionDefaultAbstarct.dart';
@@ -15,8 +16,8 @@ class NavigatorActionTeam extends NavigatorActionDefaultAbstract {
   RouteDescription get route => TeamPage.route;
 
   @override
-  TeamsPageEditArguments get arguments =>
-      TeamsPageEditArguments(teamId: teamId);
+  TeamPageArguments get arguments =>
+      TeamPageArguments(teamId: teamId);
 
   @override
   Future<NavigatorAction> go(NavigatorState navigator) async {

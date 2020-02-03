@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:crowdproj/modules/home/PreloadedPage.dart';
-import 'package:crowdproj/modules/teams/TeamBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,9 +36,6 @@ class MainApp extends StatelessWidget {
         BlocProvider<NavigatorBloc>(
           create: (context) => NavigatorBloc(navigatorKey: _navigatorKey),
         ),
-//        BlocProvider<TeamBloc>(
-//          create: (context) => TeamBloc(navigatorKey: _navigatorKey),
-//        ),
         ChangeNotifierProvider.value(value: AppSession.get.authService),
       ],
       child: MaterialApp(
@@ -73,7 +69,6 @@ class MainApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         home: Consumer<AuthService>(builder: (context, value, child) {
-//          final TeamBloc = BlocProvider.of<TeamBloc>(context);
           final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
           final home = AppSession.get.resolveHome();
           return home;

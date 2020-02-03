@@ -1,16 +1,19 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
-import 'package:crowdproj/modules/teams/TeamBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamUpdateWidget.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamViewWidget.dart';
+import 'package:crowdproj/modules/team/TeamBloc.dart';
+import 'package:crowdproj/modules/team/widgets/TeamUpdateWidget.dart';
+import 'package:crowdproj/modules/team/widgets/TeamViewWidget.dart';
+import 'package:crowdproj/modules/teams/TeamsPage.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'TeamsPage.dart';
+import 'TeamPageArguments.dart';
 import 'events/TeamEventTeamInit.dart';
 import '../../api/models/Team.dart';
+import 'states/TeamState.dart';
+import 'states/TeamStateEditing.dart';
+import 'states/TeamStateViewing.dart';
 
 class TeamPage extends StatefulWidget {
   @override
@@ -23,8 +26,8 @@ class TeamPage extends StatefulWidget {
       TeamsLocalizations.of(context).title;
 
   static String pathFormatter({RouteSettings settings}) {
-    final teamId = (settings?.arguments as TeamsPageEditArguments)?.teamId;
-    final prefix = TeamsPage.route.pathName;
+    final teamId = (settings?.arguments as TeamPageArguments)?.teamId;
+    final prefix = TeamPage.route.pathName;
     return teamId == null ? "$prefix/create" : "$prefix/${teamId}";
   }
 
@@ -43,19 +46,19 @@ class _TeamPageState extends State<TeamPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    final args = ModalRoute.of(context).settings.arguments as TeamsPageEditArguments;
+    final args = ModalRoute.of(context).settings.arguments as TeamPageArguments;
     return PageSimple(
       title: localizer.title,
       body: Container(
         child: BlocProvider(
           create: (context) => TeamBloc(context: context)
           ..add(TeamEventTeamInit(teamId: args?.teamId)),
-          child: BlocBuilder<TeamBloc, TeamsState>(
+          child: BlocBuilder<TeamBloc, TeamState>(
           builder: (context, state) {
             switch (state.runtimeType) {
-              case TeamsStateEditing:
+              case TeamStateEditing:
                 return TeamUpdateWidget();
-              case TeamsStateViewing:
+              case TeamStateViewing:
                 return TeamViewWidget();
               default:
                 return Container();
@@ -67,12 +70,4 @@ class _TeamPageState extends State<TeamPage> {
     );
     PageSimple(title: localizer.title, body: TeamUpdateWidget());
   }
-}
-
-class TeamsPageEditArguments {
-  TeamsPageEditArguments({
-    this.teamId,
-  }) : super();
-
-  String teamId;
 }

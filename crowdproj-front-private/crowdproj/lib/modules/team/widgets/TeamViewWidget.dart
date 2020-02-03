@@ -1,5 +1,6 @@
-import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamEventEditRequested.dart';
+import 'package:crowdproj/modules/team/events/TeamEventEditRequested.dart';
+import 'package:crowdproj/modules/team/states/TeamState.dart';
+import 'package:crowdproj/modules/team/states/TeamStateViewing.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
@@ -18,10 +19,10 @@ class _TeamViewWidgetState extends State<TeamViewWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return BlocBuilder<TeamBloc, TeamsState>(builder: (context, state) {
-      final team = state is TeamsStateViewing ? state.team : Team();
+    return BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
+      final team = state is TeamStateViewing ? state.team : Team();
       final List<ApiError> errors =
-          state is TeamsStateViewing ? state.errors : [];
+          state is TeamStateViewing ? state.errors : [];
       return Container(
         margin: EdgeInsets.all(15),
         child: Card(

@@ -1,15 +1,16 @@
 import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamEventSaveRequested.dart';
+import 'package:crowdproj/modules/team/events/TeamEventSaveRequested.dart';
+import 'package:crowdproj/modules/team/states/TeamState.dart';
+import 'package:crowdproj/modules/team/states/TeamStateEditing.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamFieldNameWidget.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamFieldSummaryWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../TeamBloc.dart';
+import 'TeamFieldNameWidget.dart';
+import 'TeamFieldSummaryWidget.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
   @override
@@ -84,10 +85,10 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return BlocBuilder<TeamBloc, TeamsState>(builder: (context, state) {
-      if (!(state is TeamsStateEditing)) return Container();
-      final tm = (state as TeamsStateEditing)?.team ?? this.team;
-      final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];
+    return BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
+      if (!(state is TeamStateEditing)) return Container();
+      final tm = (state as TeamStateEditing)?.team ?? this.team;
+      final List<ApiError> errors = state is TeamStateEditing ? state.errors : [];
       return Container(
         child: Form(
           key: _formKey,
