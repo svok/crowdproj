@@ -2,14 +2,13 @@ import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../TeamPage.dart';
 import '../TeamsBloc.dart';
-import 'TeamsEvent.dart';
+import 'TeamEvent.dart';
 
-class TeamsEventViewRequested extends TeamsEvent {
-  TeamsEventViewRequested({
+class TeamEventViewRequested extends TeamEvent {
+  TeamEventViewRequested({
     this.teamId,
   }) : super();
 

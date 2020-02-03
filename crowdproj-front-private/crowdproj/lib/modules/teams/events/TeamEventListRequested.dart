@@ -1,14 +1,12 @@
 import 'package:crowdproj/api/models/TeamsQuery.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEvent.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:crowdproj/modules/teams/events/TeamEvent.dart';
 
 import '../TeamsBloc.dart';
 
-class TeamsEventSaveRequested extends TeamsEvent {
-  TeamsEventSaveRequested({
+class TeamEventSaveRequested extends TeamEvent {
+  TeamEventSaveRequested({
     this.query,
   }) : super();
 
@@ -16,7 +14,6 @@ class TeamsEventSaveRequested extends TeamsEvent {
 
   @override
   Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
-//    final navigatorBloc = BlocPr41.ovider.of<NavigatorBloc>(context);
     final service = AppSession.get.teamsService;
 
     final state = teamsBloc.state as TeamsStateListing;

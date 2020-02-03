@@ -1,14 +1,11 @@
-import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEventSaveRequested.dart';
+import 'package:crowdproj/modules/teams/events/TeamEventSaveRequested.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldNameWidget.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldSummaryWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +33,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     form.save();
     // Here we are trying to save data on server
     final teamsBloc = BlocProvider.of<TeamsBloc>(context);
-    teamsBloc.add(TeamsEventSaveRequested(team: team));
+    teamsBloc.add(TeamEventSaveRequested(team: team));
     // If saving fails we set errors
 //    final response = AppSession.get.teamsService.saveTeam(team);
 //    if (!false) {

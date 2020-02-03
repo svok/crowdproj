@@ -3,9 +3,9 @@ import 'package:bloc/bloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:flutter/material.dart';
 
-import 'events/TeamsEvent.dart';
+import 'events/TeamEvent.dart';
 
-class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
+class TeamsBloc extends Bloc<TeamEvent, TeamsState> {
   TeamsBloc({
     @required this.context,
   }) : super();
@@ -16,7 +16,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   TeamsState get initialState => TeamsStateNothing();
 
   @override
-  Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
+  Stream<TeamsState> mapEventToState(TeamEvent event) async* {
     yield* event.handle(this);
   }
 

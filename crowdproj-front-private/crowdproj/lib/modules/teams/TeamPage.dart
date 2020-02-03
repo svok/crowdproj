@@ -2,16 +2,14 @@ import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEventViewRequested.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamUpdateWidget.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamViewWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamsPage.dart';
-import 'events/TeamsEventTeamInit.dart';
+import 'events/TeamEventTeamInit.dart';
 import '../../api/models/Team.dart';
 
 class TeamPage extends StatefulWidget {
@@ -51,7 +49,7 @@ class _TeamPageState extends State<TeamPage> {
       body: Container(
         child: BlocProvider(
           create: (context) => TeamsBloc(context: context)
-          ..add(TeamsEventTeamInit(teamId: args?.teamId)),
+          ..add(TeamEventTeamInit(teamId: args?.teamId)),
           child: BlocBuilder<TeamsBloc, TeamsState>(
           builder: (context, state) {
             switch (state.runtimeType) {

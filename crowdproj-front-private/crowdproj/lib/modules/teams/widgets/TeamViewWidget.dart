@@ -1,15 +1,8 @@
-import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEventEditRequested.dart';
-import 'package:crowdproj/modules/teams/events/TeamsEventSaveRequested.dart';
+import 'package:crowdproj/modules/teams/events/TeamEventEditRequested.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamFieldNameWidget.dart';
-import 'package:crowdproj/modules/teams/widgets/TeamFieldSummaryWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:crowdproj/widgets/CentralContainerWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -46,7 +39,7 @@ class _TeamViewWidgetState extends State<TeamViewWidget> {
                     child: Text(localizer.titleUpdate),
                     onPressed: () {
                       BlocProvider.of<TeamsBloc>(context)
-                          .add(TeamsEventEditRequested(team: team));
+                          .add(TeamEventEditRequested(team: team));
                     },
                   ),
                   FlatButton(
