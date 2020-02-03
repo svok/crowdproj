@@ -9,7 +9,7 @@ import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
   @override
@@ -32,8 +32,8 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     }
     form.save();
     // Here we are trying to save data on server
-    final teamsBloc = BlocProvider.of<TeamsBloc>(context);
-    teamsBloc.add(TeamEventSaveRequested(team: team));
+    final teamBloc = BlocProvider.of<TeamBloc>(context);
+    teamBloc.add(TeamEventSaveRequested(team: team));
     // If saving fails we set errors
 //    final response = AppSession.get.teamsService.saveTeam(team);
 //    if (!false) {
@@ -84,7 +84,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
+    return BlocBuilder<TeamBloc, TeamsState>(builder: (context, state) {
       if (!(state is TeamsStateEditing)) return Container();
       final tm = (state as TeamsStateEditing)?.team ?? this.team;
       final List<ApiError> errors = state is TeamsStateEditing ? state.errors : [];

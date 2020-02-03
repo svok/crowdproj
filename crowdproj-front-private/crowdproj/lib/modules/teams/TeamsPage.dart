@@ -2,7 +2,7 @@ import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
+import 'package:crowdproj/modules/teams/TeamBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,7 @@ class _TeamsPageState extends State<TeamsPage> {
     final localizer = TeamsLocalizations.of(context);
     return PageSimple(
       title: localizer.title,
-//      body: BlocBuilder<TeamsBloc, TeamsState>(
+//      body: BlocBuilder<TeamBloc, TeamsState>(
 //        builder: (context, state) {
 //          return Container();
 //        },

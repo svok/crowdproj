@@ -22,7 +22,7 @@ class NavigatorActionTeam extends NavigatorActionDefaultAbstract {
   Future<NavigatorAction> go(NavigatorState navigator) async {
     super.go(navigator);
     final context = navigator.context;
-//    BlocProvider.of<TeamsBloc>(context).add(TeamsEventTeamInit(teamId: teamId));
+//    BlocProvider.of<TeamBloc>(context).add(TeamsEventTeamInit(teamId: teamId));
   }
 
   @override

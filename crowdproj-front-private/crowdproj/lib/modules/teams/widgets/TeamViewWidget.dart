@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 
 class TeamViewWidget extends StatefulWidget {
   @override
@@ -18,7 +18,7 @@ class _TeamViewWidgetState extends State<TeamViewWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return BlocBuilder<TeamsBloc, TeamsState>(builder: (context, state) {
+    return BlocBuilder<TeamBloc, TeamsState>(builder: (context, state) {
       final team = state is TeamsStateViewing ? state.team : Team();
       final List<ApiError> errors =
           state is TeamsStateViewing ? state.errors : [];
@@ -38,7 +38,7 @@ class _TeamViewWidgetState extends State<TeamViewWidget> {
                   FlatButton(
                     child: Text(localizer.titleUpdate),
                     onPressed: () {
-                      BlocProvider.of<TeamsBloc>(context)
+                      BlocProvider.of<TeamBloc>(context)
                           .add(TeamEventEditRequested(team: team));
                     },
                   ),

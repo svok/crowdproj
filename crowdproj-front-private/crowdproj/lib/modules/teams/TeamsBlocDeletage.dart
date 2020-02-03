@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 
-class TeamsBlocDelegate extends BlocDelegate {
+class TeamBlocDelegate extends BlocDelegate {
 
   @override
   void onEvent(Bloc bloc, Object event) {

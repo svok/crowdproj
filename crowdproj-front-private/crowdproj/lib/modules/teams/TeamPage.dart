@@ -1,6 +1,6 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
+import 'package:crowdproj/modules/teams/TeamBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamUpdateWidget.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamViewWidget.dart';
@@ -48,9 +48,9 @@ class _TeamPageState extends State<TeamPage> {
       title: localizer.title,
       body: Container(
         child: BlocProvider(
-          create: (context) => TeamsBloc(context: context)
+          create: (context) => TeamBloc(context: context)
           ..add(TeamEventTeamInit(teamId: args?.teamId)),
-          child: BlocBuilder<TeamsBloc, TeamsState>(
+          child: BlocBuilder<TeamBloc, TeamsState>(
           builder: (context, state) {
             switch (state.runtimeType) {
               case TeamsStateEditing:

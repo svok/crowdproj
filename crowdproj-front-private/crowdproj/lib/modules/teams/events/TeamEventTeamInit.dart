@@ -2,7 +2,7 @@ import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/events/TeamEventEditRequested.dart';
 import 'package:crowdproj/modules/teams/events/TeamEventViewRequested.dart';
 
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 import 'TeamEvent.dart';
 
 class TeamEventTeamInit extends TeamEvent {
@@ -13,11 +13,11 @@ class TeamEventTeamInit extends TeamEvent {
   final String teamId;
 
   @override
-  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
+  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
     if (teamId == null) {
-      teamsBloc.add(TeamEventEditRequested());
+      TeamBloc.add(TeamEventEditRequested());
     } else {
-      teamsBloc.add(TeamEventViewRequested(teamId: teamId));
+      TeamBloc.add(TeamEventViewRequested(teamId: teamId));
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
+import 'package:crowdproj/modules/teams/TeamBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/api/models/Team.dart';
 
@@ -13,7 +13,7 @@ class TeamEventEditRequested extends TeamEvent {
   final Team team;
 
   @override
-  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
+  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
     final service = AppSession.get.teamsService;
     if (team == null) {
       // New team creation

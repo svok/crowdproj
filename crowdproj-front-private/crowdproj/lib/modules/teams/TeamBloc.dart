@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 
 import 'events/TeamEvent.dart';
 
-class TeamsBloc extends Bloc<TeamEvent, TeamsState> {
-  TeamsBloc({
+class TeamBloc extends Bloc<TeamEvent, TeamsState> {
+  TeamBloc({
     @required this.context,
   }) : super();
 
@@ -22,7 +22,7 @@ class TeamsBloc extends Bloc<TeamEvent, TeamsState> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    print('TeamsBloc - Error\'s occured: $error, $stackTrace');
+    print('TeamBloc - Error\'s occured: $error, $stackTrace');
   }
 
 }

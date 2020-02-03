@@ -4,7 +4,7 @@ import 'package:crowdproj/modules/teams/events/TeamEvent.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 
 class TeamEventSaveRequested extends TeamEvent {
   TeamEventSaveRequested({
@@ -14,7 +14,7 @@ class TeamEventSaveRequested extends TeamEvent {
   final Team team;
 
   @override
-  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
+  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
     final service = AppSession.get.teamsService;
 
     yield TeamsStateEditing(

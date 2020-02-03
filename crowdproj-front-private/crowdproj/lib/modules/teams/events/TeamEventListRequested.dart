@@ -3,7 +3,7 @@ import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/modules/teams/events/TeamEvent.dart';
 
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 
 class TeamEventSaveRequested extends TeamEvent {
   TeamEventSaveRequested({
@@ -13,10 +13,10 @@ class TeamEventSaveRequested extends TeamEvent {
   final TeamsQuery query;
 
   @override
-  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
+  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
     final service = AppSession.get.teamsService;
 
-    final state = teamsBloc.state as TeamsStateListing;
+    final state = TeamBloc.state as TeamsStateListing;
     yield TeamsStateListing(
       query: query,
       teams: state?.teams,

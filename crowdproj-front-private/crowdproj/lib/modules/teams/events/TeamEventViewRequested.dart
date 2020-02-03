@@ -4,7 +4,7 @@ import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:flutter/material.dart';
 
 import '../TeamPage.dart';
-import '../TeamsBloc.dart';
+import '../TeamBloc.dart';
 import 'TeamEvent.dart';
 
 class TeamEventViewRequested extends TeamEvent {
@@ -15,7 +15,7 @@ class TeamEventViewRequested extends TeamEvent {
   final String teamId;
 
   @override
-  Stream<TeamsState> handle(TeamsBloc teamsBloc) async* {
+  Stream<TeamsState> handle(TeamBloc TeamBloc) async* {
     final service = AppSession.get.teamsService;
     final routeDescription = TeamPage.route;
     final routeSettings = RouteSettings(
@@ -23,8 +23,8 @@ class TeamEventViewRequested extends TeamEvent {
       arguments: TeamsPageEditArguments(teamId: teamId),
     );
 
-    final stateEditing = teamsBloc.state as TeamsStateEditing;
-    final stateViewing = teamsBloc.state as TeamsStateViewing;
+    final stateEditing = TeamBloc.state as TeamsStateEditing;
+    final stateViewing = TeamBloc.state as TeamsStateViewing;
     yield TeamsStateViewing(
       team: stateEditing?.team ?? stateViewing.team,
       isWaiting: true,
