@@ -46,13 +46,14 @@ class _TeamPageState extends State<TeamPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    final args = ModalRoute.of(context).settings.arguments as TeamPageArguments;
+    final arguments = ModalRoute.of(context).settings.arguments;
+    final args = arguments is TeamPageArguments ? arguments : null;
     return PageSimple(
       title: localizer.title,
       body: Container(
         child: BlocProvider(
           create: (context) => TeamBloc(context: context)
-          ..add(TeamEventTeamInit(teamId: args?.teamId)),
+          ..add(TeamEventTeamInit(team: args?.team, teamId: args?.teamId)),
           child: BlocBuilder<TeamBloc, TeamState>(
           builder: (context, state) {
             switch (state.runtimeType) {

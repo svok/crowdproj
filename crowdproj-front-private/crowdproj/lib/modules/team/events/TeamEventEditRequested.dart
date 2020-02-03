@@ -8,10 +8,8 @@ import 'TeamEvent.dart';
 
 class TeamEventEditRequested extends TeamEvent {
   TeamEventEditRequested({
-    this.team,
-  }) : super();
-
-  final Team team;
+    Team team,
+  }) : super(team: team);
 
   @override
   Stream<TeamState> handle(TeamBloc TeamBloc) async* {
@@ -27,4 +25,7 @@ class TeamEventEditRequested extends TeamEvent {
       yield TeamStateEditing(team: response.team, teamEdited: response.team);
     }
   }
+
+  @override
+  List<Object> get props => [team];
 }

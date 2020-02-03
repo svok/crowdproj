@@ -3,6 +3,7 @@ import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
+import 'package:crowdproj/modules/teams/TeamsEvent.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
@@ -41,7 +42,7 @@ class _TeamsPageState extends State<TeamsPage> {
     return PageSimple(
       title: localizer.title,
       body: BlocProvider(
-        create: (context) => TeamsBloc(context: context),
+        create: (context) => TeamsBloc(context: context)..add(TeamsEvent.init),
         child: TeamsWidget(),
       ),
       floatingActionButton: Row(
@@ -54,7 +55,7 @@ class _TeamsPageState extends State<TeamsPage> {
                 final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
                 navigatorBloc.add(NavigatorActionTeam());
               },
-              heroTag: "teamEdit",
+              heroTag: "addNewTeam",
               tooltip: localizer.title,
               child: Icon(Icons.group_add),
             ),
@@ -64,4 +65,3 @@ class _TeamsPageState extends State<TeamsPage> {
     );
   }
 }
-

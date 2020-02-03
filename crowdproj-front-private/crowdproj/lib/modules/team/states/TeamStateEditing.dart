@@ -5,13 +5,12 @@ import 'TeamState.dart';
 
 class TeamStateEditing extends TeamState {
   TeamStateEditing({
-    this.team,
+    Team team,
     this.teamEdited,
     this.errors,
     bool isWaiting,
-  }) : super(isWaiting: isWaiting);
+  }) : super(team: team, isWaiting: isWaiting);
 
-  final Team team;
   final Team teamEdited;
   final List<ApiError> errors;
 

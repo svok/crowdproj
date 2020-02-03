@@ -1,10 +1,12 @@
+import 'package:crowdproj/modules/navigator/NavigatorActionTeams.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/HomeLocalizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../auth/AuthPage.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -16,8 +18,7 @@ class HomePage extends StatefulWidget {
           {BuildContext context, RouteSettings settings}) =>
       HomeLocalizations.of(context).title;
 
-  static String pathFormatter({RouteSettings settings}) =>
-      "/";
+  static String pathFormatter({RouteSettings settings}) => "/";
 
   static final route = RouteDescription(
       id: "HomePage",
@@ -71,14 +72,12 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: EdgeInsets.all(4.0),
             child: FloatingActionButton(
-              heroTag: "main-login",
+              heroTag: "main-teams",
               onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (context) => new AuthPage()),
-                );
+                BlocProvider.of<NavigatorBloc>(context)
+                    .add(NavigatorActionTeams());
               },
-              child: Icon(Icons.navigate_next),
+              child: Icon(Icons.group),
             ),
           ),
         ],

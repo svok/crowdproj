@@ -5,11 +5,10 @@ import 'TeamState.dart';
 
 class TeamStateViewing extends TeamState {
   TeamStateViewing({
-    this.team,
+    Team team,
     this.errors,
     bool isWaiting,
-  }) : super(isWaiting: isWaiting);
-  final Team team;
+  }) : super(team: team, isWaiting: isWaiting);
   final List<ApiError> errors;
 
   String toString() => "Viewing team ${team?.id}";
