@@ -23,7 +23,7 @@ class TeamsEventEditRequested extends TeamsEvent {
       yield TeamsStateEditing(teamEdited: Team());
     } else {
       // Existing team update
-      yield teamsBloc.state..isWaiting = true;
+      yield TeamsStateEditing(team: team, teamEdited: team, isWaiting: true);
       final response = await service.getTeam(team.id);
       print("_editEvent: ${response.team}");
       yield TeamsStateEditing(team: response.team, teamEdited: response.team);

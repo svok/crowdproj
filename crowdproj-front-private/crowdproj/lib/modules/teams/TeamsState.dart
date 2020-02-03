@@ -6,7 +6,7 @@ import '../../api/models/Team.dart';
 
 abstract class TeamsState extends Equatable {
   TeamsState({this.isWaiting = false}): super();
-  bool isWaiting;
+  final bool isWaiting;
 }
 
 class TeamsStateNothing extends TeamsState {

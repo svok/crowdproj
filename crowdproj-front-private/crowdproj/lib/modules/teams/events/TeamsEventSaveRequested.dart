@@ -22,7 +22,10 @@ class TeamsEventSaveRequested extends TeamsEvent {
     final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     final service = AppSession.get.teamsService;
 
-    yield teamsBloc.state..isWaiting = true;
+    yield TeamsStateEditing(
+      team: team,
+      isWaiting: true,
+    );
 
     final response = await service.saveTeam(team);
     if (response.status == ApiResponseStatuses.success) {

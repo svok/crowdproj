@@ -25,7 +25,13 @@ class TeamsEventViewRequested extends TeamsEvent {
       arguments: TeamsPageEditArguments(teamId: teamId),
     );
 
-    yield teamsBloc.state..isWaiting = true;
+    final stateEditing = teamsBloc.state as TeamsStateEditing;
+    final stateViewing = teamsBloc.state as TeamsStateViewing;
+    yield TeamsStateViewing(
+      team: stateEditing?.team ?? stateViewing.team,
+      isWaiting: true,
+    );
+
     final response = await service.getTeam(teamId);
     if (response.status == ApiResponseStatuses.success) {
       yield TeamsStateViewing(team: response.team);

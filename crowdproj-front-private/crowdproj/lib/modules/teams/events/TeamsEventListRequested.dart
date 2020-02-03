@@ -20,7 +20,13 @@ class TeamsEventSaveRequested extends TeamsEvent {
     final teamsBloc = BlocProvider.of<TeamsBloc>(context);
     final service = AppSession.get.teamsService;
 
-    yield teamsBloc.state..isWaiting = true;
+    final state = teamsBloc.state as TeamsStateListing;
+    yield TeamsStateListing(
+      query: query,
+      teams: state?.teams,
+      errors: state?.errors,
+      isWaiting: true,
+    );
 
     final response = await service.getTeams(query);
     yield TeamsStateListing(
