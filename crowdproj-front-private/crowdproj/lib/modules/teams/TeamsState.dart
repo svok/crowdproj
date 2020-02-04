@@ -8,6 +8,7 @@ class TeamsState extends Equatable {
     this.query,
     this.teams,
     this.errors,
+    this.hasReachedMax = true,
     this.isWaiting = false,
   }) : super();
 
@@ -15,27 +16,29 @@ class TeamsState extends Equatable {
   final List<Team> teams;
   final List<ApiError> errors;
   final bool isWaiting;
+  final bool hasReachedMax;
+
+  int get offset => query?.offset ?? 0;
+  int get limit => query?.limit ?? 0;
+  int get length => teams?.length ?? 0;
+  DateTime get timeVersion => query.onDate;
 
   Team getTeam(int index) => teams[index];
 
-  TeamsRangeStatus checkRange(int index) {
-    if (query == null || teams == null) return TeamsRangeStatus.empty;
-    if (index < 0) return TeamsRangeStatus.noBefore;
-    if (index < query.offset) return TeamsRangeStatus.beforeBuffer;
-    if (index < query.offset + teams.length) return TeamsRangeStatus.withinBuffer;
-    if (teams.length < query.limit) return TeamsRangeStatus.noAfter;
-    return TeamsRangeStatus.afterBuffer;
-  }
+  TeamsState clone({
+    TeamsQuery query,
+    List<Team> teams,
+    List<ApiError> errors,
+    bool hasReachedMax,
+    bool isWaiting,
+  }) => TeamsState(
+    query: query ?? this.query,
+    teams: teams ?? this.teams,
+    errors: errors ?? this.errors,
+    hasReachedMax: hasReachedMax ?? this.hasReachedMax,
+    isWaiting: isWaiting ?? this.isWaiting,
+  );
 
   @override
   List<Object> get props => [isWaiting];
-}
-
-enum TeamsRangeStatus {
-  withinBuffer,
-  beforeBuffer,
-  afterBuffer,
-  noBefore,
-  noAfter,
-  empty,
 }

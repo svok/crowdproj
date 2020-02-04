@@ -13,6 +13,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   }) : super();
 
   final BuildContext context;
+  static const BATCH_SIZE = 20;
 
   @override
   TeamsState get initialState => TeamsState();
@@ -21,6 +22,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   Stream<TeamsState> mapEventToState(TeamsEvent event) async* {
     switch(event) {
       case TeamsEvent.init: yield* _init(); break;
+      case TeamsEvent.readNext: yield* _readNext(); break;
       default: yield TeamsState();
     }
     print("TEAMS BLOC EVENT: $event");
@@ -29,7 +31,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   Stream<TeamsState> _init() async* {
     final query = TeamsQuery(
       offset: 0,
-      limit: 4,
+      limit: BATCH_SIZE,
     );
     yield TeamsState(
       query: query,
@@ -42,6 +44,25 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       query: query,
       teams: result.teams,
       errors: result.errors,
+      hasReachedMax: result.teams.length < query.limit,
+    );
+  }
+
+  Stream<TeamsState> _readNext() async* {
+    final query = TeamsQuery(
+      onDate: state.timeVersion,
+      offset: state.offset + state.limit,
+      limit: BATCH_SIZE,
+    );
+    yield state.clone(isWaiting: true);
+    final result = await AppSession.get.teamsService.getTeams(query);
+    final newTeams = (state?.teams ?? []) + (result?.teams ?? []);
+    print("FETCH result: ${result.teams?.length ?? 0} - total: ${newTeams.length}");
+    yield TeamsState(
+      query: query,
+      teams: newTeams,
+      errors: result.errors,
+      hasReachedMax: result.teams.length < query.limit,
     );
   }
 
