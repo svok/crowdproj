@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'package:crowdproj/common/AppPreferencesCrypted.dart';
+import 'package:crowdproj/common/AppPreferencesShared.dart';
+import 'package:crowdproj/common/IAppPreferences.dart';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPlatform {
   void setupRuntimeEnvironment() {
@@ -32,5 +36,12 @@ class AppPlatform {
     return Platform.environment["LANG"] ??
         Platform.environment["LANGUAGE"] ??
         Platform.environment["LC_ALL"];
+  }
+
+  IAppPreferences getStorage(String dbName) {
+    if (Platform.isLinux || Platform.isWindows) {
+      return AppPreferencesCrypted(dbName: dbName);
+    }
+    return AppPreferencesShared(dbName: dbName);
   }
 }

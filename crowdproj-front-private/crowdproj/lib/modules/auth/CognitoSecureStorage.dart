@@ -1,4 +1,5 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
+import 'package:crowdproj/common/IAppPreferences.dart';
 import 'dart:convert';
 
 import 'package:crypted_preferences/crypted_preferences.dart';
@@ -6,9 +7,9 @@ import 'package:crypted_preferences/crypted_preferences.dart';
 /// Class handles platform specific storages for the requirements of the login
 class CognitoSecureStorage extends CognitoStorage {
 
-  Preferences _securePrefs;
+  IAppPreferences _securePrefs;
 
-  CognitoSecureStorage(Preferences prefs) {
+  CognitoSecureStorage(IAppPreferences prefs) {
     _securePrefs = prefs;
   }
 
