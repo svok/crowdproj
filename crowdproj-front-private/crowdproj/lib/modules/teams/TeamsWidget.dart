@@ -27,7 +27,6 @@ class _TeamsWidgetState extends State<TeamsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TeamsBloc, TeamsState>(
       builder: (context, state) {
-        print("TEAMS LIST BUILD for ${state?.teams?.length} objects");
         return Stack(
           alignment: AlignmentDirectional.topStart,
           children: <Widget>[

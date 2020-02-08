@@ -89,6 +89,7 @@ flutter:
 
   assets:
     - assets/img/
+    - assets/pages/promo/
     - assets/pages/about/
 
   # An image asset can refer to one or more resolution-specific "variants", see
