@@ -4,19 +4,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/translations/HomeLocalizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class MenuItemAbout extends PopupMenuItem<String> {
-  MenuItemAbout({Key key, bool enabled = true, @required BuildContext context})
-      : super(
-          key: key,
-          value: id,
-          enabled: enabled,
-          child: Text(HomeLocalizations.of(context).titleAbout),
-        );
-  static const String id = "about";
+class MenuItemAbout extends StatelessWidget {
 
-  static callback(BuildContext context) async {
-    final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-    navigatorBloc.add(NavigatorActionAbout());
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(HomeLocalizations.of(context).titleAbout),
+      trailing: Icon(FontAwesomeIcons.info),
+      onTap: () {
+        Navigator.of(context).pop();
+        final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
+        navigatorBloc.add(NavigatorActionAbout());
+      },
+    );
   }
 }

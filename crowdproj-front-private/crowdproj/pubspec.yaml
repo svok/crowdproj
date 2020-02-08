@@ -48,7 +48,7 @@ dependencies:
       url: git@github.com:svok/crypted_preferences.git
 #      url: git@github.com:jaumard/crypted_preferences.git
   devicelocale: ^0.2.1
-  provider: ^4.0.2
+  provider: ^4.0.3
   uuid: ^2.0.4
   equatable: ^1.0.3
 #  window_utils:

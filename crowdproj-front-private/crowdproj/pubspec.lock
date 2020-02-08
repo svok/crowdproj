@@ -72,7 +72,7 @@ packages:
       name: build_config
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.4.1+1"
+    version: "0.4.2"
   built_collection:
     dependency: transitive
     description:
@@ -409,7 +409,7 @@ packages:
       name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.2"
+    version: "4.0.3"
   pub_semver:
     dependency: transitive
     description:
@@ -526,7 +526,7 @@ packages:
       name: url_launcher_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0+2"
+    version: "0.1.1"
   uuid:
     dependency: "direct main"
     description:
