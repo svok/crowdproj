@@ -60,6 +60,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterBuildTask>(FlutterBuildTask.TASK_NAME_WINDOWS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("windows")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -73,6 +74,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterBuildTask>(FlutterBuildTask.TASK_NAME_WEB) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("web")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -89,6 +91,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterBuildTask>(FlutterBuildTask.TASK_NAME_ANDROID) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("android")
             buildPackage.set("appbundle")
             buildPlatforms.addAll("android-arm", "android-arm64", "android-x64")
@@ -107,6 +110,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterBuildTask>(FlutterBuildTask.TASK_NAME_IOS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("ios")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -120,6 +124,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterBuildTask>(FlutterBuildTask.TASK_NAME_MACOS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("macos")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -152,6 +157,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_WINDOWS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("windows")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -165,6 +171,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_WEB) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("web")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -181,6 +188,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_ANDROID) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("android")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -197,6 +205,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_IOS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("ios")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir
@@ -210,6 +219,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
         }
 
         tasks.register<FlutterRunTask>(FlutterRunTask.TASK_NAME_MACOS) {
+            dependsOn(FlutterPubUpgradeTask.TASK_NAME)
             architecture.set("macos")
             flutterCommand.set(taskData.flutterCommand)
             val dir = taskData.workDir

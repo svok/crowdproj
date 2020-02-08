@@ -25,6 +25,7 @@ class PageSimple extends StatelessWidget {
         ),
         drawer: MenuWidget(),
         body: body,
-        floatingActionButton: floatingActionButton);
+        floatingActionButton: floatingActionButton,
+    );
   }
 }
