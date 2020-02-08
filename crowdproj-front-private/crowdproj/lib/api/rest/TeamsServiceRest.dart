@@ -9,7 +9,7 @@ import '../models/Team.dart' as local;
 import '../models/Profile.dart' as local;
 import '../models/ApiResponse.dart' as local;
 
-class TeamsServiceRest implements ITeamsService {
+class TeamsServiceRest extends ITeamsService {
   String basePath;
   CrowdprojModels _models;
   TeamApi _api;
@@ -29,7 +29,11 @@ class TeamsServiceRest implements ITeamsService {
   Future<local.ApiResponseTeam> saveTeam(local.Team team) async {
     final webRes = await _api.addTeam(TeamsServiceRestHelper.toTeam(team));
     final res = webRes.data;
-    return TeamsServiceRestHelper.fromApiResponseTeam(res);
+    final localRes = TeamsServiceRestHelper.fromApiResponseTeam(res);
+    if (localRes?.status == local.ApiResponseStatuses.success) {
+      notifyListeners();
+    }
+    return localRes;
   }
 
   @override

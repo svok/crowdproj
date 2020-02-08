@@ -1,5 +1,6 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/platforms/AppPlatform.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:crowdproj/modules/home/HomePage.dart';
 import 'package:crowdproj/modules/promo/PromoPage.dart';
@@ -8,7 +9,6 @@ import 'package:crowdproj/api/stub/TeamsServiceStub.dart';
 import 'package:crowdproj/modules/auth/CognitoConfig.dart';
 import 'package:crowdproj/modules/auth/AuthService.dart';
 import 'package:crowdproj/modules/auth/CognitoSecureStorage.dart';
-import 'package:crowdproj/modules/platforms/AppPlatform.dart';
 import 'package:flutter/material.dart';
 
 class AppSession {

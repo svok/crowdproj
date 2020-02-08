@@ -23,6 +23,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
     switch(event) {
       case TeamsEvent.init: yield* _init(); break;
       case TeamsEvent.readNext: yield* _readNext(); break;
+      case TeamsEvent.update: yield* _update(); break;
       default: yield TeamsState();
     }
     print("TEAMS BLOC EVENT: $event");
@@ -49,15 +50,34 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   }
 
   Stream<TeamsState> _readNext() async* {
+    yield state.clone(isWaiting: true);
+
     final query = TeamsQuery(
       onDate: state.timeVersion,
       offset: state.offset + state.limit,
       limit: BATCH_SIZE,
     );
-    yield state.clone(isWaiting: true);
     final result = await AppSession.get.teamsService.getTeams(query);
     final newTeams = (state?.teams ?? []) + (result?.teams ?? []);
-    print("FETCH result: ${result.teams?.length ?? 0} - total: ${newTeams.length}");
+    yield TeamsState(
+      query: query,
+      teams: newTeams,
+      errors: result.errors,
+      hasReachedMax: result.teams.length < query.limit,
+    );
+  }
+
+  Stream<TeamsState> _update() async* {
+    yield state.clone(isWaiting: true);
+
+    final query = TeamsQuery(
+      offset: 0,
+      limit: state.teams?.length,
+    );
+    final _service = AppSession.get.teamsService;
+    final result = await _service.getTeams(query);
+    final newTeams = result?.teams ?? [];
+    _service.isUptodate = true;
     yield TeamsState(
       query: query,
       teams: newTeams,

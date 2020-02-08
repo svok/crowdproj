@@ -88,6 +88,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     return BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
       if (!(state is TeamStateEditing)) return Container();
       final tm = (state as TeamStateEditing)?.team ?? this.team;
+      team = tm;
       final List<ApiError> errors = state is TeamStateEditing ? state.errors : [];
       return Container(
         child: Form(

@@ -40,5 +40,5 @@ class TeamsState extends Equatable {
   );
 
   @override
-  List<Object> get props => [isWaiting];
+  List<Object> get props => [isWaiting, teams];
 }

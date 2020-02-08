@@ -52,4 +52,6 @@ class Team {
    */
   TeamStatus status;
 
+  @override
+  String toString() => "Team{id=$id, name=$name}";
 }

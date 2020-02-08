@@ -1,4 +1,4 @@
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AppPreferencesShared extends IAppPreferences {

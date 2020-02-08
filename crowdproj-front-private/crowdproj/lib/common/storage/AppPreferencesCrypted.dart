@@ -1,4 +1,4 @@
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 import 'package:crypted_preferences/crypted_preferences.dart';
 
 class AppPreferencesCrypted extends IAppPreferences {

@@ -21,7 +21,6 @@ class TeamEventSaveRequested extends TeamEvent {
       team: team,
       isWaiting: true,
     );
-
     final response = await service.saveTeam(team);
     if (response.status == ApiResponseStatuses.success) {
       yield TeamStateViewing(team: response.team);

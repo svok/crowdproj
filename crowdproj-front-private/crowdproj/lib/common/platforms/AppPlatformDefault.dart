@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:crowdproj/common/AppPreferencesCrypted.dart';
-import 'package:crowdproj/common/AppPreferencesShared.dart';
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/storage/AppPreferencesCrypted.dart';
+import 'package:crowdproj/common/storage/AppPreferencesShared.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 import 'package:devicelocale/devicelocale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart'

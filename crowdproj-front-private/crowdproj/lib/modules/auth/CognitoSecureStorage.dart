@@ -1,5 +1,5 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 import 'dart:convert';
 
 import 'package:crypted_preferences/crypted_preferences.dart';

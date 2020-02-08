@@ -1,7 +1,7 @@
 import 'dart:html' as html;
 
-import 'package:crowdproj/common/AppPreferencesShared.dart';
-import 'package:crowdproj/common/IAppPreferences.dart';
+import 'package:crowdproj/common/storage/AppPreferencesShared.dart';
+import 'package:crowdproj/common/storage/IAppPreferences.dart';
 //import 'dart:js' as js; // only if you want to do Js logic
 
 class AppPlatform {
