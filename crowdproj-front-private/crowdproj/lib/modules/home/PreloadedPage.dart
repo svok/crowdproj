@@ -15,7 +15,13 @@ class PreloadedPage extends StatelessWidget {
       ],
       child: EmptyApp(
         child: ActivitySpinner(
-          child: Image.asset("assets/pages/promo/01.jpeg"),
+          child: Image.asset(
+            "assets/pages/splash/splash.jpeg",
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+            alignment: Alignment.center,
+          ),
         ),
       ),
     );

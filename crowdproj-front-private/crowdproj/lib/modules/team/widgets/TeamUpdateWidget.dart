@@ -6,6 +6,7 @@ import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
+import 'package:crowdproj/widgets/mdeditor/MdEditorWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -112,15 +113,21 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
                     team.summary = newValue;
                   },
                 ),
-                TextFormField(
-                  initialValue: tm.description,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 3,
-                  maxLines: null,
+                MdEditorWidget(
+                  initialText: tm.description,
                   onSaved: (String text) {
                     team.description = text;
                   },
                 ),
+//                TextFormField(
+//                  initialValue: tm.description,
+//                  keyboardType: TextInputType.multiline,
+//                  minLines: 3,
+//                  maxLines: null,
+//                  onSaved: (String text) {
+//                    team.description = text;
+//                  },
+//                ),
                 FormSubmitButtonWidget(
                   label: localizer.labelSave,
                   onPressed: () {

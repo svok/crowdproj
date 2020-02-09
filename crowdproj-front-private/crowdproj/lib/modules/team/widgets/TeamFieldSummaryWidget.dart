@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 
 class TeamFieldSummaryWidget extends StatelessWidget {
   TeamFieldSummaryWidget({
-    this.key,
+    Key key,
     @required this.summary,
     this.error,
     this.onSaved,
     this.requiredField,
   }) : super(key: key);
 
-  Key key;
-  String summary;
+  final String summary;
   String error;
-  bool requiredField;
-  FormFieldSetter<String> onSaved;
+  final bool requiredField;
+  final FormFieldSetter<String> onSaved;
 
   @override
   Widget build(BuildContext context) {
