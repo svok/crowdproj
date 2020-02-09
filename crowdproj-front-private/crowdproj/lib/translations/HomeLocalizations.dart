@@ -51,6 +51,14 @@ class HomeLocalizations {
         desc: 'Title for the about page',
         locale: localeName,
       );
+
+  String get loading => Intl.message(
+    'Loading...',
+    name: "HomeLocalizations_loading",
+    desc: 'Label for loading spinner',
+    locale: localeName,
+  );
+
 }
 
 class _HomeLocalizationsDelegate

@@ -1,5 +1,5 @@
 {
-  "@@last_modified": "2020-01-19T18:47:00.020344",
+  "@@last_modified": "2020-02-08T21:46:23.488244",
   "AuthLocalizations_title": "Authentication",
   "@AuthLocalizations_title": {
     "description": "Default title for AuthPage",
@@ -106,6 +106,12 @@
     "type": "text",
     "placeholders": {}
   },
+  "HomeLocalizations_loading": "Loading...",
+  "@HomeLocalizations_loading": {
+    "description": "Label for loading spinner",
+    "type": "text",
+    "placeholders": {}
+  },
   "PromoLocalizations_title": "Promo World",
   "@PromoLocalizations_title": {
     "description": "Title for the Demo application",
@@ -118,10 +124,62 @@
     "type": "text",
     "placeholders": {}
   },
+  "TeamsLocalizations_titleCreate": "Create Team",
+  "@TeamsLocalizations_titleCreate": {
+    "description": "Title for the team creation",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_titleUpdate": "Update Team",
+  "@TeamsLocalizations_titleUpdate": {
+    "description": "Title for the team update",
+    "type": "text",
+    "placeholders": {}
+  },
   "TeamsLocalizations_titleMyTeams": "My Teams",
   "@TeamsLocalizations_titleMyTeams": {
     "description": "Title for pages with the users teams lists",
     "type": "text",
     "placeholders": {}
+  },
+  "TeamsLocalizations_labelName": "Team Name",
+  "@TeamsLocalizations_labelName": {
+    "description": "Label for the team's name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_hintName": "New Yourk Wolves Byke Den",
+  "@TeamsLocalizations_hintName": {
+    "description": "Hint for the team's name field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_labelSummary": "Team Summary",
+  "@TeamsLocalizations_labelSummary": {
+    "description": "Label for the team's summary field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_hintSummary": "In our team we are making fun, enjoy bikes, high speed and freedom",
+  "@TeamsLocalizations_hintSummary": {
+    "description": "Hint for the team's summary field",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_labelSave": "Save",
+  "@TeamsLocalizations_labelSave": {
+    "description": "Save button label for a team",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_errorTextFieldLength": "The field for {field} must be at least {validationNameMinLengh} symbols long, while currently it's size is just {length} symbols",
+  "@TeamsLocalizations_errorTextFieldLength": {
+    "description": "Error for the field name length is too short",
+    "type": "text",
+    "placeholders": {
+      "field": {},
+      "validationNameMinLengh": {},
+      "length": {}
+    }
   }
 }

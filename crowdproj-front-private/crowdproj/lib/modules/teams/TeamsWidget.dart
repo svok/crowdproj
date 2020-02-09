@@ -3,6 +3,7 @@ import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsEvent.dart';
 import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:crowdproj/widgets/BottomLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,33 +28,41 @@ class _TeamsWidgetState extends State<TeamsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TeamsBloc, TeamsState>(
       builder: (context, state) {
-        return Stack(
-          alignment: AlignmentDirectional.topStart,
-          children: <Widget>[
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return index >= state.teams.length
-                    ? BottomLoader()
-                    : TeamsTeamWidget(team: state.getTeam(index));
-              },
-              itemCount: state.hasReachedMax ? state.length : state.length + 1,
-              controller: _scrollController,
-            ),
-            ChangeNotifierProvider.value(
-              value: AppSession.get.teamsService,
-              child: Consumer<ITeamsService>(builder: (context, value, child) {
-                return value.isUptodate ? Container() : Container(
-                  alignment: AlignmentDirectional.topEnd,
-                  child: IconButton(
-                    icon: Icon(Icons.refresh),
-                    onPressed: () {
-                      BlocProvider.of<TeamsBloc>(context).add(TeamsEvent.update);
-                    },
-                  ),
-                );
-              }),
-            ),
-          ],
+        return ActivitySpinner(
+          isWaiting: state?.isWaiting,
+          child: Stack(
+            alignment: AlignmentDirectional.topStart,
+            children: <Widget>[
+              ListView.builder(
+                itemBuilder: (context, index) {
+                  return index >= state.teams.length
+                      ? BottomLoader()
+                      : TeamsTeamWidget(team: state.getTeam(index));
+                },
+                itemCount:
+                    state.hasReachedMax ? state.length : state.length + 1,
+                controller: _scrollController,
+              ),
+              ChangeNotifierProvider.value(
+                value: AppSession.get.teamsService,
+                child:
+                    Consumer<ITeamsService>(builder: (context, value, child) {
+                  return value.isUptodate
+                      ? Container()
+                      : Container(
+                          alignment: AlignmentDirectional.topEnd,
+                          child: IconButton(
+                            icon: Icon(Icons.refresh),
+                            onPressed: () {
+                              BlocProvider.of<TeamsBloc>(context)
+                                  .add(TeamsEvent.update);
+                            },
+                          ),
+                        );
+                }),
+              ),
+            ],
+          ),
         );
       },
     );

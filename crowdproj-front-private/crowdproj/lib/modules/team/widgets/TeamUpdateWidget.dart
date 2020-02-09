@@ -5,6 +5,7 @@ import 'package:crowdproj/modules/team/states/TeamStateEditing.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
+import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -43,7 +44,6 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
 //            .addPostFrameCallback((_) => _formKey.currentState.validate());
 //      });
 //    }
-
 
     //    _formKey.currentState.save();
 //    bool accountConfirmed;
@@ -89,42 +89,46 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
       if (!(state is TeamStateEditing)) return Container();
       final tm = (state as TeamStateEditing)?.team ?? this.team;
       team = tm;
-      final List<ApiError> errors = state is TeamStateEditing ? state.errors : [];
-      return Container(
-        child: Form(
-          key: _formKey,
-          child: new ListView(
-            children: <Widget>[
-              TeamFieldNameWidget(
-                name: tm.name,
-                error: ApiError.errorString(errors, "name"),
-                onSaved: (String newValue) {
-                  team.name = newValue;
-                },
-              ),
-              TeamFieldSummaryWidget(
-                summary: tm.summary,
-                error: ApiError.errorString(errors, "summary"),
-                onSaved: (String newValue) {
-                  team.summary = newValue;
-                },
-              ),
-              TextFormField(
-                initialValue: tm.description,
-                keyboardType: TextInputType.multiline,
-                minLines: 3,
-                maxLines: null,
-                onSaved: (String text) {
-                  team.description = text;
-                },
-              ),
-              FormSubmitButtonWidget(
-                label: localizer.labelSave,
-                onPressed: () {
-                  _submit(context);
-                },
-              ),
-            ],
+      final List<ApiError> errors =
+          state is TeamStateEditing ? state.errors : [];
+      return ActivitySpinner(
+        isWaiting: state?.isWaiting,
+        child: Container(
+          child: Form(
+            key: _formKey,
+            child: new ListView(
+              children: <Widget>[
+                TeamFieldNameWidget(
+                  name: tm.name,
+                  error: ApiError.errorString(errors, "name"),
+                  onSaved: (String newValue) {
+                    team.name = newValue;
+                  },
+                ),
+                TeamFieldSummaryWidget(
+                  summary: tm.summary,
+                  error: ApiError.errorString(errors, "summary"),
+                  onSaved: (String newValue) {
+                    team.summary = newValue;
+                  },
+                ),
+                TextFormField(
+                  initialValue: tm.description,
+                  keyboardType: TextInputType.multiline,
+                  minLines: 3,
+                  maxLines: null,
+                  onSaved: (String text) {
+                    team.description = text;
+                  },
+                ),
+                FormSubmitButtonWidget(
+                  label: localizer.labelSave,
+                  onPressed: () {
+                    _submit(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       );

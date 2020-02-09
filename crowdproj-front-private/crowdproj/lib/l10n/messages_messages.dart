@@ -29,6 +29,8 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static m4(description) => "Sorry. Unknown error has occured. The error description: ${description}";
 
+  static m5(field, validationNameMinLengh, length) => "The field for ${field} must be at least ${validationNameMinLengh} symbols long, while currently it\'s size is just ${length} symbols";
+
   final messages = _notInlinedMessages(_notInlinedMessages);
   static _notInlinedMessages(_) => <String, Function> {
     "AuthLocalizations_emailError" : m0,
@@ -45,10 +47,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "ErrorLocalizations_titleErrorCoded" : m3,
     "ErrorLocalizations_titleErrorUncoded" : MessageLookupByLibrary.simpleMessage("Error"),
     "ErrorLocalizations_unknownError" : m4,
+    "HomeLocalizations_loading" : MessageLookupByLibrary.simpleMessage("Loading..."),
     "HomeLocalizations_title" : MessageLookupByLibrary.simpleMessage("Hello World"),
     "HomeLocalizations_titleAbout" : MessageLookupByLibrary.simpleMessage("About"),
     "PromoLocalizations_title" : MessageLookupByLibrary.simpleMessage("Promo World"),
+    "TeamsLocalizations_errorTextFieldLength" : m5,
+    "TeamsLocalizations_hintName" : MessageLookupByLibrary.simpleMessage("New Yourk Wolves Byke Den"),
+    "TeamsLocalizations_hintSummary" : MessageLookupByLibrary.simpleMessage("In our team we are making fun, enjoy bikes, high speed and freedom"),
+    "TeamsLocalizations_labelName" : MessageLookupByLibrary.simpleMessage("Team Name"),
+    "TeamsLocalizations_labelSave" : MessageLookupByLibrary.simpleMessage("Save"),
+    "TeamsLocalizations_labelSummary" : MessageLookupByLibrary.simpleMessage("Team Summary"),
     "TeamsLocalizations_title" : MessageLookupByLibrary.simpleMessage("Teams"),
-    "TeamsLocalizations_titleMyTeams" : MessageLookupByLibrary.simpleMessage("My Teams")
+    "TeamsLocalizations_titleCreate" : MessageLookupByLibrary.simpleMessage("Create Team"),
+    "TeamsLocalizations_titleMyTeams" : MessageLookupByLibrary.simpleMessage("My Teams"),
+    "TeamsLocalizations_titleUpdate" : MessageLookupByLibrary.simpleMessage("Update Team")
   };
 }

@@ -109,6 +109,7 @@ class TeamsLocalizations {
         name: "TeamsLocalizations_errorTextFieldLength",
         desc: 'Error for the field name length is too short',
         locale: localeName,
+        args: [field, validationNameMinLengh, length],
       );
 }
 

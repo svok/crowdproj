@@ -46,6 +46,7 @@ class TeamsServiceStub extends ITeamsService {
         ],
       );
     }
+    await Future.delayed(Duration(seconds: 2));
     final id = team?.id ?? Uuid().v4();
     teamRepo[id] = team..id = id;
     final result = ApiResponseTeam(
@@ -62,6 +63,7 @@ class TeamsServiceStub extends ITeamsService {
 
   Future<ApiResponseTeam> getTeam(String teamId) async {
     print("getTeam: request");
+    await Future.delayed(Duration(seconds: 2));
     return ApiResponseTeam(
       teams: [
         teamRepo[teamId],
@@ -76,6 +78,7 @@ class TeamsServiceStub extends ITeamsService {
   Future<ApiResponseTeam> getTeams(TeamsQuery query) async {
     final offset = query?.offset ?? 0;
     final limit = query?.limit ?? 20;
+    await Future.delayed(Duration(seconds: 2));
     return ApiResponseTeam(
       teams: teamRepo.values.skip(offset).take(limit).toList(),
       status: ApiResponseStatuses.success,

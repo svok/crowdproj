@@ -1,8 +1,23 @@
+import 'package:crowdproj/translations/HomeLocalizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
+import 'package:crowdproj/widgets/EmptyApp.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class PreloadedPage extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => ActivitySpinner();
-
+  Widget build(BuildContext context) {
+    return Localizations(
+      locale: Locale("en", "US"),
+      delegates: [
+        HomeLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ],
+      child: EmptyApp(
+        child: ActivitySpinner(
+          child: Image.asset("assets/pages/promo/01.jpeg"),
+        ),
+      ),
+    );
+  }
 }

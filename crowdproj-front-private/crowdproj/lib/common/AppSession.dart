@@ -48,6 +48,7 @@ class AppSession {
     );
 
     await _instance.resolveHome();
+//    await Future.delayed(Duration(seconds: 10));
   }
 
   void setPromoShown() {
