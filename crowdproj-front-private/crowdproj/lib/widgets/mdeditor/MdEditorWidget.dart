@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 class MdEditorWidget extends StatefulWidget {
   MdEditorWidget({
     Key key,
-    this.initialText,
+    this.initialText = "",
     this.maxLines: 10,
     this.minLines: 3,
     this.onSaved,
@@ -19,6 +20,14 @@ class MdEditorWidget extends StatefulWidget {
 }
 
 class _MdEditorWidgetState extends State<MdEditorWidget> {
+  String text;
+
+  @override
+  void initState() {
+    super.initState();
+    text = widget.initialText ?? "";
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeActive = Theme.of(context).textTheme.headline6;
@@ -37,40 +46,45 @@ class _MdEditorWidgetState extends State<MdEditorWidget> {
                 Tab(text: "Edit"),
                 Tab(text: "View"),
               ],
+              onTap: (int index) {
+                setState(() {});
+              },
             ),
           ),
           Container(
-            constraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width,
-              maxHeight: MediaQuery.of(context).size.height/2
-            ),
+            alignment: Alignment.topCenter,
+//            constraints: BoxConstraints(
+//                maxHeight: MediaQuery.of(context).size.height / 2,
+//            ),
+            height: 200,
             child: TabBarView(
               children: [
-                Container(
-                  height: 200,
-                  width: MediaQuery.of(context).size.width/2,
+                Align(
+                  alignment: Alignment.topCenter,
+//                  height: 200,
+//                  width: MediaQuery.of(context).size.width / 2,
                   child: TextFormField(
-                    initialValue: widget.initialText,
+                    initialValue: text,
                     keyboardType: TextInputType.multiline,
                     minLines: widget.minLines,
                     maxLines: widget.maxLines,
+                    showCursor: true,
                     onSaved: widget.onSaved,
+                    onChanged: (String newValue) {
+                      text = newValue;
+                    },
                   ),
                 ),
-                Container(
-                  height: 250,
-                  width: MediaQuery.of(context).size.width/2,
-                  child: SingleChildScrollView(),
+                Align(
+//                  height: 250,
+//                  width: MediaQuery.of(context).size.width / 2,
+                  alignment: Alignment.topCenter,
+                  child: Scrollbar(
+//                    child: SingleChildScrollView(
+                    child: Markdown(data: text),
+//                    ),
+                  ),
                 ),
-
-//                TextFormField(
-//                  initialValue: widget.initialText,
-//                  keyboardType: TextInputType.multiline,
-//                  minLines: widget.minLines,
-//                  maxLines: widget.maxLines,
-//                  onSaved: widget.onSaved,
-//                ),
-//                Icon(Icons.directions_transit),
               ],
             ),
           ),

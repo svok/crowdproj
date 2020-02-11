@@ -33,15 +33,17 @@ class _TeamsWidgetState extends State<TeamsWidget> {
           child: Stack(
             alignment: AlignmentDirectional.topStart,
             children: <Widget>[
-              ListView.builder(
-                itemBuilder: (context, index) {
-                  return index >= state.teams.length
-                      ? BottomLoader()
-                      : TeamsTeamWidget(team: state.getTeam(index));
-                },
-                itemCount:
-                    state.hasReachedMax ? state.length : state.length + 1,
-                controller: _scrollController,
+              Scrollbar(
+                child: ListView.builder(
+                  itemBuilder: (context, index) {
+                    return index >= state.teams.length
+                        ? BottomLoader()
+                        : TeamsTeamWidget(team: state.getTeam(index));
+                  },
+                  itemCount:
+                      state.hasReachedMax ? state.length : state.length + 1,
+                  controller: _scrollController,
+                ),
               ),
               ChangeNotifierProvider.value(
                 value: AppSession.get.teamsService,

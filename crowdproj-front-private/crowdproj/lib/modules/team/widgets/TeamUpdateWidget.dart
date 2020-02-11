@@ -22,7 +22,9 @@ class TeamUpdateWidget extends StatefulWidget {
 class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
-  Team team = Team();
+  Team team;
+  List<ApiError> errors;
+
   String nameError;
   String summaryError;
   String descriptionError;
@@ -88,37 +90,57 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     final localizer = TeamsLocalizations.of(context);
     return BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
       if (!(state is TeamStateEditing)) return Container();
-      final tm = (state as TeamStateEditing)?.team ?? this.team;
-      team = tm;
-      final List<ApiError> errors =
-          state is TeamStateEditing ? state.errors : [];
+      team = (state as TeamStateEditing)?.team ?? Team();
+      errors = state is TeamStateEditing ? state.errors : [];
       return ActivitySpinner(
         isWaiting: state?.isWaiting,
-        child: Container(
-          child: Form(
-            key: _formKey,
-            child: new ListView(
-              children: <Widget>[
-                TeamFieldNameWidget(
-                  name: tm.name,
-                  error: ApiError.errorString(errors, "name"),
-                  onSaved: (String newValue) {
-                    team.name = newValue;
-                  },
-                ),
-                TeamFieldSummaryWidget(
-                  summary: tm.summary,
-                  error: ApiError.errorString(errors, "summary"),
-                  onSaved: (String newValue) {
-                    team.summary = newValue;
-                  },
-                ),
-                MdEditorWidget(
-                  initialText: tm.description,
-                  onSaved: (String text) {
-                    team.description = text;
-                  },
-                ),
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.topCenter,
+              child: Scrollbar(
+                child: _formBuilder(),
+              ),
+            ),
+            FormSubmitButtonWidget(
+              label: localizer.labelSave,
+              onPressed: () {
+                _submit(context);
+              },
+            ),
+          ],
+        ),
+      );
+    });
+  }
+
+  Widget _formBuilder() {
+    return Container(
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            TeamFieldNameWidget(
+              name: team.name,
+              error: ApiError.errorString(errors, "name"),
+              onSaved: (String newValue) {
+                team.name = newValue;
+              },
+            ),
+            TeamFieldSummaryWidget(
+              summary: team.summary,
+              error: ApiError.errorString(errors, "summary"),
+              onSaved: (String newValue) {
+                team.summary = newValue;
+              },
+            ),
+          MdEditorWidget(
+            initialText: team.description,
+            onSaved: (String text) {
+              team.description = text;
+            },
+          ),
 //                TextFormField(
 //                  initialValue: tm.description,
 //                  keyboardType: TextInputType.multiline,
@@ -128,17 +150,9 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
 //                    team.description = text;
 //                  },
 //                ),
-                FormSubmitButtonWidget(
-                  label: localizer.labelSave,
-                  onPressed: () {
-                    _submit(context);
-                  },
-                ),
-              ],
-            ),
-          ),
+          ],
         ),
-      );
-    });
+      ),
+    );
   }
 }
