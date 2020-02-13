@@ -7,7 +7,8 @@ class TeamFieldSummaryWidget extends StatelessWidget {
     @required this.summary,
     this.error,
     this.onSaved,
-    this.requiredField, this.onChanged,
+    this.requiredField,
+    this.onChanged,
   }) : super(key: key);
 
   final String summary;

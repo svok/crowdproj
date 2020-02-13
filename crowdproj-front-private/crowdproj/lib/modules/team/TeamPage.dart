@@ -1,9 +1,6 @@
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/team/TeamBloc.dart';
 import 'package:crowdproj/modules/team/TeamPageView.dart';
-import 'package:crowdproj/modules/team/widgets/TeamUpdateWidget.dart';
-import 'package:crowdproj/modules/team/widgets/TeamViewWidget.dart';
 import 'package:crowdproj/modules/teams/TeamsPage.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +62,5 @@ class _TeamPageState extends State<TeamPage> {
         },
       ),
     );
-    PageSimple(title: localizer.title, body: TeamUpdateWidget());
   }
 }

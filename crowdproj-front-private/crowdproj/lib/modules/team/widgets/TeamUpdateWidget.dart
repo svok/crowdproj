@@ -10,10 +10,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../TeamBloc.dart';
+import 'TeamFieldDescriptionWidget.dart';
 import 'TeamFieldNameWidget.dart';
 import 'TeamFieldSummaryWidget.dart';
-
-typedef OnTeamUpdate(Team team);
 
 class TeamUpdateWidget extends StatefulWidget {
   TeamUpdateWidget({
@@ -26,8 +25,8 @@ class TeamUpdateWidget extends StatefulWidget {
 
   final Team team;
   final List<ApiError> errors;
-  final OnTeamUpdate onTeamChanged;
-  final OnTeamUpdate onTeamUpdated;
+  final ValueChanged<Team> onTeamChanged;
+  final ValueChanged<Team> onTeamUpdated;
 
   @override
   _TeamUpdateWidgetState createState() => _TeamUpdateWidgetState();
@@ -118,21 +117,25 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
       errors = state is TeamStateEditing ? state.errors : [];
       return ActivitySpinner(
         isWaiting: state?.isWaiting,
-        child: Column(
-          children: <Widget>[
-            Align(
-              alignment: Alignment.topCenter,
-              child: Scrollbar(
-                child: _formBuilder(),
-              ),
+        child: Scrollbar(
+          child: SingleChildScrollView(
+            child: Column(
+              children: <Widget>[
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: Scrollbar(
+                    child: _formBuilder(),
+                  ),
+                ),
+                FormSubmitButtonWidget(
+                  label: localizer.labelSave,
+                  onPressed: () {
+                    _submit(context);
+                  },
+                ),
+              ],
             ),
-            FormSubmitButtonWidget(
-              label: localizer.labelSave,
-              onPressed: () {
-                _submit(context);
-              },
-            ),
-          ],
+          ),
         ),
       );
     });
@@ -140,55 +143,52 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
 
   Widget _formBuilder() {
     return Container(
-      child: Form(
-        key: _formKey,
-        child: ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            TeamFieldNameWidget(
-              name: team.name,
-              error: ApiError.errorString(errors, "name"),
-              onSaved: (String newValue) {
-                team.name = newValue;
-              },
-              onChanged: (value) {
-                team.name = value;
-                widget.onTeamChanged(team);
-              },
-            ),
-            TeamFieldSummaryWidget(
-              summary: team.summary,
-              error: ApiError.errorString(errors, "summary"),
-              onSaved: (String newValue) {
-                team.summary = newValue;
-              },
-              onChanged: (value) {
-                team.summary = value;
-                widget.onTeamChanged(team);
-              },
-            ),
-//          MdEditorWidget(
-//            initialText: team.description,
-//            onSaved: (String text) {
-//              team.description = text;
-//            },
-//          ),
-            TextFormField(
-              initialValue: team.description,
-              keyboardType: TextInputType.multiline,
-              minLines: 3,
-              maxLines: 7,
-              onSaved: (String text) {
-                team.description = text;
-              },
-              onChanged: (String text) {
-                team.description = text;
-                widget.onTeamChanged(team);
-              },
-            ),
-          ],
+      child: Scrollbar(
+        child: Form(
+          key: _formKey,
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              TeamFieldNameWidget(
+                name: team.name,
+                error: ApiError.errorString(errors, "name"),
+                onSaved: (String newValue) {
+                  team.name = newValue;
+                },
+                onChanged: (value) {
+                  team.name = value;
+                  widget.onTeamChanged(team);
+                },
+              ),
+              TeamFieldSummaryWidget(
+                summary: team.summary,
+                error: ApiError.errorString(errors, "summary"),
+                onSaved: (String newValue) {
+                  team.summary = newValue;
+                },
+                onChanged: (value) {
+                  team.summary = value;
+                  widget.onTeamChanged(team);
+                },
+              ),
+              TeamFieldDescriptionWidget(
+                description: team.description,
+                error: ApiError.errorString(errors, "description"),
+                onSaved: (String newValue) {
+                  team.description = newValue;
+                },
+                onChanged: (value) {
+                  team.description = value;
+                  widget.onTeamChanged(team);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
+
+  static const validationSummaryMinLengh = 5;
+  static const summaryMaxLength = 300;
 }
