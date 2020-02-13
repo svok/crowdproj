@@ -1,6 +1,7 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/team/TeamBloc.dart';
+import 'package:crowdproj/modules/team/TeamPageView.dart';
 import 'package:crowdproj/modules/team/widgets/TeamUpdateWidget.dart';
 import 'package:crowdproj/modules/team/widgets/TeamViewWidget.dart';
 import 'package:crowdproj/modules/teams/TeamsPage.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamPageArguments.dart';
+import 'TeamPageUpdate.dart';
 import 'events/TeamEventTeamInit.dart';
 import '../../api/models/Team.dart';
 import 'states/TeamState.dart';
@@ -42,31 +44,25 @@ class TeamPage extends StatefulWidget {
 }
 
 class _TeamPageState extends State<TeamPage> {
-
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     final arguments = ModalRoute.of(context).settings.arguments;
     final args = arguments is TeamPageArguments ? arguments : null;
-    return PageSimple(
-      title: localizer.title,
-      body: Container(
-        child: BlocProvider(
-          create: (context) => TeamBloc(context: context)
-          ..add(TeamEventTeamInit(team: args?.team, teamId: args?.teamId)),
-          child: BlocBuilder<TeamBloc, TeamState>(
-          builder: (context, state) {
-            switch (state.runtimeType) {
-              case TeamStateEditing:
-                return TeamUpdateWidget();
-              case TeamStateViewing:
-                return TeamViewWidget();
-              default:
-                return Container();
-            }
-          },
-        ),
-        ),
+    return BlocProvider(
+      create: (context) => TeamBloc(context: context)
+        ..add(TeamEventTeamInit(team: args?.team, teamId: args?.teamId)),
+      child: BlocBuilder<TeamBloc, TeamState>(
+        builder: (context, state) {
+          switch (state.runtimeType) {
+            case TeamStateEditing:
+              return TeamPageUpdate();
+            case TeamStateViewing:
+              return TeamPageView();
+            default:
+              return Container();
+          }
+        },
       ),
     );
     PageSimple(title: localizer.title, body: TeamUpdateWidget());

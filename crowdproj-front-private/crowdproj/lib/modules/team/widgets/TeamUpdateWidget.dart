@@ -6,7 +6,6 @@ import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
-import 'package:crowdproj/widgets/mdeditor/MdEditorWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,7 +13,22 @@ import '../TeamBloc.dart';
 import 'TeamFieldNameWidget.dart';
 import 'TeamFieldSummaryWidget.dart';
 
+typedef OnTeamUpdate(Team team);
+
 class TeamUpdateWidget extends StatefulWidget {
+  TeamUpdateWidget({
+    Key key,
+    this.team,
+    this.errors,
+    this.onTeamChanged,
+    this.onTeamUpdated,
+  }) : super(key: key);
+
+  final Team team;
+  final List<ApiError> errors;
+  final OnTeamUpdate onTeamChanged;
+  final OnTeamUpdate onTeamUpdated;
+
   @override
   _TeamUpdateWidgetState createState() => _TeamUpdateWidgetState();
 }
@@ -29,6 +43,15 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   String summaryError;
   String descriptionError;
 
+  @override
+  initState() {
+    super.initState();
+    team = widget.team;
+    nameError = ApiError.errorString(widget.errors, "name");
+    summaryError = ApiError.errorString(widget.errors, "summary");
+    descriptionError = ApiError.errorString(widget.errors, "description");
+  }
+
   _submit(BuildContext context) async {
     final form = _formKey.currentState;
     nameError = summaryError = descriptionError = null;
@@ -36,6 +59,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
       return;
     }
     form.save();
+    if (widget.onTeamUpdated != null) widget.onTeamUpdated(team);
     // Here we are trying to save data on server
     final teamBloc = BlocProvider.of<TeamBloc>(context);
     teamBloc.add(TeamEventSaveRequested(team: team));
@@ -127,6 +151,10 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
               onSaved: (String newValue) {
                 team.name = newValue;
               },
+              onChanged: (value) {
+                team.name = value;
+                widget.onTeamChanged(team);
+              },
             ),
             TeamFieldSummaryWidget(
               summary: team.summary,
@@ -134,22 +162,30 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
               onSaved: (String newValue) {
                 team.summary = newValue;
               },
+              onChanged: (value) {
+                team.summary = value;
+                widget.onTeamChanged(team);
+              },
             ),
-          MdEditorWidget(
-            initialText: team.description,
-            onSaved: (String text) {
-              team.description = text;
-            },
-          ),
-//                TextFormField(
-//                  initialValue: tm.description,
-//                  keyboardType: TextInputType.multiline,
-//                  minLines: 3,
-//                  maxLines: null,
-//                  onSaved: (String text) {
-//                    team.description = text;
-//                  },
-//                ),
+//          MdEditorWidget(
+//            initialText: team.description,
+//            onSaved: (String text) {
+//              team.description = text;
+//            },
+//          ),
+            TextFormField(
+              initialValue: team.description,
+              keyboardType: TextInputType.multiline,
+              minLines: 3,
+              maxLines: 7,
+              onSaved: (String text) {
+                team.description = text;
+              },
+              onChanged: (String text) {
+                team.description = text;
+                widget.onTeamChanged(team);
+              },
+            ),
           ],
         ),
       ),

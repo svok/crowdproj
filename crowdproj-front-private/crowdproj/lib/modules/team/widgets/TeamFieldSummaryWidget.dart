@@ -7,13 +7,14 @@ class TeamFieldSummaryWidget extends StatelessWidget {
     @required this.summary,
     this.error,
     this.onSaved,
-    this.requiredField,
+    this.requiredField, this.onChanged,
   }) : super(key: key);
 
   final String summary;
   String error;
   final bool requiredField;
   final FormFieldSetter<String> onSaved;
+  final ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +34,9 @@ class TeamFieldSummaryWidget extends StatelessWidget {
         maxLength: summaryMaxLength,
         maxLengthEnforced: true,
         onSaved: onSaved,
-        onChanged: (_) {
+        onChanged: (value) {
           error = null;
+          onChanged(value);
         },
         validator: (String value) {
           if (value.trim().length < validationSummaryMinLengh) {

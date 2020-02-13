@@ -3,31 +3,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/widgets/menu/MenuWidget.dart';
 
-class PageSimple extends StatelessWidget {
-  PageSimple({
+class PageSimpleWithTabs extends StatelessWidget {
+  PageSimpleWithTabs({
     Key key,
     @required String this.title,
-    @required Widget this.body,
+    @required this.bodies,
     Widget this.floatingActionButton,
-    Widget this.appBarBottom,
+    @required List<Widget> this.tabButtons,
+    this.onTabSelected,
   }) : super(key: key);
 
   final String title;
-  final Widget body;
-  final Widget appBarBottom;
+  final List<Widget> bodies;
   final Widget floatingActionButton;
+  final List<Widget> tabButtons;
+  final ValueChanged<int> onTabSelected;
 
   @override
   Widget build(BuildContext context) {
 //    AppSession.get.routes.setWindow(context);
-    return Scaffold(
+    return DefaultTabController(
+      length: tabButtons.length,
+      child: Scaffold(
         appBar: AppBar(
           title: Text(title),
-          bottom: appBarBottom,
+          bottom: TabBar(
+            tabs: tabButtons,
+            onTap: onTabSelected,
+          ),
         ),
         drawer: MenuWidget(),
-        body: body,
+        body: TabBarView(
+          children: bodies,
+        ),
         floatingActionButton: floatingActionButton,
+      ),
     );
   }
 }

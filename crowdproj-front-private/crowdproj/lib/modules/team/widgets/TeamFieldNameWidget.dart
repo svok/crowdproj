@@ -9,6 +9,7 @@ class TeamFieldNameWidget extends StatelessWidget {
     this.key,
     @required this.name,
     this.onSaved,
+    this.onChanged,
     this.error,
   }) : super(key: key);
 
@@ -16,6 +17,7 @@ class TeamFieldNameWidget extends StatelessWidget {
   String name;
   String error;
   FormFieldSetter<String> onSaved;
+  ValueChanged<String> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +37,9 @@ class TeamFieldNameWidget extends StatelessWidget {
         maxLength: nameMaxLength,
         maxLengthEnforced: true,
         onSaved: onSaved,
-        onChanged: (_) {
+        onChanged: (value) {
           error = null;
+          onChanged(value);
         },
         validator: (String value) {
           if (value.trim().length < validationNameMinLengh) {

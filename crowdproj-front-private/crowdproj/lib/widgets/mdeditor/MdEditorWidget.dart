@@ -53,10 +53,10 @@ class _MdEditorWidgetState extends State<MdEditorWidget> {
           ),
           Container(
             alignment: Alignment.topCenter,
-//            constraints: BoxConstraints(
-//                maxHeight: MediaQuery.of(context).size.height / 2,
-//            ),
-            height: 200,
+            constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height / 3,
+            ),
+//            height: 200,
             child: TabBarView(
               children: [
                 Align(
@@ -75,9 +75,12 @@ class _MdEditorWidgetState extends State<MdEditorWidget> {
                     },
                   ),
                 ),
-                Align(
+                Container(
 //                  height: 250,
 //                  width: MediaQuery.of(context).size.width / 2,
+//                  constraints: BoxConstraints(
+//                    maxHeight: MediaQuery.of(context).size.width / 2,
+//                  ),
                   alignment: Alignment.topCenter,
                   child: Scrollbar(
 //                    child: SingleChildScrollView(
