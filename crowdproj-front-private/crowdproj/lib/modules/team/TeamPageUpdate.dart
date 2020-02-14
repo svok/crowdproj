@@ -33,6 +33,14 @@ class _TeamPageUpdateState extends State<TeamPageUpdate> {
         _editorBuilder(),
         _previewerBuilder(),
       ],
+      actions: <Widget>[
+        IconButton(icon: Icon(Icons.save), onPressed: () {
+          Navigator.of(context).maybePop();
+        }),
+        IconButton(icon: Icon(Icons.cancel), onPressed: () {
+          Navigator.of(context).maybePop();
+        }),
+      ],
     );
   }
 

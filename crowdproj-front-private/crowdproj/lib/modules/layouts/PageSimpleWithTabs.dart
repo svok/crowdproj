@@ -1,4 +1,4 @@
-import 'package:crowdproj/common/AppSession.dart';
+import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/widgets/menu/MenuWidget.dart';
@@ -11,6 +11,8 @@ class PageSimpleWithTabs extends StatelessWidget {
     Widget this.floatingActionButton,
     @required List<Widget> this.tabButtons,
     this.onTabSelected,
+    this.bottomNavBar,
+    this.actions,
   }) : super(key: key);
 
   final String title;
@@ -18,10 +20,13 @@ class PageSimpleWithTabs extends StatelessWidget {
   final Widget floatingActionButton;
   final List<Widget> tabButtons;
   final ValueChanged<int> onTabSelected;
+  final Widget bottomNavBar;
+  final List<Widget> actions;
 
   @override
   Widget build(BuildContext context) {
 //    AppSession.get.routes.setWindow(context);
+    final localizer = TeamsLocalizations.of(context);
     return DefaultTabController(
       length: tabButtons.length,
       child: Scaffold(
@@ -31,12 +36,14 @@ class PageSimpleWithTabs extends StatelessWidget {
             tabs: tabButtons,
             onTap: onTabSelected,
           ),
+          actions: actions,
         ),
         drawer: MenuWidget(),
         body: TabBarView(
           children: bodies,
         ),
         floatingActionButton: floatingActionButton,
+        bottomNavigationBar: bottomNavBar,
       ),
     );
   }
