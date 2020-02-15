@@ -1,18 +1,14 @@
-import 'package:crowdproj/modules/auth/widgets/FormSubmitButtonWidget.dart';
-import 'package:crowdproj/modules/team/events/TeamEventSaveRequested.dart';
-import 'package:crowdproj/modules/team/states/TeamState.dart';
-import 'package:crowdproj/modules/team/states/TeamStateEditing.dart';
+import 'package:crowdproj/modules/team/update/TeamUpdateEventSave.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../TeamBloc.dart';
-import 'TeamFieldDescriptionWidget.dart';
-import 'TeamFieldNameWidget.dart';
-import 'TeamFieldSummaryWidget.dart';
+import '../widgets/TeamFieldDescriptionWidget.dart';
+import '../widgets/TeamFieldNameWidget.dart';
+import '../widgets/TeamFieldSummaryWidget.dart';
+import 'TeamUpdateBloc.dart';
 
 class TeamUpdateWidget extends StatefulWidget {
   TeamUpdateWidget({
@@ -60,8 +56,8 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
     form.save();
     if (widget.onTeamUpdated != null) widget.onTeamUpdated(team);
     // Here we are trying to save data on server
-    final teamBloc = BlocProvider.of<TeamBloc>(context);
-    teamBloc.add(TeamEventSaveRequested(team: team));
+    final teamBloc = BlocProvider.of<TeamUpdateBloc>(context);
+    teamBloc.add(TeamUpdateEventSave());
     // If saving fails we set errors
 //    final response = AppSession.get.teamsService.saveTeam(team);
 //    if (!false) {
@@ -111,39 +107,10 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return BlocBuilder<TeamBloc, TeamState>(builder: (context, state) {
-      if (!(state is TeamStateEditing)) return Container();
-      team = (state as TeamStateEditing)?.team ?? Team();
-      errors = state is TeamStateEditing ? state.errors : [];
-      return ActivitySpinner(
-        isWaiting: state?.isWaiting,
-        child: Scrollbar(
-          child: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                Align(
-                  alignment: Alignment.topCenter,
-                  child: Scrollbar(
-                    child: _formBuilder(),
-                  ),
-                ),
-                FormSubmitButtonWidget(
-                  label: localizer.labelSave,
-                  onPressed: () {
-                    _submit(context);
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget _formBuilder() {
-    return Container(
-      child: Scrollbar(
+//    return BlocBuilder<TeamUpdateBloc, TeamUpdateState>(builder: (context, state) {
+      team = widget.team ?? Team();
+      errors = widget.errors;
+      return Scrollbar(
         child: Form(
           key: _formKey,
           child: ListView(
@@ -185,8 +152,7 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
             ],
           ),
         ),
-      ),
-    );
+      );
   }
 
   static const validationSummaryMinLengh = 5;

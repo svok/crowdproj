@@ -9,12 +9,13 @@ class PageSimple extends StatelessWidget {
     @required String this.title,
     @required Widget this.body,
     Widget this.floatingActionButton,
-    Widget this.appBarBottom,
+    Widget this.appBarBottom, this.actions,
   }) : super(key: key);
 
   final String title;
   final Widget body;
   final Widget appBarBottom;
+  final List<Widget> actions;
   final Widget floatingActionButton;
 
   @override
@@ -23,6 +24,7 @@ class PageSimple extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(title),
+          actions: actions,
           bottom: appBarBottom,
         ),
         drawer: MenuWidget(),

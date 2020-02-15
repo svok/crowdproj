@@ -7,23 +7,17 @@ import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/HomeLocalizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 
-  static String titleFormatter(
-          {BuildContext context, RouteSettings settings}) =>
-      HomeLocalizations.of(context).title;
-
-  static String pathFormatter({RouteSettings settings}) => "/";
-
-  static final route = RouteDescription(
+  static final RouteDescription route = RouteDescription(
       id: "HomePage",
-      pathFormatter: HomePage.pathFormatter,
-      titleFormatter: HomePage.titleFormatter,
+      pathFormatter: ({dynamic arguments}) => "/",
+      titleFormatter: ({BuildContext context, dynamic arguments}) =>
+          HomeLocalizations.of(context).title,
       builder: (BuildContext context) {
         return HomePage();
       });

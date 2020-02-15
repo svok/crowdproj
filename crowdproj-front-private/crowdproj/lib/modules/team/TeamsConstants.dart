@@ -1,0 +1,1 @@
+const BASE_TEAMS_PATH = "/teams";

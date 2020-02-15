@@ -11,16 +11,11 @@ class AboutPage extends StatefulWidget {
   @override
   _AboutPageState createState() => _AboutPageState();
 
-  static String titleFormatter({BuildContext context, RouteSettings settings}) =>
-      HomeLocalizations.of(context).titleAbout;
-
-  static String pathFormatter({RouteSettings settings}) =>
-      "/about";
-
-  static final route = RouteDescription(
+  static final RouteDescription route = RouteDescription(
       id: "AboutPage",
-      pathFormatter: AboutPage.pathFormatter,
-      titleFormatter: AboutPage.titleFormatter,
+      pathFormatter: ({Object arguments}) => "/about",
+      titleFormatter: ({BuildContext context, Object arguments}) =>
+          HomeLocalizations.of(context).titleAbout,
       builder: (BuildContext context) {
         return AboutPage();
       });

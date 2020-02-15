@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/common/RouteSettingsArgs.dart';
 import 'package:crowdproj/modules/auth/ProfileWidget.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/translations/AuthLocalizations.dart';
 import 'package:crowdproj/widgets/CentralContainerWidget.dart';
-import 'package:crowdproj/widgets/menu/MenuWidget.dart';
+
+import 'AuthPage.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({Key key}) : super(key: key);
@@ -13,16 +13,12 @@ class ProfilePage extends StatefulWidget {
   @override
   _PofilePageState createState() => new _PofilePageState();
 
-  static String titleFormatter(
-          {BuildContext context, RouteSettings settings}) =>
-      AuthLocalizations.of(context).titleUpdate;
-
-  static String pathFormatter({RouteSettings settings}) => "/user/profile";
-
-  static final route = RouteDescription(
+  static final RouteDescription route = RouteDescription(
       id: "ProfilePage",
-      pathFormatter: ProfilePage.pathFormatter,
-      titleFormatter: ProfilePage.titleFormatter,
+      pathFormatter: ({dynamic arguments}) =>
+          "${AuthPage.route.pathFormatted(arguments: arguments)}/profile",
+      titleFormatter: ({BuildContext context, dynamic arguments}) =>
+          AuthLocalizations.of(context).titleUpdate,
       builder: (BuildContext context) {
         return ProfilePage();
       });

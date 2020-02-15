@@ -9,16 +9,11 @@ class PromoPage extends StatefulWidget {
   @override
   _PromoPageState createState() => _PromoPageState();
 
-  static String titleFormatter(
-          {BuildContext context, RouteSettings settings}) =>
-      PromoLocalizations.of(context).title;
-
-  static String pathFormatter({RouteSettings settings}) => "/promo";
-
-  static final route = RouteDescription(
+  static final RouteDescription route = RouteDescription(
       id: "PromoPage",
-      pathFormatter: PromoPage.pathFormatter,
-      titleFormatter: PromoPage.titleFormatter,
+      pathFormatter: ({dynamic arguments}) => "/promo",
+      titleFormatter: ({BuildContext context, dynamic arguments}) =>
+          PromoLocalizations.of(context).title,
       builder: (BuildContext context) {
         return PromoPage();
       });

@@ -1,12 +1,9 @@
 import 'package:crowdproj/api/models/ApiResponse.dart';
-import 'package:crowdproj/modules/team/events/TeamEventEditRequested.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-import '../TeamBloc.dart';
 
 class TeamViewWidget extends StatelessWidget {
   TeamViewWidget({
@@ -32,24 +29,6 @@ class TeamViewWidget extends StatelessWidget {
               subtitle: Text(team?.summary ?? ""),
             ),
             MarkdownBody(data: team?.description ?? ""),
-            ButtonBar(
-              children: <Widget>[
-                FlatButton(
-                  child: Text(localizer.titleUpdate),
-                  onPressed: () {
-                    BlocProvider.of<TeamBloc>(context)
-                        .add(TeamEventEditRequested(team: team));
-                  },
-                ),
-                FlatButton(
-                  child:
-                      Text(MaterialLocalizations.of(context).closeButtonLabel),
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                  },
-                ),
-              ],
-            ),
           ],
         ),
       ),

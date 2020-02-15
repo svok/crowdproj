@@ -4,13 +4,12 @@ import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import '../../api/models/Team.dart';
+import 'TeamsPageArgs.dart';
 import 'TeamsWidget.dart';
 
 class TeamsPage extends StatefulWidget {
@@ -19,17 +18,12 @@ class TeamsPage extends StatefulWidget {
 
   final team = Team();
 
-  static String titleFormatter(
-          {BuildContext context, RouteSettings settings}) =>
-      TeamsLocalizations.of(context).title;
-
-  static String pathFormatter({RouteSettings settings}) => "/teams";
-
-  static final route = RouteDescription(
+  static final RouteDescription<TeamsPageArgs> route = RouteDescription(
       id: "TeamsPage",
       pathName: "/teams",
-      pathFormatter: TeamsPage.pathFormatter,
-      titleFormatter: TeamsPage.titleFormatter,
+      pathFormatter: ({TeamsPageArgs arguments}) => "/teams",
+      titleFormatter: ({BuildContext context, TeamsPageArgs arguments}) =>
+          TeamsLocalizations.of(context).title,
       builder: (BuildContext context) {
         return TeamsPage();
       });

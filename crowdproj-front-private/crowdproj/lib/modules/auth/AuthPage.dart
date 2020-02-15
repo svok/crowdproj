@@ -13,23 +13,17 @@ class AuthPage extends StatefulWidget {
   @override
   _AuthPageState createState() => new _AuthPageState();
 
-  static String titleFormatter({BuildContext context, RouteSettings settings}) =>
-      AuthLocalizations.of(context).title;
-
-  static String pathFormatter({RouteSettings settings}) =>
-      "/user";
-
-  static final route = RouteDescription(
+  static final RouteDescription route = RouteDescription(
       id: "AuthPage",
-      pathFormatter: AuthPage.pathFormatter,
-      titleFormatter: AuthPage.titleFormatter,
+      pathFormatter: ({dynamic arguments}) => "/user",
+      titleFormatter: ({BuildContext context, dynamic arguments}) =>
+          AuthLocalizations.of(context).title,
       builder: (BuildContext context) {
         return AuthPage();
       });
 }
 
 class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
-
   int _tab = 0;
   TabController _tabController;
 
@@ -38,6 +32,7 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
     super.initState();
     _tabController = new TabController(vsync: this, length: 3);
   }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -58,9 +53,17 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
             isScrollable: true,
             indicatorPadding: EdgeInsets.all(10),
             tabs: [
-              Tab(text: localizer.titleLogin, icon: Icon(FontAwesomeIcons.signInAlt),),
-              Tab(text: localizer.titleRegister, icon: Icon(FontAwesomeIcons.userPlus),),
-              Tab(text: localizer.titleConfirm, icon: Icon(Icons.confirmation_number)),
+              Tab(
+                text: localizer.titleLogin,
+                icon: Icon(FontAwesomeIcons.signInAlt),
+              ),
+              Tab(
+                text: localizer.titleRegister,
+                icon: Icon(FontAwesomeIcons.userPlus),
+              ),
+              Tab(
+                  text: localizer.titleConfirm,
+                  icon: Icon(Icons.confirmation_number)),
             ],
           ),
           title: Text(localizer.title),
@@ -99,5 +102,4 @@ class _AuthPageState extends State<AuthPage> with TickerProviderStateMixin {
   static const int tabSignin = 0;
   static const int tabSignup = 1;
   static const int tabConfirm = 2;
-
 }

@@ -59,6 +59,13 @@ class TeamsLocalizations {
         locale: localeName,
       );
 
+  String get titleView => Intl.message(
+    'Team',
+    name: "TeamsLocalizations_titleView",
+    desc: 'Title for the team view',
+    locale: localeName,
+  );
+
   String get titleMyTeams => Intl.message(
         'My Teams',
         name: "TeamsLocalizations_titleMyTeams",

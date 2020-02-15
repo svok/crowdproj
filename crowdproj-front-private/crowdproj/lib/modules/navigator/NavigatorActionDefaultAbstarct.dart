@@ -4,16 +4,12 @@ import 'package:flutter/material.dart';
 import 'NavigatorAction.dart';
 
 abstract class NavigatorActionDefaultAbstract extends NavigatorAction {
-
   RouteDescription get route;
 
   @override
   String get path {
     return route.pathFormatted(
-      settings: RouteSettings(
-        name: route.pathName,
-        arguments: arguments,
-      ),
+      arguments: arguments,
     );
   }
 
@@ -22,5 +18,4 @@ abstract class NavigatorActionDefaultAbstract extends NavigatorAction {
 
   @override
   Object get arguments => null;
-
 }

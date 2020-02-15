@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-typedef String TitleFormatter({RouteSettings settings, @required BuildContext context});
-typedef String RouteFormatter({RouteSettings settings});
+typedef String TitleFormatter<T>({T arguments, @required BuildContext context});
+typedef String RouteFormatter<T>({T arguments});
 
-class RouteDescription {
+class RouteDescription<T> {
   RouteDescription({
     @required this.id,
     this.pathName,
@@ -13,15 +13,15 @@ class RouteDescription {
     this.titleFormatter,
 }): super();
 
-  String id;
-  String pathName;
-  WidgetBuilder builder;
-  RouteFormatter pathFormatter;
-  TitleFormatter titleFormatter;
+  final String id;
+  final String pathName;
+  final WidgetBuilder builder;
+  final RouteFormatter<T> pathFormatter;
+  final TitleFormatter<T> titleFormatter;
 
 
-  String pathFormatted({RouteSettings settings}) => pathFormatter != null ? pathFormatter(settings: settings) : "";
-  String titleFormatted({@required BuildContext context, RouteSettings settings}) => titleFormatter != null ? titleFormatter(settings: settings, context: context) : "";
+  String pathFormatted({T arguments}) => pathFormatter != null ? pathFormatter(arguments: arguments) : "";
+  String titleFormatted({@required BuildContext context, T arguments}) => titleFormatter != null ? titleFormatter(arguments: arguments, context: context) : "";
 
   @override
   String toString() => "RouteDescription[id=$id]";

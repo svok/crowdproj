@@ -19,6 +19,7 @@ class TeamsTeamWidget extends StatelessWidget {
     subtitle: Text(team.summary),
     onTap: () {
       BlocProvider.of<NavigatorBloc>(context).add(NavigatorActionTeam(
+        teamId: team.id,
         team: team,
       ));
     },

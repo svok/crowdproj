@@ -54,4 +54,24 @@ class Team {
 
   @override
   String toString() => "Team{id=$id, name=$name}";
+
+  Team copyWith({
+    String id,
+    String name,
+    String summary,
+    String description,
+    Profile owner,
+    TeamVisibility visibility,
+    TeamJoinability joinability,
+    TeamStatus status,
+  }) => Team(
+    id: id ?? this.id,
+    name: name ?? this.name,
+    summary: summary ?? this.summary,
+    description: description ?? this.description,
+    owner: owner ?? this.owner,
+    visibility: visibility ?? this.visibility,
+    joinability: joinability ?? this.joinability,
+    status: status ?? this.status,
+  );
 }

@@ -1,7 +1,7 @@
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/team/TeamPage.dart';
 import 'package:crowdproj/modules/team/TeamPageArguments.dart';
+import 'package:crowdproj/modules/team/view/TeamViewPage.dart';
 
 import 'NavigatorActionDefaultAbstarct.dart';
 
@@ -14,7 +14,7 @@ class NavigatorActionTeam extends NavigatorActionDefaultAbstract {
   final String teamId;
 
   @override
-  RouteDescription get route => TeamPage.route;
+  RouteDescription get route => TeamViewPage.route;
 
   @override
   TeamPageArguments get arguments =>
