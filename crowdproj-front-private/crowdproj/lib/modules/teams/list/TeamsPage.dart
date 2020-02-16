@@ -2,13 +2,14 @@ import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsEvent.dart';
+import 'package:crowdproj/modules/teams/TeamsConstants.dart';
+import 'package:crowdproj/modules/teams/list/TeamsBloc.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/models/Team.dart';
+import '../../../api/models/Team.dart';
+import 'TeamsEvent.dart';
 import 'TeamsPageArgs.dart';
 import 'TeamsWidget.dart';
 
@@ -20,8 +21,8 @@ class TeamsPage extends StatefulWidget {
 
   static final RouteDescription<TeamsPageArgs> route = RouteDescription(
       id: "TeamsPage",
-      pathName: "/teams",
-      pathFormatter: ({TeamsPageArgs arguments}) => "/teams",
+      pathName: BASE_TEAMS_PATH,
+      pathFormatter: ({TeamsPageArgs arguments}) => BASE_TEAMS_PATH,
       titleFormatter: ({BuildContext context, TeamsPageArgs arguments}) =>
           TeamsLocalizations.of(context).title,
       builder: (BuildContext context) {

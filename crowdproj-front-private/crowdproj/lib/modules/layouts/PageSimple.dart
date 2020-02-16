@@ -6,11 +6,19 @@ import 'package:crowdproj/widgets/menu/MenuWidget.dart';
 class PageSimple extends StatelessWidget {
   PageSimple({
     Key key,
-    @required String this.title,
-    @required Widget this.body,
-    Widget this.floatingActionButton,
-    Widget this.appBarBottom, this.actions,
-  }) : super(key: key);
+    @required this.title,
+    @required this.body,
+    this.floatingActionButton,
+    this.appBarBottom,
+    List<Widget> actions,
+  }) : this.actions = actions ?? [
+    Builder(builder: (context) => Navigator.of(context).canPop() ? IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          Navigator.of(context).maybePop();
+        }) : Container(),
+    ),
+  ], super(key: key);
 
   final String title;
   final Widget body;

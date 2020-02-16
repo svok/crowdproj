@@ -1,7 +1,7 @@
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/team/TeamPageArguments.dart';
-import 'package:crowdproj/modules/team/view/TeamViewPage.dart';
+import 'package:crowdproj/modules/teams/TeamPageArguments.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewPage.dart';
 
 import 'NavigatorActionDefaultAbstarct.dart';
 

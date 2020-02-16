@@ -1,4 +1,4 @@
-import 'package:crowdproj/modules/team/update/TeamUpdateEventSave.dart';
+import 'package:crowdproj/modules/teams/update/TeamUpdateEventSave.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
@@ -154,7 +154,4 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
         ),
       );
   }
-
-  static const validationSummaryMinLengh = 5;
-  static const summaryMaxLength = 300;
 }

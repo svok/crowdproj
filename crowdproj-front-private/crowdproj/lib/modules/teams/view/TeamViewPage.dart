@@ -3,10 +3,8 @@ import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
-import 'package:crowdproj/modules/team/TeamsConstants.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdatePage.dart';
-import 'package:crowdproj/modules/team/view/TeamViewBloc.dart';
-import 'package:crowdproj/modules/team/view/TeamViewEventRead.dart';
+import 'package:crowdproj/modules/teams/TeamsConstants.dart';
+import 'package:crowdproj/modules/teams/update/TeamUpdatePage.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +13,8 @@ import 'package:provider/provider.dart';
 
 import '../../../api/models/Team.dart';
 import '../TeamPageArguments.dart';
+import 'TeamViewBloc.dart';
+import 'TeamViewEventRead.dart';
 import 'TeamViewEventUpdate.dart';
 import 'TeamViewState.dart';
 import 'TeamViewWidget.dart';
@@ -22,7 +22,7 @@ import 'TeamViewWidget.dart';
 class TeamViewPage extends StatelessWidget {
   static final route = RouteDescription<TeamPageArguments>(
       id: "TeamPageView",
-      pathName: "${BASE_TEAMS_PATH}/team",
+      pathName: "${BASE_TEAMS_PATH}/{teamId}",
       pathFormatter: ({TeamPageArguments arguments}) {
         final teamId = arguments?.teamId;
         if (teamId == null)
@@ -53,36 +53,35 @@ class TeamViewPage extends StatelessWidget {
       child: BlocProvider<TeamViewBloc>(
         create: (context) => TeamViewBloc(context: context)
           ..add(TeamViewEventRead(teamId: arg.teamId, team: arg.team)),
-          child: PageSimple(
-            title: TeamViewPage.route.titleFormatted(
-              context: context,
-              arguments: arg,
-            ),
-            actions: <Widget>[
-              IconButton(
-                  icon: Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: TeamUpdatePage.route.builder,
-                      settings: RouteSettings(
-                        name:
-                            TeamUpdatePage.route.pathFormatted(arguments: arg),
-                        arguments: arg,
-                      ),
-                    ));
-                  }),
-              IconButton(
-                  icon: Icon(Icons.cancel),
-                  onPressed: () {
-                    Navigator.of(context).maybePop();
-                  }),
-            ],
-            body: Consumer<ITeamsService>(
-              builder: (context, _, child) {
-                BlocProvider.of<TeamViewBloc>(context).add(TeamViewEventUpdate());
-                return child;
-              },
-              child: BlocBuilder<TeamViewBloc, TeamViewState>(
+        child: PageSimple(
+          title: TeamViewPage.route.titleFormatted(
+            context: context,
+            arguments: arg,
+          ),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: TeamUpdatePage.route.builder,
+                    settings: RouteSettings(
+                      name: TeamUpdatePage.route.pathFormatted(arguments: arg),
+                      arguments: arg,
+                    ),
+                  ));
+                }),
+            IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).maybePop();
+                }),
+          ],
+          body: Consumer<ITeamsService>(
+            builder: (context, _, child) {
+              BlocProvider.of<TeamViewBloc>(context).add(TeamViewEventUpdate());
+              return child;
+            },
+            child: BlocBuilder<TeamViewBloc, TeamViewState>(
                 builder: (context, state) {
               final team = state is TeamViewState ? state.team : Team();
               final List<ApiError> errors =

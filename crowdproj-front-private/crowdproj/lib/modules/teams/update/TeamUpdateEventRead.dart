@@ -1,8 +1,9 @@
 import 'package:crowdproj/api/models/Team.dart';
-import 'package:crowdproj/modules/team/view/TeamViewEvent.dart';
 
-class TeamViewEventRead extends TeamViewEvent{
-  TeamViewEventRead({
+import 'TeamUpdateEvent.dart';
+
+class TeamUpdateEventRead extends TeamUpdateEvent {
+  TeamUpdateEventRead({
     this.teamId,
     this.team,
   }) : super();

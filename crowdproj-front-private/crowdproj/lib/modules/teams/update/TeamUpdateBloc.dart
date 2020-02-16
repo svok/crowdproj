@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventRead.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventReset.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventSave.dart';
 import 'package:flutter/material.dart';
 
 import 'TeamUpdateEventChange.dart';
+import 'TeamUpdateEventRead.dart';
+import 'TeamUpdateEventReset.dart';
+import 'TeamUpdateEventSave.dart';
 import 'TeamUpdateState.dart';
 import 'TeamUpdateEvent.dart';
 
@@ -25,16 +25,16 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
   Stream<TeamUpdateState> mapEventToState(TeamUpdateEvent event) async* {
     switch (event.runtimeType) {
       case TeamUpdateEventChange:
-        yield* _changeTeam(event);
+        yield* _changeTeam(event as TeamUpdateEventChange);
         break;
       case TeamUpdateEventRead:
-        yield* _readTeam(event);
+        yield* _readTeam(event as TeamUpdateEventRead);
         break;
       case TeamUpdateEventSave:
-        yield* _saveTeam(event);
+        yield* _saveTeam(event as TeamUpdateEventSave);
         break;
       case TeamUpdateEventReset:
-        yield* _resetTeam(event);
+        yield* _resetTeam(event as TeamUpdateEventReset);
         break;
     }
   }

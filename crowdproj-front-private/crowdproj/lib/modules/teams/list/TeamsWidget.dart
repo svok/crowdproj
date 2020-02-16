@@ -1,14 +1,14 @@
 import 'package:crowdproj/api/ITeamsService.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/TeamsBloc.dart';
-import 'package:crowdproj/modules/teams/TeamsEvent.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
+import 'package:crowdproj/modules/teams/list/TeamsBloc.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:crowdproj/widgets/BottomLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
+import 'TeamsEvent.dart';
+import 'TeamsState.dart';
 import 'TeamsTeamWidget.dart';
 
 class TeamsWidget extends StatefulWidget {

@@ -1,5 +1,4 @@
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:crowdproj/widgets/menu/MenuWidget.dart';
 
@@ -12,8 +11,15 @@ class PageSimpleWithTabs extends StatelessWidget {
     @required List<Widget> this.tabButtons,
     this.onTabSelected,
     this.bottomNavBar,
-    this.actions,
-  }) : super(key: key);
+    List<Widget> actions,
+  }) : this.actions = actions ?? [
+    Builder(builder: (context) => Navigator.of(context).canPop() ? IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          Navigator.of(context).maybePop();
+        }) : Container(),
+    ),
+  ], super(key: key);
 
   final String title;
   final List<Widget> bodies;

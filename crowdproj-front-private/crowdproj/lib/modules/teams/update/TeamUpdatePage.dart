@@ -1,14 +1,9 @@
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimpleWithTabs.dart';
-import 'package:crowdproj/modules/team/TeamsConstants.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventChange.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventRead.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventReset.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateEventSave.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateState.dart';
-import 'package:crowdproj/modules/team/view/TeamViewPage.dart';
-import 'package:crowdproj/modules/team/view/TeamViewWidget.dart';
-import 'package:crowdproj/modules/team/update/TeamUpdateWidget.dart';
+import 'package:crowdproj/modules/teams/TeamsConstants.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewPage.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewWidget.dart';
+import 'package:crowdproj/modules/teams/update/TeamUpdateWidget.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +11,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../TeamPageArguments.dart';
 import 'TeamUpdateBloc.dart';
+import 'TeamUpdateEventChange.dart';
+import 'TeamUpdateEventRead.dart';
+import 'TeamUpdateEventReset.dart';
+import 'TeamUpdateEventSave.dart';
+import 'TeamUpdateState.dart';
 
 class TeamUpdatePage extends StatelessWidget {
   static final RouteDescription<TeamPageArguments> route =
@@ -49,7 +49,6 @@ class TeamUpdatePage extends StatelessWidget {
     if (arguments is! TeamPageArguments)
       throw ArgumentError("Argument must have TeamPageArgument type");
     final arg = arguments as TeamPageArguments;
-    print("UPDATING ${arg.team}");
     return BlocProvider<TeamUpdateBloc>(
       create: (context) => TeamUpdateBloc(context: context)
         ..add(TeamUpdateEventRead(
@@ -81,7 +80,7 @@ class TeamUpdatePage extends StatelessWidget {
                       .add(TeamUpdateEventReset());
                 }),
             IconButton(
-                icon: Icon(Icons.cancel),
+                icon: Icon(Icons.close),
                 onPressed: () {
                   Navigator.of(context).maybePop();
                 }),

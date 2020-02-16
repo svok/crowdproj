@@ -2,11 +2,11 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/team/view/TeamViewEventRead.dart';
-import 'package:crowdproj/modules/team/view/TeamViewEventUpdate.dart';
 import 'package:flutter/material.dart';
 
 import 'TeamViewEvent.dart';
+import 'TeamViewEventRead.dart';
+import 'TeamViewEventUpdate.dart';
 import 'TeamViewState.dart';
 
 class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {

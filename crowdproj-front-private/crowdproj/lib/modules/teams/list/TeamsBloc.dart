@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/TeamsQuery.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/TeamsState.dart';
 import 'package:flutter/material.dart';
 
 import 'TeamsEvent.dart';
+import 'TeamsState.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
   TeamsBloc({
