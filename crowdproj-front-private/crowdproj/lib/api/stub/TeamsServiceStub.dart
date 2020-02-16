@@ -35,25 +35,32 @@ class TeamsServiceStub extends ITeamsService {
           )
         ],
       );
-    if (team?.id != null && teamRepo[team.id] == null) {
-      return ApiResponseTeam(
-        status: ApiResponseStatuses.error,
-        errors: [
-          ApiError(
-            code: "not-found",
-            message: "Object your are saving doesn't exist",
-            description:
-                "You are trying to save an object that doesn't exist in the database",
-            level: ErrorLevels.error,
-          )
-        ],
-      );
-    }
     await Future.delayed(Duration(milliseconds: 500));
-    final id = team?.id ?? Uuid().v4();
-    teamRepo[id] = team..id = id;
+    if (team.id == null) {
+      team
+        ..id = Uuid().v4()
+        ..relation = TeamRelations.own;
+    } else {
+      final oldTeam = teamRepo[team.id];
+      if (oldTeam == null) {
+        return ApiResponseTeam(
+          status: ApiResponseStatuses.error,
+          errors: [
+            ApiError(
+              code: "not-found",
+              message: "Object your are saving doesn't exist",
+              description:
+                  "You are trying to save an object that doesn't exist in the database",
+              level: ErrorLevels.error,
+            )
+          ],
+        );
+      }
+      team.relation = oldTeam.relation;
+    }
+    teamRepo[team.id] = team;
     final result = ApiResponseTeam(
-      teams: [teamRepo[id]],
+      teams: [team],
       status: ApiResponseStatuses.success,
       errors: [],
       timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
@@ -82,9 +89,34 @@ class TeamsServiceStub extends ITeamsService {
     final offset = query?.offset ?? 0;
     final limit = query?.limit ?? 20;
     await Future.delayed(Duration(milliseconds: 500));
+    List<TeamRelations> relations;
+    switch (query.relation) {
+      case TeamRelations.own:
+        relations = [
+          TeamRelations.own,
+        ];
+        break;
+      case TeamRelations.member:
+        relations = [
+          TeamRelations.own,
+          TeamRelations.member,
+        ];
+        break;
+      case TeamRelations.accessed:
+        relations = [
+          TeamRelations.own,
+          TeamRelations.member,
+          TeamRelations.accessed,
+        ];
+        break;
+      default:
+        relations = [];
+        break;
+    }
+
     return ApiResponseTeam(
       teams: teamRepo.values
-          .where((element) => element.relation == query.relation)
+          .where((element) => relations.contains(element.relation))
           .skip(offset)
           .take(limit)
           .toList(),

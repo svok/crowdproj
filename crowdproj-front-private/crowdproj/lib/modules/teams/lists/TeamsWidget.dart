@@ -1,13 +1,12 @@
 import 'package:crowdproj/api/ITeamsService.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/list/TeamsBloc.dart';
 import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:crowdproj/widgets/BottomLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import 'TeamsEvent.dart';
+import 'TeamsBloc.dart';
 import 'TeamsEventReadNext.dart';
 import 'TeamsEventUpdate.dart';
 import 'TeamsState.dart';

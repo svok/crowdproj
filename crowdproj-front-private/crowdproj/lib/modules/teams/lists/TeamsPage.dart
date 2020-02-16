@@ -1,15 +1,16 @@
 import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
+import 'package:crowdproj/modules/layouts/PageSimple.dart';
 import 'package:crowdproj/modules/layouts/PageSimpleWithTabs.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsConstants.dart';
-import 'package:crowdproj/modules/teams/list/TeamsBloc.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../api/models/Team.dart';
+import 'TeamsBloc.dart';
 import 'TeamsEventInit.dart';
 import 'TeamsPageArgs.dart';
 import 'TeamsWidget.dart';
@@ -25,7 +26,7 @@ class TeamsPage extends StatefulWidget {
       pathName: BASE_TEAMS_PATH,
       pathFormatter: ({TeamsPageArgs arguments}) => BASE_TEAMS_PATH,
       titleFormatter: ({BuildContext context, TeamsPageArgs arguments}) =>
-          TeamsLocalizations.of(context).title,
+          TeamsLocalizations.of(context).titleTeams,
       builder: (BuildContext context) {
         return TeamsPage();
       });
@@ -35,30 +36,13 @@ class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return PageSimpleWithTabs(
-      title: localizer.title,
-      tabButtons: <Widget>[
-        Tab(text: "My",),
-        Tab(text: "Invitations",),
-        Tab(text: "All",),
-      ],
-      bodies: [
-        BlocProvider(
-          create: (context) =>
-              TeamsBloc(context, TeamRelations.member)..add(TeamsEventInit()),
-          child: TeamsWidget(),
-        ),
-        BlocProvider(
-          create: (context) =>
-              TeamsBloc(context, TeamRelations.invitations)..add(TeamsEventInit()),
-          child: TeamsWidget(),
-        ),
-        BlocProvider(
+    return PageSimple(
+      title: localizer.titleTeams,
+      body: BlocProvider(
           create: (context) =>
               TeamsBloc(context, TeamRelations.accessed)..add(TeamsEventInit()),
           child: TeamsWidget(),
         ),
-      ],
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
@@ -66,12 +50,10 @@ class _TeamsPageState extends State<TeamsPage> {
             padding: EdgeInsets.all(4.0),
             child: FloatingActionButton(
               onPressed: () {
-                final navigatorBloc = BlocProvider.of<NavigatorBloc>(context);
-                navigatorBloc.add(NavigatorActionTeam());
               },
-              heroTag: "addNewTeam",
-              tooltip: localizer.title,
-              child: Icon(Icons.group_add),
+              heroTag: "searchTeams",
+              tooltip: localizer.labelSearchTeams,
+              child: Icon(Icons.search),
             ),
           ),
         ],

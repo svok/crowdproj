@@ -93,7 +93,6 @@ class TeamUpdatePage extends StatelessWidget {
   Widget _editorBuilder() =>
       BlocBuilder<TeamUpdateBloc, TeamUpdateState>(builder: (context, state) {
         final teamBloc = BlocProvider.of<TeamUpdateBloc>(context);
-        print("EDITOR TEAM: ${state.team}");
         return ActivitySpinner(
           isWaiting: state.isWaiting,
           child: state.team == null

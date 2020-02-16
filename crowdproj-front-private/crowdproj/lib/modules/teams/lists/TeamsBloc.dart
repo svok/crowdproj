@@ -1,13 +1,14 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/api/models/TeamStatus.dart';
 import 'package:crowdproj/api/models/TeamsQuery.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/modules/teams/list/TeamsEventInit.dart';
 import 'package:flutter/material.dart';
 
 import 'TeamsEvent.dart';
+import 'TeamsEventInit.dart';
 import 'TeamsEventReadNext.dart';
 import 'TeamsEventUpdate.dart';
 import 'TeamsState.dart';
@@ -97,10 +98,11 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
 
   Stream<TeamsState> _update(TeamsEventUpdate event) async* {
     yield state.copyWith(isWaiting: true);
+    final limit = max(state.teams?.length ?? 0, BATCH_SIZE);
 
     final query = buildQuery(
       offset: 0,
-      limit: state.teams?.length,
+      limit: limit,
     );
     final _service = AppSession.get.teamsService;
     final result = await _service.getTeams(query);
@@ -110,7 +112,7 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       query: query,
       teams: newTeams,
       errors: result.errors,
-      hasReachedMax: result.teams.length < query.limit,
+      hasReachedMax: result.teams.length < limit,
     );
   }
 

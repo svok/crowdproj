@@ -50,20 +50,26 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
         team: team,
         teamUpdated: team.copyWith(),
       );
-    } else {
+    } else if(teamId != null) {
       yield TeamUpdateState(
-        teamId: event.teamId,
-        team: Team(id: event.teamId),
-        teamUpdated: Team(id: event.teamId),
+        teamId: teamId,
+        team: Team(id: teamId),
+        teamUpdated: Team(id: teamId),
         isWaiting: true,
       );
 
       final response = await service.getTeam(teamId);
       yield TeamUpdateState(
-        teamId: event.teamId,
+        teamId: teamId,
         team: response.team,
         teamUpdated: response.team.copyWith(),
         errors: response.errors,
+      );
+    } else {
+      yield TeamUpdateState(
+        teamId: null,
+        team: Team(),
+        teamUpdated: Team(),
       );
     }
   }

@@ -11,7 +11,7 @@ class MenuItemTeams extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(TeamsLocalizations.of(context).title),
+      title: Text(TeamsLocalizations.of(context).titleTeams),
       trailing: Icon(Icons.group),
       onTap: () {
         Navigator.of(context).pop();

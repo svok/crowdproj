@@ -38,10 +38,17 @@ class TeamsLocalizations {
 
   final String localeName;
 
-  String get title => Intl.message(
+  String get titleTeams => Intl.message(
         'Teams',
         name: "TeamsLocalizations_title",
-        desc: 'Title for the Demo application',
+        desc: 'Title for the Teams list page',
+        locale: localeName,
+      );
+
+  String get titleMyTeams => Intl.message(
+        'My Teams',
+        name: "TeamsLocalizations_titleMyTeams",
+        desc: 'Title for the My Teams page',
         locale: localeName,
       );
 
@@ -66,17 +73,17 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
-  String get titleMyTeams => Intl.message(
-        'My Teams',
-        name: "TeamsLocalizations_titleMyTeams",
-        desc: 'Title for pages with the users teams lists',
-        locale: localeName,
-      );
-
   String get labelName => Intl.message(
         "Team Name",
         name: "TeamsLocalizations_labelName",
         desc: 'Label for the team\'s name field',
+        locale: localeName,
+      );
+
+  String get labelSearchTeams => Intl.message(
+        "Search Teams",
+        name: "TeamsLocalizations_labelSearchTeams",
+        desc: 'Label for the search teams element',
         locale: localeName,
       );
 

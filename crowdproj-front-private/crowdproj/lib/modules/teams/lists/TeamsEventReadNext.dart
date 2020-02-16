@@ -1,5 +1,4 @@
-import 'package:crowdproj/modules/teams/list/TeamsBloc.dart';
-
+import 'TeamsBloc.dart';
 import 'TeamsEvent.dart';
 
 class TeamsEventReadNext extends TeamsEvent{
