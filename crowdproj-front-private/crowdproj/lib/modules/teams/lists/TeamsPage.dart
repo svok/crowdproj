@@ -39,18 +39,17 @@ class _TeamsPageState extends State<TeamsPage> {
     return PageSimple(
       title: localizer.titleTeams,
       body: BlocProvider(
-          create: (context) =>
-              TeamsBloc(context, TeamRelations.accessed)..add(TeamsEventInit()),
-          child: TeamsWidget(),
-        ),
+        create: (context) =>
+            TeamsBloc(context, TeamRelations.accessed)..add(TeamsEventInit()),
+        child: TeamsWidget(),
+      ),
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
           Padding(
             padding: EdgeInsets.all(4.0),
             child: FloatingActionButton(
-              onPressed: () {
-              },
+              onPressed: () {},
               heroTag: "searchTeams",
               tooltip: localizer.labelSearchTeams,
               child: Icon(Icons.search),

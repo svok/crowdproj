@@ -29,6 +29,7 @@ class _TeamsWidgetState extends State<TeamsWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<TeamsBloc, TeamsState>(
       builder: (context, state) {
+        print("TEAMS BLOC state ${state.runtimeType}");
         return ActivitySpinner(
           isWaiting: state?.isWaiting,
           child: Stack(
