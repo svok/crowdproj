@@ -8,6 +8,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 import 'TeamsEvent.dart';
+import 'TeamsEventReadNext.dart';
+import 'TeamsEventUpdate.dart';
 import 'TeamsState.dart';
 import 'TeamsTeamWidget.dart';
 
@@ -57,7 +59,7 @@ class _TeamsWidgetState extends State<TeamsWidget> {
                             icon: Icon(Icons.refresh),
                             onPressed: () {
                               BlocProvider.of<TeamsBloc>(context)
-                                  .add(TeamsEvent.update);
+                                  .add(TeamsEventUpdate());
                             },
                           ),
                         );
@@ -75,7 +77,7 @@ class _TeamsWidgetState extends State<TeamsWidget> {
     final currentScroll = _scrollController.position.pixels;
 //    print("OnSCROLL: ${maxScroll}, $currentScroll");
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<TeamsBloc>(context).add(TeamsEvent.readNext);
+      BlocProvider.of<TeamsBloc>(context).add(TeamsEventReadNext());
     }
   }
 }

@@ -4,6 +4,7 @@ import 'TeamRelations.dart';
 
 class TeamsQuery {
   TeamsQuery({
+    this.relation: TeamRelations.accessed,
     this.onDate,
     this.offset,
     this.limit,
@@ -12,6 +13,7 @@ class TeamsQuery {
     this.tagIds,
   }) : super();
 
+  TeamRelations relation;
   DateTime onDate;
   int offset = 0;
   int limit = 10;

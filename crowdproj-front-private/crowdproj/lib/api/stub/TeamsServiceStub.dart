@@ -1,5 +1,6 @@
 import 'package:crowdproj/api/ITeamsService.dart';
 import 'package:crowdproj/api/models/TeamJoinability.dart';
+import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/api/models/TeamStatus.dart';
 import 'package:crowdproj/api/models/TeamVisibility.dart';
 import 'package:crowdproj/api/models/TeamsQuery.dart';
@@ -13,7 +14,9 @@ class TeamsServiceStub extends ITeamsService {
   final Map<String, Team> teamRepo = {};
 
   TeamsServiceStub() : super() {
-    Iterable<int>.generate(100).map((it) => _generateTeam(it.toString())).forEach((it) {
+    Iterable<int>.generate(100)
+        .map((it) => _generateTeam(it.toString()))
+        .forEach((it) {
       teamRepo[it.id] = it;
     });
   }
@@ -40,7 +43,7 @@ class TeamsServiceStub extends ITeamsService {
             code: "not-found",
             message: "Object your are saving doesn't exist",
             description:
-            "You are trying to save an object that doesn't exist in the database",
+                "You are trying to save an object that doesn't exist in the database",
             level: ErrorLevels.error,
           )
         ],
@@ -80,7 +83,11 @@ class TeamsServiceStub extends ITeamsService {
     final limit = query?.limit ?? 20;
     await Future.delayed(Duration(milliseconds: 500));
     return ApiResponseTeam(
-      teams: teamRepo.values.skip(offset).take(limit).toList(),
+      teams: teamRepo.values
+          .where((element) => element.relation == query.relation)
+          .skip(offset)
+          .take(limit)
+          .toList(),
       status: ApiResponseStatuses.success,
       errors: [],
       timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
@@ -97,6 +104,11 @@ class TeamsServiceStub extends ITeamsService {
         visibility: TeamVisibility.public,
         status: TeamStatus.active,
         joinability: TeamJoinability.byUser,
+        relation: (["13", "17", "19"].contains(suf)
+            ? TeamRelations.member
+            : (["21", "9"].contains(suf)
+                ? TeamRelations.invitations
+                : TeamRelations.accessed)),
       );
 
   Profile _generateProfile(String suf) => Profile(

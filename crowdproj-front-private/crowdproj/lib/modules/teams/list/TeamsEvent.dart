@@ -1,7 +1,2 @@
-enum TeamsEvent {
-  init,
-  readPrev,
-  readNext,
-  update,
-  show,
+class TeamsEvent {
 }

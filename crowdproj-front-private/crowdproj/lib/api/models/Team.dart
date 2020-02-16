@@ -1,5 +1,6 @@
 import 'Profile.dart';
 import 'TeamJoinability.dart';
+import 'TeamRelations.dart';
 import 'TeamStatus.dart';
 import 'TeamVisibility.dart';
 
@@ -13,6 +14,7 @@ class Team {
     this.visibility,
     this.joinability,
     this.status,
+    this.relation,
   }) : super();
 
   String id;
@@ -52,6 +54,11 @@ class Team {
    */
   TeamStatus status;
 
+  /**
+   * Relationship of the team to the current user
+   */
+  TeamRelations relation;
+
   @override
   String toString() => "Team{id=$id, name=$name}";
 
@@ -64,6 +71,7 @@ class Team {
     TeamVisibility visibility,
     TeamJoinability joinability,
     TeamStatus status,
+    TeamRelations relation,
   }) => Team(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -73,5 +81,6 @@ class Team {
     visibility: visibility ?? this.visibility,
     joinability: joinability ?? this.joinability,
     status: status ?? this.status,
+    relation: relation ?? this.relation
   );
 }

@@ -25,7 +25,7 @@ class TeamsState extends Equatable {
 
   Team getTeam(int index) => teams[index];
 
-  TeamsState clone({
+  TeamsState copyWith({
     TeamsQuery query,
     List<Team> teams,
     List<ApiError> errors,

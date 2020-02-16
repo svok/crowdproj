@@ -1,5 +1,6 @@
+import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/modules/layouts/PageSimple.dart';
+import 'package:crowdproj/modules/layouts/PageSimpleWithTabs.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionTeam.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
 import 'package:crowdproj/modules/teams/TeamsConstants.dart';
@@ -9,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../api/models/Team.dart';
-import 'TeamsEvent.dart';
+import 'TeamsEventInit.dart';
 import 'TeamsPageArgs.dart';
 import 'TeamsWidget.dart';
 
@@ -34,12 +35,30 @@ class _TeamsPageState extends State<TeamsPage> {
   @override
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
-    return PageSimple(
+    return PageSimpleWithTabs(
       title: localizer.title,
-      body: BlocProvider(
-        create: (context) => TeamsBloc(context: context)..add(TeamsEvent.init),
-        child: TeamsWidget(),
-      ),
+      tabButtons: <Widget>[
+        Tab(text: "My",),
+        Tab(text: "Invitations",),
+        Tab(text: "All",),
+      ],
+      bodies: [
+        BlocProvider(
+          create: (context) =>
+              TeamsBloc(context, TeamRelations.member)..add(TeamsEventInit()),
+          child: TeamsWidget(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              TeamsBloc(context, TeamRelations.invitations)..add(TeamsEventInit()),
+          child: TeamsWidget(),
+        ),
+        BlocProvider(
+          create: (context) =>
+              TeamsBloc(context, TeamRelations.accessed)..add(TeamsEventInit()),
+          child: TeamsWidget(),
+        ),
+      ],
       floatingActionButton: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[

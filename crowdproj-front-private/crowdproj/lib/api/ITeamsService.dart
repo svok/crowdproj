@@ -5,8 +5,14 @@ import 'models/ApiResponse.dart';
 import 'models/TeamsQuery.dart';
 
 abstract class ITeamsService extends ChangeNotifier {
+  bool _isUptodate = true;
 
-  bool isUptodate = true;
+  bool get isUptodate => _isUptodate;
+
+  void set isUptodate(value) {
+    _isUptodate = value;
+    notifyListeners();
+  }
 
   Future<ApiResponseTeam> getTeams(TeamsQuery query);
 
