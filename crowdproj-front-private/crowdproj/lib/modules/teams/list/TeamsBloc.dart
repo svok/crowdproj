@@ -55,7 +55,6 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       default:
         yield TeamsState();
     }
-    print("TEAMS BLOC EVENT: $event");
   }
 
   Stream<TeamsState> _init(TeamsEventInit event) async* {
