@@ -1,6 +1,5 @@
 import 'package:crowdproj/api/ITeamsService.dart';
 import 'package:crowdproj/common/AppSession.dart';
-import 'package:crowdproj/widgets/ActivitySpinner.dart';
 import 'package:crowdproj/widgets/BottomLoader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,28 +18,29 @@ class TeamsWidget extends StatefulWidget {
 
 class _TeamsWidgetState extends State<TeamsWidget> {
   final _scrollController = ScrollController();
-  final _scrollThreshold = 200.0;
+  final _scrollThreshold = 20.0;
 
   _TeamsWidgetState() : super() {
     _scrollController.addListener(_onScroll);
   }
 
+  TeamsState teamsState = TeamsState();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TeamsBloc, TeamsState>(
       builder: (context, state) {
-        print("TEAMS BLOC state ${state.runtimeType}");
-        return ActivitySpinner(
-          isWaiting: state?.isWaiting,
-          child: Stack(
+        teamsState = state;
+        return
+          Stack(
             alignment: AlignmentDirectional.topStart,
             children: <Widget>[
-              Scrollbar(
+            Scrollbar(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return index >= state.teams.length
                         ? BottomLoader()
-                        : TeamsTeamWidget(team: state.getTeam(index));
+                        : TeamsTeamWidget(team: state.teams[index]);
                   },
                   itemCount:
                       state.hasReachedMax ? state.length : state.length + 1,
@@ -66,18 +66,20 @@ class _TeamsWidgetState extends State<TeamsWidget> {
                 }),
               ),
             ],
-          ),
         );
       },
     );
   }
 
+  int sizeFlag = 0;
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;
-//    print("OnSCROLL: ${maxScroll}, $currentScroll");
     if (maxScroll - currentScroll <= _scrollThreshold) {
-      BlocProvider.of<TeamsBloc>(context).add(TeamsEventReadNext());
+      if (teamsState.length != sizeFlag) {
+        sizeFlag = teamsState.length;
+        BlocProvider.of<TeamsBloc>(context).add(TeamsEventReadNext());
+      }
     }
   }
 }
