@@ -108,6 +108,34 @@ class TeamsLocalizations {
         locale: localeName,
       );
 
+  String get labelDescription => Intl.message(
+        "Team Description",
+        name: "TeamsLocalizations_labelDescription",
+        desc: 'Label for the team\'s description field',
+        locale: localeName,
+      );
+
+  String get hintDescription => Intl.message(
+        "# New Yourk Wolves Byke Den\n\nWe do the following:\n1. Ride motobykes\n1. Enjoy the speed\n1. Breath the wind",
+        name: "TeamsLocalizations_hintSummary",
+        desc: 'Hint for the team\'s description field',
+        locale: localeName,
+      );
+
+  String get labelStatus => Intl.message(
+        "Team Activity State",
+        name: "TeamsLocalizations_labelStatus",
+        desc: 'Label for the team\'s activity state field',
+        locale: localeName,
+      );
+
+  String get hintStatus => Intl.message(
+        "Active",
+        name: "TeamsLocalizations_hintStatus",
+        desc: 'Hint for the team\'s activity state field',
+        locale: localeName,
+      );
+
   String get labelSave => Intl.message(
     "Save",
     name: "TeamsLocalizations_labelSave",
@@ -115,7 +143,26 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
+  String get labelStatusActive => Intl.message(
+    "Active",
+    name: "TeamsLocalizations_labelStatusActive",
+    desc: 'Label for a team status Active',
+    locale: localeName,
+  );
 
+  String get labelStatusPending => Intl.message(
+    "Pending",
+    name: "TeamsLocalizations_labelStatusPending",
+    desc: 'Label for a team status Pending',
+    locale: localeName,
+  );
+
+  String get labelStatusClosed => Intl.message(
+    "Closed",
+    name: "TeamsLocalizations_labelStatusClosed",
+    desc: 'Label for a team status Closed',
+    locale: localeName,
+  );
 
   String errorTextFieldLength(String field, int validationNameMinLengh, int length) =>
       Intl.message(

@@ -23,7 +23,7 @@ class TeamFieldNameWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return ListTile(
-      leading: const Icon(Icons.email),
+      leading: const Icon(Icons.title),
       title: TextFormField(
         key: key,
         initialValue: name,

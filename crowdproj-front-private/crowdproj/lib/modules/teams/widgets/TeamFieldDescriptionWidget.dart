@@ -26,6 +26,10 @@ class TeamFieldDescriptionWidget extends StatelessWidget {
       title: TextFormField(
         initialValue: description,
         keyboardType: TextInputType.multiline,
+        decoration: new InputDecoration(
+          hintText: localizer.hintDescription,
+          labelText: "${localizer.labelDescription} \*",
+        ),
         minLines: 3,
         maxLines: 7,
         onSaved: onSaved,

@@ -1,7 +1,7 @@
 import 'package:crowdproj/modules/teams/update/TeamUpdateEventSave.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
-import 'package:crowdproj/translations/TeamsLocalizations.dart';
+import 'package:crowdproj/modules/teams/widgets/TeamFieldStatusWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -106,8 +106,6 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final localizer = TeamsLocalizations.of(context);
-//    return BlocBuilder<TeamUpdateBloc, TeamUpdateState>(builder: (context, state) {
       team = widget.team ?? Team();
       errors = widget.errors;
       return Scrollbar(
@@ -136,6 +134,15 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
                 onChanged: (value) {
                   team.summary = value;
                   widget.onTeamChanged(team);
+                },
+              ),
+              TeamFieldStatusWidget(
+                status: team.status,
+                onChanged: (value) {
+                  setState(() {
+                    team.status = value;
+                    widget.onTeamChanged(team);
+                  });
                 },
               ),
               TeamFieldDescriptionWidget(

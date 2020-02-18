@@ -21,7 +21,7 @@ class TeamFieldSummaryWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizer = TeamsLocalizations.of(context);
     return ListTile(
-      leading: const Icon(Icons.group),
+      leading: const Icon(Icons.description),
       title: new TextFormField(
         key: key,
         initialValue: summary,
