@@ -164,6 +164,55 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
+  String get labelVisibilityPublic => Intl.message(
+    "Public",
+    name: "TeamsLocalizations_labelVisibilityPublic",
+    desc: 'Label for team visibility public',
+    locale: localeName,
+  );
+
+  String get labelVisibilityRegistered => Intl.message(
+    "Registered users only",
+    name: "TeamsLocalizations_labelVisibilityRegistered",
+    desc: 'Label for team visibility registered only',
+    locale: localeName,
+  );
+
+  String get labelVisibilityGroup => Intl.message(
+    "Same team group members",
+    name: "TeamsLocalizations_labelVisibilityGroup",
+    desc: 'Label for team visibility team group members only',
+    locale: localeName,
+  );
+
+  String get labelVisibilityMembers => Intl.message(
+    "Team members only",
+    name: "TeamsLocalizations_labelVisibilityMembers",
+    desc: 'Label for team visibility team members only',
+    locale: localeName,
+  );
+
+  String get labelJoinabilityOwner => Intl.message(
+    "Owner",
+    name: "TeamsLocalizations_labelJoinabilityOwner",
+    desc: 'Label for team joinability: only owner approves the team\'s membership',
+    locale: localeName,
+  );
+
+  String get labelJoinabilityMember => Intl.message(
+    "Member",
+    name: "TeamsLocalizations_labelJoinabilityMember",
+    desc: 'Label for team joinability: only member of the team approves the team\'s membership',
+    locale: localeName,
+  );
+
+  String get labelJoinabilityUser => Intl.message(
+    "Not required",
+    name: "TeamsLocalizations_labelJoinabilityUser",
+    desc: 'Label for team joinability: team\'s membership approvements is not required',
+    locale: localeName,
+  );
+
   String errorTextFieldLength(String field, int validationNameMinLengh, int length) =>
       Intl.message(
         "The field for $field must be at least $validationNameMinLengh symbols long, while currently it's size is just $length symbols",

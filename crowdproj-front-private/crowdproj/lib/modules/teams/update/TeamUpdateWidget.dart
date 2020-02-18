@@ -1,7 +1,9 @@
 import 'package:crowdproj/modules/teams/update/TeamUpdateEventSave.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
+import 'package:crowdproj/modules/teams/widgets/TeamFieldJoinabilityWidget.dart';
 import 'package:crowdproj/modules/teams/widgets/TeamFieldStatusWidget.dart';
+import 'package:crowdproj/modules/teams/widgets/TeamFieldVisibilityWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -141,6 +143,24 @@ class _TeamUpdateWidgetState extends State<TeamUpdateWidget> {
                 onChanged: (value) {
                   setState(() {
                     team.status = value;
+                    widget.onTeamChanged(team);
+                  });
+                },
+              ),
+              TeamFieldVisibilityWidget(
+                visibility: team.visibility,
+                onChanged: (value) {
+                  setState(() {
+                    team.visibility = value;
+                    widget.onTeamChanged(team);
+                  });
+                },
+              ),
+              TeamFieldJoinabilityWidget(
+                joinability: team.joinability,
+                onChanged: (value) {
+                  setState(() {
+                    team.joinability = value;
                     widget.onTeamChanged(team);
                   });
                 },

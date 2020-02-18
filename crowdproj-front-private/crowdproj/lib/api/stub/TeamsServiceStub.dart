@@ -72,7 +72,6 @@ class TeamsServiceStub extends ITeamsService {
   }
 
   Future<ApiResponseTeam> getTeam(String teamId) async {
-    print("getTeam: request");
     await Future.delayed(Duration(milliseconds: 500));
     return ApiResponseTeam(
       teams: [
