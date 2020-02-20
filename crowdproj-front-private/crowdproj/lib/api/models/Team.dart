@@ -83,4 +83,6 @@ class Team {
     status: status ?? this.status,
     relation: relation ?? this.relation
   );
+
+  bool get canJoin => joinability == TeamJoinability.byUser;
 }

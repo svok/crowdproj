@@ -213,6 +213,20 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
+  String get labelJoinTeam => Intl.message(
+    "Join",
+    name: "TeamsLocalizations_labelJoinTeam",
+    desc: 'Label for join a team action',
+    locale: localeName,
+  );
+
+  String get labelApplyTeam => Intl.message(
+    "Join",
+    name: "TeamsLocalizations_labelApplyTeam",
+    desc: 'Label for apply to join a team action',
+    locale: localeName,
+  );
+
   String errorTextFieldLength(String field, int validationNameMinLengh, int length) =>
       Intl.message(
         "The field for $field must be at least $validationNameMinLengh symbols long, while currently it's size is just $length symbols",
