@@ -2,7 +2,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/AppSession.dart';
+import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
+import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
+import 'package:crowdproj/modules/teams/TeamPageArguments.dart';
+import 'package:crowdproj/modules/teams/lists/TeamsPageArgs.dart';
+import 'package:crowdproj/modules/teams/update/TeamUpdatePage.dart';
+import 'package:crowdproj/translations/ErrorLocalizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'TeamUpdateEventChange.dart';
 import 'TeamUpdateEventRead.dart';
@@ -45,11 +52,15 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
     final team = event.team;
 
     if (team?.id != null) {
-      yield TeamUpdateState(
-        teamId: team.id,
-        team: team,
-        teamUpdated: team.copyWith(),
-      );
+      if (team?.canUpdate != true) {
+        _sendTeamError(teamId, team);
+      } else {
+        yield TeamUpdateState(
+          teamId: team.id,
+          team: team,
+          teamUpdated: team.copyWith(),
+        );
+      }
     } else if(teamId != null) {
       yield TeamUpdateState(
         teamId: teamId,
@@ -59,12 +70,17 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
       );
 
       final response = await service.getTeam(teamId);
-      yield TeamUpdateState(
-        teamId: teamId,
-        team: response.team,
-        teamUpdated: response.team.copyWith(),
-        errors: response.errors,
-      );
+      final team = response.team;
+      if (team?.canUpdate != true) {
+        _sendTeamError(teamId, team);
+      } else {
+        yield TeamUpdateState(
+          teamId: teamId,
+          team: response.team,
+          teamUpdated: response.team.copyWith(),
+          errors: response.errors,
+        );
+      }
     } else {
       yield TeamUpdateState(
         teamId: null,
@@ -72,6 +88,17 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
         teamUpdated: Team(),
       );
     }
+  }
+
+  _sendTeamError(String teamId, Team team) {
+    final args = TeamPageArguments(teamId: teamId, team: team);
+    BlocProvider.of<NavigatorBloc>(context).add(NavigatorActionError(
+      code: 403,
+      badRoute: RouteSettings(
+        name: TeamUpdatePage.route.pathFormatted(arguments: args),
+        arguments: args,
+      ),
+    ));
   }
 
   Stream<TeamUpdateState> _saveTeam(TeamUpdateEventSave event) async* {

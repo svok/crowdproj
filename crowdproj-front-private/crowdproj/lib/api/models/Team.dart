@@ -15,6 +15,8 @@ class Team {
     this.joinability,
     this.status,
     this.relation,
+    this.canJoin: false,
+    this.canUpdate: false,
   }) : super();
 
   String id;
@@ -59,6 +61,17 @@ class Team {
    */
   TeamRelations relation;
 
+  /**
+   * Whether current user is allowed to join the team with no permission from
+   * other persons
+   */
+  bool canJoin;
+
+  /**
+   * Whether current user is allowed to update the team.
+   */
+  bool canUpdate;
+
   @override
   String toString() => "Team{id=$id, name=$name}";
 
@@ -72,6 +85,8 @@ class Team {
     TeamJoinability joinability,
     TeamStatus status,
     TeamRelations relation,
+    bool canJoin,
+    bool canUpdate,
   }) => Team(
     id: id ?? this.id,
     name: name ?? this.name,
@@ -81,8 +96,10 @@ class Team {
     visibility: visibility ?? this.visibility,
     joinability: joinability ?? this.joinability,
     status: status ?? this.status,
-    relation: relation ?? this.relation
+    relation: relation ?? this.relation,
+    canJoin: canJoin ?? this.canJoin,
+    canUpdate: canUpdate ?? this.canUpdate,
   );
 
-  bool get canJoin => joinability == TeamJoinability.byUser;
+//  bool get canJoin => joinability == TeamJoinability.byUser;
 }

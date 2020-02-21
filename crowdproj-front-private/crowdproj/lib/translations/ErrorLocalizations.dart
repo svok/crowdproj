@@ -86,6 +86,14 @@ class ErrorLocalizations {
     args: [],
   );
 
+  String error403() => Intl.message(
+    'Sorry. Access to the page requested is restricted.',
+    name: "ErrorLocalizations_error403",
+    desc: 'Description for error 403',
+    locale: localeName,
+    args: [],
+  );
+
   String unknownError(String description) => Intl.message(
     'Sorry. Unknown error has occured. The error description: $description',
     name: "ErrorLocalizations_unknownError",

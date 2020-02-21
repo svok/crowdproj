@@ -31,6 +31,18 @@ class NavigatorActionError extends NavigatorActionDefaultAbstract {
   AccessResult get hasAccess => AccessResult.allowed;
 
   @override
+  Future<NavigatorAction> go(NavigatorState navigator) async {
+        navigator.pushReplacement(MaterialPageRoute(
+          builder: builder,
+          settings: RouteSettings(name: path, arguments: arguments),
+          maintainState: maintainState,
+          fullscreenDialog: fullscreenDialog,
+        ));
+        return null;
+  }
+
+
+  @override
   List<Object> get props => [code, badRoute, description];
 
 }

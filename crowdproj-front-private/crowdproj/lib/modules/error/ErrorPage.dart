@@ -27,11 +27,11 @@ class ErrorPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final localizer = ErrorLocalizations.of(context);
+    final arguments = ModalRoute.of(context)?.settings?.arguments;
+    final args = this.args ?? (arguments is ErrorPageArgs ? arguments : null);
 //    AppSession.get.routes.setWindow(context);
-    final text = "**${localizer.labelFailedPage}**: ${args?.badRoute}\n\n"
-        "**${localizer.labelErrorDescription}**: ${_textForCode(
-      localizer,
-    )}";
+    final text = "**${localizer.labelFailedPage}**: ${args?.badRoute?.name}\n\n"
+        "**${localizer.labelErrorDescription}**: ${_textForCode(localizer, args)}";
     return Scaffold(
       appBar: AppBar(
         title: Text(args?.code == null
@@ -42,11 +42,13 @@ class ErrorPage extends StatelessWidget {
     );
   }
 
-  String _textForCode(ErrorLocalizations localizer) {
-    final localArgs = args;
-    if (localArgs == null || localArgs.code == null)
+  String _textForCode(ErrorLocalizations localizer, ErrorPageArgs args) {
+    if (args.description != null) return args.description;
+    if (args == null || args.code == null)
       return localizer.errorWithoutCode(args?.description);
-    switch (localArgs.code) {
+    switch (args.code) {
+      case 403:
+        return localizer.error403();
       case 404:
         return localizer.error404();
       default:

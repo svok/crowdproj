@@ -134,12 +134,16 @@ class TeamsServiceStub extends ITeamsService {
         owner: _generateProfile(profSuf),
         visibility: TeamVisibility.public,
         status: TeamStatus.active,
-        joinability: TeamJoinability.byUser,
+        joinability: profSuf.endsWith("2")
+            ? TeamJoinability.byUser
+            : TeamJoinability.byMember,
         relation: (["13", "17", "19"].contains(suf)
             ? TeamRelations.member
             : (["21", "9"].contains(suf)
                 ? TeamRelations.invitations
                 : TeamRelations.accessed)),
+        canJoin: suf.endsWith("2") ? true : false,
+        canUpdate: suf.endsWith("1") ? true : false,
       );
 
   Profile _generateProfile(String suf) => Profile(

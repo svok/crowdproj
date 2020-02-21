@@ -29,7 +29,7 @@ class TeamUpdatePage extends StatelessWidget {
             }
             final prefix =
                 TeamViewPage.route.pathFormatted(arguments: arguments);
-            return "$prefix/${teamId}";
+            return "$prefix/update";
           },
           titleFormatter: ({
             BuildContext context,
