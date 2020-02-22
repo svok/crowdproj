@@ -42,20 +42,8 @@ class TeamsServiceStub extends ITeamsService {
         ..relation = TeamRelations.own;
     } else {
       final oldTeam = teamRepo[team.id];
-      if (oldTeam == null) {
-        return ApiResponseTeam(
-          status: ApiResponseStatuses.error,
-          errors: [
-            ApiError(
-              code: "not-found",
-              message: "Object your are saving doesn't exist",
-              description:
-                  "You are trying to save an object that doesn't exist in the database",
-              level: ErrorLevels.error,
-            )
-          ],
-        );
-      }
+      final validationResult = _validateRequest(team.id);
+      if (validationResult != null) return validationResult;
       team.relation = oldTeam.relation;
     }
     teamRepo[team.id] = team;
@@ -73,6 +61,7 @@ class TeamsServiceStub extends ITeamsService {
 
   Future<ApiResponseTeam> getTeam(String teamId) async {
     await Future.delayed(Duration(milliseconds: 500));
+    final validationResult = _validateRequest(teamId);
     return ApiResponseTeam(
       teams: [
         teamRepo[teamId],
@@ -126,6 +115,80 @@ class TeamsServiceStub extends ITeamsService {
     );
   }
 
+  @override
+  Future<ApiResponseTeam> applyMembership(String teamId) =>
+      joinMembership(teamId);
+
+  @override
+  Future<ApiResponseTeam> joinMembership(String teamId) async {
+    await Future.delayed(Duration(milliseconds: 500));
+    final validationResult = _validateRequest(teamId);
+    if (validationResult != null) return validationResult;
+    final team = teamRepo[teamId];
+    switch (team.relation) {
+      case TeamRelations.own:
+        return ApiResponseTeam(
+          status: ApiResponseStatuses.error,
+          errors: [
+            ApiError(
+              code: "not-required",
+              message: "Not required joining own team",
+              description:
+                  "You are trying to join your own team. It is not required since you have complete control over that.",
+              level: ErrorLevels.error,
+            ),
+          ],
+          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+        );
+      case TeamRelations.member:
+        return ApiResponseTeam(
+          status: ApiResponseStatuses.error,
+          errors: [
+            ApiError(
+              code: "not-required",
+              message: "Not required joining membered team",
+              description:
+                  "You are trying to join a team that you have been bein a member of.",
+              level: ErrorLevels.error,
+            ),
+          ],
+          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+        );
+      case TeamRelations.accessed:
+      case TeamRelations.invitations:
+        break;
+      case TeamRelations.unavailable:
+        return ApiResponseTeam(
+          status: ApiResponseStatuses.error,
+          errors: [
+            ApiError(
+              code: "access-restricted",
+              message: "Not allowed",
+              description:
+                  "You are not allowed to apply for the membership to this team.",
+              level: ErrorLevels.error,
+            ),
+          ],
+          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+        );
+    }
+    team
+      ..relation = TeamRelations.member
+      ..canJoin = false
+      ..canLeave = true;
+
+    return ApiResponseTeam(
+      teams: [team],
+      status: ApiResponseStatuses.success,
+      errors: [],
+      timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+      timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+    );
+  }
+
   Team _generateTeam(String suf, {String profSuf: "1"}) => Team(
         id: "some-id-$suf",
         name: "Some team $suf",
@@ -142,9 +205,11 @@ class TeamsServiceStub extends ITeamsService {
             : (["21", "9"].contains(suf)
                 ? TeamRelations.invitations
                 : TeamRelations.accessed)),
-        canJoin: suf.endsWith("2") ? true : false,
-        canUpdate: suf.endsWith("1") ? true : false,
-      );
+      )
+        ..canJoin = (suf.endsWith("2") ? true : false)
+        ..canApply = (suf.endsWith("2") ? false : true)
+        ..canUpdate = (suf.endsWith("1") ? true : false)
+        ..canLeave = (["13", "17", "19"].contains(suf));
 
   Profile _generateProfile(String suf) => Profile(
         id: "some-profile-$suf",
@@ -154,4 +219,22 @@ class TeamsServiceStub extends ITeamsService {
         email: "john-$suf@johns.com",
         phone: "+1 404 500 500 $suf",
       );
+
+  ApiResponseTeam _validateRequest(String teamId) {
+    if (teamRepo[teamId] != null) return null;
+    return ApiResponseTeam(
+      status: ApiResponseStatuses.error,
+      errors: [
+        ApiError(
+          code: "not-found",
+          message: "No such team",
+          description:
+              "The team you are requesting does not exitst or not available",
+          level: ErrorLevels.error,
+        ),
+      ],
+      timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+      timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+    );
+  }
 }

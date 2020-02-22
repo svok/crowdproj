@@ -20,6 +20,12 @@ class AppSession {
     this.locale,
   }) {}
 
+  final CognitoSecureStorage cognitoSecureStorage;
+  final CognitoUserPool userPool;
+  final IAppPreferences securePrefs;
+  final AuthService authService;
+  final Locale locale;
+
   static AppSession _instance;
 
   static AppSession get get => _instance;
@@ -28,17 +34,31 @@ class AppSession {
   ITeamsService get teamsService => _teamsService;
 
   static Future<void> init(BuildContext context) async {
+    print("1");
     final _securePrefs = AppPlatform.getStorage('crowdproj.prefs');
+    print("2");
     await _securePrefs.init();
 
     // Clean up storage for debug mode
 //    if (kDebugMode) await _securePrefs.clear();
 
+    print("3");
     final _cognitoSecureStorage = CognitoSecureStorage(_securePrefs);
+    print("4");
     final _userPool = CognitoConfig.userPool(_cognitoSecureStorage);
+    print("5");
     final _auth = AuthService(_userPool);
+    print("6");
     final _locale = _parseLocale(await AppPlatform.getLanguage());
+    print("7");
     await _auth.init();
+    print("7-aa");
+
+    final xx = AppSession._(
+    );
+
+    print("7-ab");
+    print("7-ac");
 
     _instance = AppSession._(
       userPool: _userPool,
@@ -47,8 +67,10 @@ class AppSession {
       locale: _locale,
     );
 
+    print("8-1");
     await _instance.resolveHome();
 //    await Future.delayed(Duration(seconds: 10));
+    print("9");
   }
 
   void setPromoShown() {
@@ -65,12 +87,6 @@ class AppSession {
     final isAuthenticated = authService.isAuthenticated();
     return isAuthenticated ? HomePage() : AuthPage();
   }
-
-  final CognitoSecureStorage cognitoSecureStorage;
-  final CognitoUserPool userPool;
-  final IAppPreferences securePrefs;
-  final AuthService authService;
-  final Locale locale;
 
   static Locale _parseLocale(String str) {
     final matches = localeRegex.firstMatch(str);

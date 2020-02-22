@@ -15,8 +15,7 @@ class Team {
     this.joinability,
     this.status,
     this.relation,
-    this.canJoin: false,
-    this.canUpdate: false,
+    this.cans,
   }) : super();
 
   String id;
@@ -61,16 +60,53 @@ class Team {
    */
   TeamRelations relation;
 
+  List<String> cans = [];
+
   /**
    * Whether current user is allowed to join the team with no permission from
    * other persons
    */
-  bool canJoin;
+  bool get canJoin => cans.contains("join");
+
+  set canJoin(bool value) {
+    if (value)
+      cans.add("join");
+    else
+      cans.remove("join");
+  }
+
+  /**
+   * Whether current user is allowed to apply for membership in this team
+   */
+  bool get canApply => cans.contains("apply");
+  set canApply(bool value) {
+    if (value)
+      cans.add("apply");
+    else
+      cans.remove("apply");
+  }
+
+  /**
+   * Whether current user is allowed to leave this team
+   */
+  bool get canLeave => cans.contains("leave");
+  set canLeave(bool value) {
+    if (value)
+      cans.add("leave");
+    else
+      cans.remove("leave");
+  }
 
   /**
    * Whether current user is allowed to update the team.
    */
-  bool canUpdate;
+  bool get canUpdate => cans.contains("update");
+  set canUpdate(bool value) {
+    if (value)
+      cans.add("update");
+    else
+      cans.remove("update");
+  }
 
   @override
   String toString() => "Team{id=$id, name=$name}";
@@ -85,21 +121,20 @@ class Team {
     TeamJoinability joinability,
     TeamStatus status,
     TeamRelations relation,
-    bool canJoin,
-    bool canUpdate,
-  }) => Team(
-    id: id ?? this.id,
-    name: name ?? this.name,
-    summary: summary ?? this.summary,
-    description: description ?? this.description,
-    owner: owner ?? this.owner,
-    visibility: visibility ?? this.visibility,
-    joinability: joinability ?? this.joinability,
-    status: status ?? this.status,
-    relation: relation ?? this.relation,
-    canJoin: canJoin ?? this.canJoin,
-    canUpdate: canUpdate ?? this.canUpdate,
-  );
+    List<String> cansJoin,
+  }) =>
+      Team(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        summary: summary ?? this.summary,
+        description: description ?? this.description,
+        owner: owner ?? this.owner,
+        visibility: visibility ?? this.visibility,
+        joinability: joinability ?? this.joinability,
+        status: status ?? this.status,
+        relation: relation ?? this.relation,
+        cans: cans ?? this.cans,
+      );
 
 //  bool get canJoin => joinability == TeamJoinability.byUser;
 }

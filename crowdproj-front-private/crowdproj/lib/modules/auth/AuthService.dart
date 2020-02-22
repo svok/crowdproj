@@ -20,7 +20,7 @@ class AuthService with ChangeNotifier {
   Future<void> init() async {
     _cognitoUser = await _userPool.getCurrentUser();
     if (_cognitoUser == null) {
-      return false;
+      return;
     }
     _session = await _cognitoUser.getSession();
     _currentUser = await getCurrentUser();

@@ -41,7 +41,6 @@ class TeamViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizer = TeamsLocalizations.of(context);
     final arguments = ModalRoute.of(context)?.settings?.arguments;
     if (arguments == null)
       throw ArgumentError("Non-null TeamPageArguments must be provided");
@@ -59,17 +58,7 @@ class TeamViewPage extends StatelessWidget {
             arguments: arg,
           ),
           actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: TeamUpdatePage.route.builder,
-                    settings: RouteSettings(
-                      name: TeamUpdatePage.route.pathFormatted(arguments: arg),
-                      arguments: arg,
-                    ),
-                  ));
-                }),
+            _updateIconButton(context),
             IconButton(
                 icon: Icon(Icons.close),
                 onPressed: () {
@@ -96,4 +85,23 @@ class TeamViewPage extends StatelessWidget {
       ),
     );
   }
+
+  Widget _updateIconButton(BuildContext context) => BlocBuilder<TeamViewBloc, TeamViewState>(builder: (context, state) {
+    final arg = TeamPageArguments(teamId: state.teamId, team: state.team);
+    return state?.team?.canUpdate == true
+        ? IconButton(
+        icon: Icon(Icons.edit),
+        onPressed: () {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: TeamUpdatePage.route.builder,
+            settings: RouteSettings(
+              name: TeamUpdatePage.route
+                  .pathFormatted(arguments: arg),
+              arguments: arg,
+            ),
+          ));
+        })
+        : Container();
+  });
+
 }

@@ -51,4 +51,16 @@ class TeamsServiceRest extends ITeamsService {
     final res = webRes.data;
     return TeamsServiceRestHelper.fromApiResponseTeam(res);
   }
+
+  @override
+  Future<local.ApiResponseTeam> applyMembership(String teamId) {
+    // TODO: implement applyMembership
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<local.ApiResponseTeam> joinMembership(String teamId) {
+    // TODO: implement joinMembership
+    throw UnimplementedError();
+  }
 }

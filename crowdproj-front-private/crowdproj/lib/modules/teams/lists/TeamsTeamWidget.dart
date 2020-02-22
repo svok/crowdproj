@@ -17,6 +17,7 @@ class TeamsTeamWidget extends StatelessWidget {
     leading: Icon(Icons.group),
     title: Text(team.name),
     subtitle: Text(team.summary),
+    trailing: Icon(Icons.arrow_forward_ios),
     onTap: () {
       BlocProvider.of<NavigatorBloc>(context).add(NavigatorActionTeam(
         teamId: team.id,

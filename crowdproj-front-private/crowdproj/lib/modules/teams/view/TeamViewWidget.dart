@@ -1,5 +1,6 @@
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
+import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -17,8 +18,6 @@ class TeamViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localizer = TeamsLocalizations.of(context);
-
     final topContentText = Theme(
       data: ThemeData.dark(),
       child: Builder(
@@ -32,19 +31,7 @@ class TeamViewWidget extends StatelessWidget {
             SizedBox(height: 30.0),
             Container(
               alignment: Alignment.topRight,
-              child: team == null
-                  ? Container(child: Text("Shittt"))
-                  : team.canJoin
-                      ? FlatButton.icon(
-                          icon: Icon(FontAwesomeIcons.signInAlt),
-                          label: Text(localizer.labelJoinTeam),
-                          onPressed: () {},
-                        )
-                      : FlatButton.icon(
-                          icon: Icon(FontAwesomeIcons.share),
-                          label: Text(localizer.labelApplyTeam),
-                          onPressed: () {},
-                        ),
+              child: _applyButton(context, team),
             ),
           ],
         ),
@@ -73,22 +60,25 @@ class TeamViewWidget extends StatelessWidget {
       data: team?.description ?? "",
     );
 
-    final readButton = Container(
-      padding: EdgeInsets.symmetric(vertical: 16.0),
-      width: MediaQuery.of(context).size.width,
-      child: RaisedButton(
-        onPressed: () => {},
-        color: Color.fromRGBO(58, 66, 86, 1.0),
-        child: Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
-      ),
-    );
+//    final readButton = Container(
+//      padding: EdgeInsets.symmetric(vertical: 16.0),
+//      width: MediaQuery.of(context).size.width,
+//      child: RaisedButton(
+//        onPressed: () => {},
+//        color: Color.fromRGBO(58, 66, 86, 1.0),
+//        child: Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
+//      ),
+//    );
 
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
       padding: EdgeInsets.all(40.0),
       child: Center(
         child: Column(
-          children: <Widget>[bottomContentText, readButton],
+          children: <Widget>[
+            bottomContentText,
+//            readButton,
+          ],
         ),
       ),
     );
@@ -96,11 +86,13 @@ class TeamViewWidget extends StatelessWidget {
     return Scrollbar(
       child: SingleChildScrollView(
         child: Column(
-          children: <Widget>[topContent, bottomContent],
+          children: <Widget>[
+            topContent,
+            bottomContent,
+          ],
         ),
       ),
     );
-
   }
 
   TextStyle chooseTitleTextStyle(BuildContext context, String title) {
@@ -114,5 +106,28 @@ class TeamViewWidget extends StatelessWidget {
     if (len < 32) return theme.headline4;
     if (len < 48) return theme.headline5;
     return theme.headline6;
+  }
+
+  Widget _applyButton(BuildContext context, Team team) {
+    final localizer = TeamsLocalizations.of(context);
+
+    if (team == null) return Container();
+    if (team.canJoin) return FlatButton.icon(
+      icon: Icon(FontAwesomeIcons.signInAlt),
+      label: Text(localizer.labelJoinTeam),
+      onPressed: () {},
+    );
+    if (team.canLeave) return FlatButton.icon(
+      icon: Icon(FontAwesomeIcons.share),
+      label: Text(localizer.labelLeaveTeam),
+      onPressed: () {},
+    );
+    if (team.canApply) return FlatButton.icon(
+      icon: Icon(FontAwesomeIcons.share),
+      label: Text(localizer.labelApplyTeam),
+      onPressed: () {},
+    );
+    if (team.relation == TeamRelations.own) return Text(localizer.labelOwnTeam);
+    return Container();
   }
 }

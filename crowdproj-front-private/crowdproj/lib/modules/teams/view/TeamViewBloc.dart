@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/common/AppSession.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewEventApply.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewEventJoin.dart';
 import 'package:flutter/material.dart';
 
 import 'TeamViewEvent.dart';
@@ -28,6 +30,12 @@ class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {
       case TeamViewEventUpdate:
         yield* _update(event);
         break;
+      case TeamViewEventApply:
+        yield* _applyTeam(event);
+        break;
+      case TeamViewEventJoin:
+        yield* _joinTeam(event);
+        break;
     }
   }
 
@@ -50,7 +58,9 @@ class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {
 
       final response = await service.getTeam(teamId);
       yield TeamViewState(
+        teamId: teamId,
         team: response.team,
+        errors: response.errors,
       );
     }
   }
@@ -61,6 +71,32 @@ class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {
     yield state.copyWith(isWaiting: true);
 
     final response = await service.getTeam(state.teamId);
+    yield TeamViewState(
+      teamId: state.teamId,
+      team: response.team,
+      errors: response.errors,
+    );
+  }
+
+  Stream<TeamViewState> _applyTeam(TeamViewEventUpdate event) async* {
+    final service = AppSession.get.teamsService;
+
+    yield state.copyWith(isWaiting: true);
+
+    final response = await service.applyMembership(state.teamId);
+    yield TeamViewState(
+      teamId: state.teamId,
+      team: response.team,
+      errors: response.errors,
+    );
+  }
+
+  Stream<TeamViewState> _joinTeam(TeamViewEventUpdate event) async* {
+    final service = AppSession.get.teamsService;
+
+    yield state.copyWith(isWaiting: true);
+
+    final response = await service.joinMembership(state.teamId);
     yield TeamViewState(
       teamId: state.teamId,
       team: response.team,

@@ -221,9 +221,23 @@ class TeamsLocalizations {
   );
 
   String get labelApplyTeam => Intl.message(
-    "Join",
+    "Apply",
     name: "TeamsLocalizations_labelApplyTeam",
     desc: 'Label for apply to join a team action',
+    locale: localeName,
+  );
+
+  String get labelLeaveTeam => Intl.message(
+    "Leave",
+    name: "TeamsLocalizations_labelLeaveTeam",
+    desc: 'Label for leave a team action',
+    locale: localeName,
+  );
+
+  String get labelOwnTeam => Intl.message(
+    "Owned",
+    name: "TeamsLocalizations_labelOwnTeam",
+    desc: 'Label for a team that is owned by the user',
     locale: localeName,
   );
 
