@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj/api/models/Team.dart';
+import 'package:crowdproj/api/models/TeamAccess.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/modules/navigator/NavigatorActionError.dart';
 import 'package:crowdproj/modules/navigator/NavigatorBloc.dart';
@@ -52,7 +53,7 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
     final team = event.team;
 
     if (team?.id != null) {
-      if (team?.canUpdate != true) {
+      if (team?.can(TeamAccess.UPDATE) != true) {
         _sendTeamError(teamId, team);
       } else {
         yield TeamUpdateState(
@@ -71,7 +72,7 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
 
       final response = await service.getTeam(teamId);
       final team = response.team;
-      if (team?.canUpdate != true) {
+      if (team?.can(TeamAccess.UPDATE) != true) {
         _sendTeamError(teamId, team);
       } else {
         yield TeamUpdateState(

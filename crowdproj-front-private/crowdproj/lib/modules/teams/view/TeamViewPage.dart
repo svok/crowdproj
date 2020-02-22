@@ -1,5 +1,6 @@
 import 'package:crowdproj/api/ITeamsService.dart';
 import 'package:crowdproj/api/models/ApiResponse.dart';
+import 'package:crowdproj/api/models/TeamAccess.dart';
 import 'package:crowdproj/common/AppSession.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
@@ -88,7 +89,7 @@ class TeamViewPage extends StatelessWidget {
 
   Widget _updateIconButton(BuildContext context) => BlocBuilder<TeamViewBloc, TeamViewState>(builder: (context, state) {
     final arg = TeamPageArguments(teamId: state.teamId, team: state.team);
-    return state?.team?.canUpdate == true
+    return state?.team?.can(TeamAccess.UPDATE) == true
         ? IconButton(
         icon: Icon(Icons.edit),
         onPressed: () {

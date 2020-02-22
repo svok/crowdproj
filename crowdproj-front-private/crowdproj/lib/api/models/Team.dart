@@ -62,51 +62,7 @@ class Team {
 
   List<String> cans = [];
 
-  /**
-   * Whether current user is allowed to join the team with no permission from
-   * other persons
-   */
-  bool get canJoin => cans.contains("join");
-
-  set canJoin(bool value) {
-    if (value)
-      cans.add("join");
-    else
-      cans.remove("join");
-  }
-
-  /**
-   * Whether current user is allowed to apply for membership in this team
-   */
-  bool get canApply => cans.contains("apply");
-  set canApply(bool value) {
-    if (value)
-      cans.add("apply");
-    else
-      cans.remove("apply");
-  }
-
-  /**
-   * Whether current user is allowed to leave this team
-   */
-  bool get canLeave => cans.contains("leave");
-  set canLeave(bool value) {
-    if (value)
-      cans.add("leave");
-    else
-      cans.remove("leave");
-  }
-
-  /**
-   * Whether current user is allowed to update the team.
-   */
-  bool get canUpdate => cans.contains("update");
-  set canUpdate(bool value) {
-    if (value)
-      cans.add("update");
-    else
-      cans.remove("update");
-  }
+  bool can(String tag) => cans?.contains(tag);
 
   @override
   String toString() => "Team{id=$id, name=$name}";

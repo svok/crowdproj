@@ -234,6 +234,27 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
+  String get labelTeamAcceptInvitation => Intl.message(
+    "Accept Invitation",
+    name: "TeamsLocalizations_labelTeamAcceptInvitation",
+    desc: 'Label for accept an invitation for team membership',
+    locale: localeName,
+  );
+
+  String get labelTeamDenyInvitation => Intl.message(
+    "Deny Invitation",
+    name: "TeamsLocalizations_labelTeamDenyInvitation",
+    desc: 'Label for deny an invitation for team membership',
+    locale: localeName,
+  );
+
+  String get labelTeamInvite => Intl.message(
+    "Invite",
+    name: "TeamsLocalizations_labelTeamInvite",
+    desc: 'Label for invite a user to the team',
+    locale: localeName,
+  );
+
   String get labelOwnTeam => Intl.message(
     "Owned",
     name: "TeamsLocalizations_labelOwnTeam",

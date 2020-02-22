@@ -39,7 +39,8 @@ class TeamsServiceStub extends ITeamsService {
     if (team.id == null) {
       team
         ..id = Uuid().v4()
-        ..relation = TeamRelations.own;
+        ..relation = TeamRelations.own
+        ..cans = ["update"];
     } else {
       final oldTeam = teamRepo[team.id];
       final validationResult = _validateRequest(team.id);
@@ -177,8 +178,9 @@ class TeamsServiceStub extends ITeamsService {
     }
     team
       ..relation = TeamRelations.member
-      ..canJoin = false
-      ..canLeave = true;
+      ..cans.remove("join")
+      ..cans.remove("append")
+      ..cans.add("leave");
 
     return ApiResponseTeam(
       teams: [team],
@@ -205,11 +207,52 @@ class TeamsServiceStub extends ITeamsService {
             : (["21", "9"].contains(suf)
                 ? TeamRelations.invitations
                 : TeamRelations.accessed)),
-      )
-        ..canJoin = (suf.endsWith("2") ? true : false)
-        ..canApply = (suf.endsWith("2") ? false : true)
-        ..canUpdate = (suf.endsWith("1") ? true : false)
-        ..canLeave = (["13", "17", "19"].contains(suf));
+        cans: [
+          if (["2"].contains(suf)) ...["join", ] else "apply",
+          if (["1"].contains(suf)) ...["update", ""],
+          if (suf.endsWith("1")) "update",
+          if (["13", "17", "19"].contains(suf)) "leave",
+        ],
+      );
+
+  Team _generateTeamOwn(String suf, {String profSuf: "1"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byMember,
+        relation: TeamRelations.own,
+        cans: ["update"],
+      );
+
+  Team _generateTeamMember(String suf, {String profSuf: "1"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byMember,
+        relation: TeamRelations.member,
+        cans: ["leave", "update"],
+      );
+
+  Team _generateTeamInvitation(String suf, {String profSuf: "1"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byMember,
+        relation: TeamRelations.invitations,
+        cans: ["unapply", "accept"],
+      );
 
   Profile _generateProfile(String suf) => Profile(
         id: "some-profile-$suf",

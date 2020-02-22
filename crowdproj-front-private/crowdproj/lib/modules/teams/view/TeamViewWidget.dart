@@ -1,5 +1,6 @@
 import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
+import 'package:crowdproj/api/models/TeamAccess.dart';
 import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
@@ -112,22 +113,53 @@ class TeamViewWidget extends StatelessWidget {
     final localizer = TeamsLocalizations.of(context);
 
     if (team == null) return Container();
-    if (team.canJoin) return FlatButton.icon(
-      icon: Icon(FontAwesomeIcons.signInAlt),
-      label: Text(localizer.labelJoinTeam),
-      onPressed: () {},
+    return Wrap(
+      children: <Widget>[
+        if (team.can(TeamAccess.JOIN))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.link),
+            label: Text(localizer.labelJoinTeam),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.LEAVE))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.unlink),
+            label: Text(localizer.labelLeaveTeam),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.APPLY))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.link),
+            label: Text(localizer.labelApplyTeam),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.UNAPPLY))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.unlink),
+            label: Text(localizer.labelApplyTeam),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.ACCEPT_INVITATION))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.checkSquare),
+            label: Text(localizer.labelTeamAcceptInvitation),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.DENY_INVITATION))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.windowClose),
+            label: Text(localizer.labelTeamDenyInvitation),
+            onPressed: () {},
+          ),
+        if (team.can(TeamAccess.INVITE))
+          FlatButton.icon(
+            icon: Icon(FontAwesomeIcons.userPlus),
+            label: Text(localizer.labelTeamDenyInvitation),
+            onPressed: () {},
+          ),
+        if (team.relation == TeamRelations.own) Text(localizer.labelOwnTeam),
+      ],
     );
-    if (team.canLeave) return FlatButton.icon(
-      icon: Icon(FontAwesomeIcons.share),
-      label: Text(localizer.labelLeaveTeam),
-      onPressed: () {},
-    );
-    if (team.canApply) return FlatButton.icon(
-      icon: Icon(FontAwesomeIcons.share),
-      label: Text(localizer.labelApplyTeam),
-      onPressed: () {},
-    );
-    if (team.relation == TeamRelations.own) return Text(localizer.labelOwnTeam);
     return Container();
   }
 }
