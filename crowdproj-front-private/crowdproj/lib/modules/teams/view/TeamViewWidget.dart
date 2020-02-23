@@ -41,37 +41,35 @@ class TeamViewWidget extends StatelessWidget {
       ),
     );
 
-    final topContent = Container(
-      decoration: new BoxDecoration(
-        image: new DecorationImage(
-          image: new AssetImage("assets/pages/teams/default-team-photo.jpeg"),
-          fit: BoxFit.cover,
+    final topContent = Stack(
+      children: <Widget>[
+        Container(
+          decoration: new BoxDecoration(
+            image: new DecorationImage(
+              image: AssetImage("assets/pages/teams/default-team-photo.jpeg"),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                Color.fromRGBO(58, 66, 86, .90),
+                BlendMode.srcOver,
+              ),
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.all(40.0),
+            width: MediaQuery.of(context).size.width,
+//          decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .05)),
+            child: Center(
+              child: topContentText,
+            ),
+          ),
         ),
-      ),
-      child: Container(
-        padding: EdgeInsets.all(40.0),
-        width: MediaQuery.of(context).size.width,
-        decoration: BoxDecoration(color: Color.fromRGBO(58, 66, 86, .9)),
-        child: Center(
-          child: topContentText,
-        ),
-      ),
+      ],
     );
 
     final bottomContentText = Markdown(
       shrinkWrap: true,
       data: team?.description ?? "",
     );
-
-//    final readButton = Container(
-//      padding: EdgeInsets.symmetric(vertical: 16.0),
-//      width: MediaQuery.of(context).size.width,
-//      child: RaisedButton(
-//        onPressed: () => {},
-//        color: Color.fromRGBO(58, 66, 86, 1.0),
-//        child: Text("TAKE THIS LESSON", style: TextStyle(color: Colors.white)),
-//      ),
-//    );
 
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
@@ -80,7 +78,6 @@ class TeamViewWidget extends StatelessWidget {
         child: Column(
           children: <Widget>[
             bottomContentText,
-//            readButton,
           ],
         ),
       ),
@@ -163,10 +160,11 @@ class TeamViewWidget extends StatelessWidget {
             label: Text(localizer.labelTeamInvite),
             onPressed: bloc.inviteAction,
           ),
-        if (team.relation == TeamRelations.own) Text(
+        if (team.relation == TeamRelations.own)
+          Text(
             localizer.labelOwnTeam,
-          style: theme.headline5,
-        ),
+            style: theme.headline5,
+          ),
       ],
     );
   }
