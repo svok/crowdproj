@@ -15,8 +15,7 @@ import 'package:provider/provider.dart';
 import '../../../api/models/Team.dart';
 import '../TeamPageArguments.dart';
 import 'TeamViewBloc.dart';
-import 'TeamViewEventRead.dart';
-import 'TeamViewEventUpdate.dart';
+import 'TeamViewEvent.dart';
 import 'TeamViewState.dart';
 import 'TeamViewWidget.dart';
 

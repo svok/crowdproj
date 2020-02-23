@@ -3,5 +3,6 @@ enum TeamRelations {
   member,
   invitations,
   accessed,
+  applied,
   unavailable,
 }

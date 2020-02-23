@@ -1,4 +1,5 @@
 import 'package:crowdproj/api/ITeamsService.dart';
+import 'package:crowdproj/api/models/TeamAccess.dart';
 import 'package:crowdproj/api/models/TeamJoinability.dart';
 import 'package:crowdproj/api/models/TeamRelations.dart';
 import 'package:crowdproj/api/models/TeamStatus.dart';
@@ -63,6 +64,7 @@ class TeamsServiceStub extends ITeamsService {
   Future<ApiResponseTeam> getTeam(String teamId) async {
     await Future.delayed(Duration(milliseconds: 500));
     final validationResult = _validateRequest(teamId);
+    if (validationResult != null) return validationResult;
     return ApiResponseTeam(
       teams: [
         teamRepo[teamId],
@@ -89,6 +91,8 @@ class TeamsServiceStub extends ITeamsService {
         relations = [
           TeamRelations.own,
           TeamRelations.member,
+          TeamRelations.invitations,
+          TeamRelations.applied,
         ];
         break;
       case TeamRelations.accessed:
@@ -96,6 +100,14 @@ class TeamsServiceStub extends ITeamsService {
           TeamRelations.own,
           TeamRelations.member,
           TeamRelations.accessed,
+          TeamRelations.invitations,
+          TeamRelations.applied,
+        ];
+        break;
+      case TeamRelations.invitations:
+        relations = [
+          TeamRelations.invitations,
+          TeamRelations.applied,
         ];
         break;
       default:
@@ -116,108 +128,20 @@ class TeamsServiceStub extends ITeamsService {
     );
   }
 
-  @override
-  Future<ApiResponseTeam> applyMembership(String teamId) =>
-      joinMembership(teamId);
-
-  @override
-  Future<ApiResponseTeam> joinMembership(String teamId) async {
-    await Future.delayed(Duration(milliseconds: 500));
-    final validationResult = _validateRequest(teamId);
-    if (validationResult != null) return validationResult;
-    final team = teamRepo[teamId];
-    switch (team.relation) {
-      case TeamRelations.own:
-        return ApiResponseTeam(
-          status: ApiResponseStatuses.error,
-          errors: [
-            ApiError(
-              code: "not-required",
-              message: "Not required joining own team",
-              description:
-                  "You are trying to join your own team. It is not required since you have complete control over that.",
-              level: ErrorLevels.error,
-            ),
-          ],
-          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
-          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
-        );
-      case TeamRelations.member:
-        return ApiResponseTeam(
-          status: ApiResponseStatuses.error,
-          errors: [
-            ApiError(
-              code: "not-required",
-              message: "Not required joining membered team",
-              description:
-                  "You are trying to join a team that you have been bein a member of.",
-              level: ErrorLevels.error,
-            ),
-          ],
-          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
-          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
-        );
-      case TeamRelations.accessed:
-      case TeamRelations.invitations:
-        break;
-      case TeamRelations.unavailable:
-        return ApiResponseTeam(
-          status: ApiResponseStatuses.error,
-          errors: [
-            ApiError(
-              code: "access-restricted",
-              message: "Not allowed",
-              description:
-                  "You are not allowed to apply for the membership to this team.",
-              level: ErrorLevels.error,
-            ),
-          ],
-          timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
-          timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
-        );
+  Team _generateTeam(String suf, {String profSuf: "1"}) {
+    switch(suf) {
+      case "1": return _generateTeamOwn(suf);
+      case "2": return _generateTeamMember(suf);
+      case "3": return _generateTeamApplied(suf);
+      case "4": return _generateTeamInvitation(suf);
+      case "5": return _generateTeamGeneral(suf);
+      default: return _generateTeamDefault(suf);
     }
-    team
-      ..relation = TeamRelations.member
-      ..cans.remove("join")
-      ..cans.remove("append")
-      ..cans.add("leave");
-
-    return ApiResponseTeam(
-      teams: [team],
-      status: ApiResponseStatuses.success,
-      errors: [],
-      timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
-      timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
-    );
   }
-
-  Team _generateTeam(String suf, {String profSuf: "1"}) => Team(
-        id: "some-id-$suf",
-        name: "Some team $suf",
-        summary: "Some team $suf object for testing purposes",
-        description: "# Some team $suf\n\nSome team description",
-        owner: _generateProfile(profSuf),
-        visibility: TeamVisibility.public,
-        status: TeamStatus.active,
-        joinability: profSuf.endsWith("2")
-            ? TeamJoinability.byUser
-            : TeamJoinability.byMember,
-        relation: (["13", "17", "19"].contains(suf)
-            ? TeamRelations.member
-            : (["21", "9"].contains(suf)
-                ? TeamRelations.invitations
-                : TeamRelations.accessed)),
-        cans: [
-          if (["2"].contains(suf)) ...["join", ] else "apply",
-          if (["1"].contains(suf)) ...["update", ""],
-          if (suf.endsWith("1")) "update",
-          if (["13", "17", "19"].contains(suf)) "leave",
-        ],
-      );
 
   Team _generateTeamOwn(String suf, {String profSuf: "1"}) => Team(
         id: "some-id-$suf",
-        name: "Some team $suf",
+        name: "Some team $suf owner",
         summary: "Some team $suf object for testing purposes",
         description: "# Some team $suf\n\nSome team description",
         owner: _generateProfile(profSuf),
@@ -225,12 +149,12 @@ class TeamsServiceStub extends ITeamsService {
         status: TeamStatus.active,
         joinability: TeamJoinability.byMember,
         relation: TeamRelations.own,
-        cans: ["update"],
+        cans: [TeamAccess.UPDATE, TeamAccess.INVITE],
       );
 
-  Team _generateTeamMember(String suf, {String profSuf: "1"}) => Team(
+  Team _generateTeamMember(String suf, {String profSuf: "2"}) => Team(
         id: "some-id-$suf",
-        name: "Some team $suf",
+        name: "Some team $suf member",
         summary: "Some team $suf object for testing purposes",
         description: "# Some team $suf\n\nSome team description",
         owner: _generateProfile(profSuf),
@@ -238,12 +162,25 @@ class TeamsServiceStub extends ITeamsService {
         status: TeamStatus.active,
         joinability: TeamJoinability.byMember,
         relation: TeamRelations.member,
-        cans: ["leave", "update"],
+        cans: [TeamAccess.LEAVE, TeamAccess.INVITE],
       );
 
-  Team _generateTeamInvitation(String suf, {String profSuf: "1"}) => Team(
+  Team _generateTeamApplied(String suf, {String profSuf: "3"}) => Team(
         id: "some-id-$suf",
-        name: "Some team $suf",
+        name: "Some team $suf applied",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byMember,
+        relation: TeamRelations.applied,
+        cans: [TeamAccess.UNAPPLY],
+      );
+
+  Team _generateTeamInvitation(String suf, {String profSuf: "4"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf invitation",
         summary: "Some team $suf object for testing purposes",
         description: "# Some team $suf\n\nSome team description",
         owner: _generateProfile(profSuf),
@@ -251,7 +188,33 @@ class TeamsServiceStub extends ITeamsService {
         status: TeamStatus.active,
         joinability: TeamJoinability.byMember,
         relation: TeamRelations.invitations,
-        cans: ["unapply", "accept"],
+        cans: [TeamAccess.DENY_INVITATION, TeamAccess.DENY_INVITATION],
+      );
+
+  Team _generateTeamGeneral(String suf, {String profSuf: "5"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf general",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byMember,
+        relation: TeamRelations.accessed,
+        cans: [TeamAccess.APPLY],
+      );
+
+  Team _generateTeamDefault(String suf, {String profSuf: "6"}) => Team(
+        id: "some-id-$suf",
+        name: "Some team $suf default",
+        summary: "Some team $suf object for testing purposes",
+        description: "# Some team $suf\n\nSome team description",
+        owner: _generateProfile(profSuf),
+        visibility: TeamVisibility.public,
+        status: TeamStatus.active,
+        joinability: TeamJoinability.byUser,
+        relation: TeamRelations.accessed,
+        cans: [TeamAccess.JOIN],
       );
 
   Profile _generateProfile(String suf) => Profile(
@@ -280,4 +243,96 @@ class TeamsServiceStub extends ITeamsService {
       timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
     );
   }
+
+  @override
+  Future<ApiResponseTeam> applyMembership(String teamId) => _makeOperation(teamId, (team) {
+    team
+      ..cans = [
+        "unapply",
+      ]
+      ..relation = TeamRelations.member;
+  });
+
+
+  @override
+  Future<ApiResponseTeam> joinMembership(String teamId) => _makeOperation(teamId, (team) {
+    team
+      ..cans = [
+        if (team.joinability == TeamJoinability.byMember) "invite",
+        "leave",
+      ]
+      ..relation = TeamRelations.member;
+  });
+
+  @override
+  Future<ApiResponseTeam> acceptInvitation(String teamId) => _makeOperation(teamId, (team) {
+    team
+      ..cans = [
+        if (team.joinability == TeamJoinability.byMember) "invite",
+        "leave",
+      ]
+      ..relation = TeamRelations.member;
+  });
+
+  @override
+  Future<ApiResponseTeam> denyInvitation(String teamId) => _makeOperation(teamId, (team) {
+    team
+      ..cans = [
+        if (team.joinability == TeamJoinability.byUser) "join" else "apply"
+      ]
+      ..relation = ([TeamVisibility.public, TeamVisibility.registeredOnly]
+          .contains(team.visibility)
+          ? TeamRelations.accessed
+          : TeamRelations.unavailable);
+  });
+
+  @override
+  Future<ApiResponseTeam> invite(String teamId, String profileId) => _makeOperation(teamId, (team) {
+
+  });
+
+  @override
+  Future<ApiResponseTeam> leaveTeam(String teamId) =>
+      _makeOperation(teamId, (team) {
+        team
+          ..cans = [
+            if (team.joinability == TeamJoinability.byUser) "join" else "apply"
+          ]
+          ..relation = ([TeamVisibility.public, TeamVisibility.registeredOnly]
+                  .contains(team.visibility)
+              ? TeamRelations.accessed
+              : TeamRelations.unavailable);
+      });
+
+  Future<ApiResponseTeam> _makeOperation(
+      String teamId, TeamOperation teamOperation) async {
+    await Future.delayed(Duration(milliseconds: 500));
+    final validationResult = _validateRequest(teamId);
+    if (validationResult != null) return validationResult;
+    final team = teamRepo[teamId];
+    teamOperation(team);
+
+    return ApiResponseTeam(
+      teams: [team],
+      status: ApiResponseStatuses.success,
+      errors: [],
+      timeRequested: DateTime.now().subtract(Duration(milliseconds: 1000)),
+      timeFinished: DateTime.now().subtract(Duration(milliseconds: 800)),
+    );
+  }
+
+  @override
+  Future<ApiResponseTeam> unapplyMembership(String teamId) => _makeOperation(teamId, (team) {
+    team
+      ..cans = [
+        if (team.joinability == TeamJoinability.byUser) "join" else "apply"
+      ]
+      ..relation = ([TeamVisibility.public, TeamVisibility.registeredOnly]
+          .contains(team.visibility)
+          ? TeamRelations.accessed
+          : TeamRelations.unavailable);
+  });
+
 }
+
+typedef void TeamOperation(Team team);

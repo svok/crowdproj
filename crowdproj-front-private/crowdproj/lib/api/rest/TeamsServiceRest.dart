@@ -63,4 +63,34 @@ class TeamsServiceRest extends ITeamsService {
     // TODO: implement joinMembership
     throw UnimplementedError();
   }
+
+  @override
+  Future<local.ApiResponseTeam> acceptInvitation(String teamId) {
+    // TODO: implement acceptInvitation
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<local.ApiResponseTeam> denyInvitation(String teamId) {
+    // TODO: implement denytInvitation
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<local.ApiResponseTeam> invite(String teamId, String profileId) {
+    // TODO: implement invite
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<local.ApiResponseTeam> leaveTeam(String teamId) {
+    // TODO: implement leaveTeam
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<local.ApiResponseTeam> unapplyMembership(String teamId) {
+    // TODO: implement unapplyMembership
+    throw UnimplementedError();
+  }
 }

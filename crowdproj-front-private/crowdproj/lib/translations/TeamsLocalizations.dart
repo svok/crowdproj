@@ -227,6 +227,13 @@ class TeamsLocalizations {
     locale: localeName,
   );
 
+  String get labelUnapplyTeam => Intl.message(
+    "Cancel application",
+    name: "TeamsLocalizations_labelUnapplyTeam",
+    desc: 'Label to cancel application for joining a team action',
+    locale: localeName,
+  );
+
   String get labelLeaveTeam => Intl.message(
     "Leave",
     name: "TeamsLocalizations_labelLeaveTeam",

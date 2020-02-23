@@ -2,8 +2,10 @@ import 'package:crowdproj/api/models/ApiResponse.dart';
 import 'package:crowdproj/api/models/Team.dart';
 import 'package:crowdproj/api/models/TeamAccess.dart';
 import 'package:crowdproj/api/models/TeamRelations.dart';
+import 'package:crowdproj/modules/teams/view/TeamViewBloc.dart';
 import 'package:crowdproj/translations/TeamsLocalizations.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -98,7 +100,7 @@ class TeamViewWidget extends StatelessWidget {
 
   TextStyle chooseTitleTextStyle(BuildContext context, String title) {
     final len = title.length;
-    final width = MediaQuery.of(context).size.width;
+//    final width = MediaQuery.of(context).size.width;
 //    final double pixPerSymbol = width/len;
     final theme = Theme.of(context).textTheme;
     if (len < 8) return theme.headline1;
@@ -111,55 +113,61 @@ class TeamViewWidget extends StatelessWidget {
 
   Widget _applyButton(BuildContext context, Team team) {
     final localizer = TeamsLocalizations.of(context);
+    final bloc = BlocProvider.of<TeamViewBloc>(context);
 
     if (team == null) return Container();
+    final theme = Theme.of(context).textTheme;
     return Wrap(
+      alignment: WrapAlignment.end,
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: <Widget>[
         if (team.can(TeamAccess.JOIN))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.link),
             label: Text(localizer.labelJoinTeam),
-            onPressed: () {},
+            onPressed: bloc.joinAction,
           ),
         if (team.can(TeamAccess.LEAVE))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.unlink),
             label: Text(localizer.labelLeaveTeam),
-            onPressed: () {},
+            onPressed: bloc.leaveAction,
           ),
         if (team.can(TeamAccess.APPLY))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.link),
             label: Text(localizer.labelApplyTeam),
-            onPressed: () {},
+            onPressed: bloc.applyAction,
           ),
         if (team.can(TeamAccess.UNAPPLY))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.unlink),
-            label: Text(localizer.labelApplyTeam),
-            onPressed: () {},
+            label: Text(localizer.labelUnapplyTeam),
+            onPressed: bloc.unapplyAction,
           ),
         if (team.can(TeamAccess.ACCEPT_INVITATION))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.checkSquare),
             label: Text(localizer.labelTeamAcceptInvitation),
-            onPressed: () {},
+            onPressed: bloc.acceptInvitationAction,
           ),
         if (team.can(TeamAccess.DENY_INVITATION))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.windowClose),
             label: Text(localizer.labelTeamDenyInvitation),
-            onPressed: () {},
+            onPressed: bloc.denyInvitationAction,
           ),
         if (team.can(TeamAccess.INVITE))
           FlatButton.icon(
             icon: Icon(FontAwesomeIcons.userPlus),
-            label: Text(localizer.labelTeamDenyInvitation),
-            onPressed: () {},
+            label: Text(localizer.labelTeamInvite),
+            onPressed: bloc.inviteAction,
           ),
-        if (team.relation == TeamRelations.own) Text(localizer.labelOwnTeam),
+        if (team.relation == TeamRelations.own) Text(
+            localizer.labelOwnTeam,
+          style: theme.headline5,
+        ),
       ],
     );
-    return Container();
   }
 }

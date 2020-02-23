@@ -22,5 +22,15 @@ abstract class ITeamsService extends ChangeNotifier {
 
   Future<ApiResponseTeam> applyMembership(String teamId);
 
+  Future<ApiResponseTeam> unapplyMembership(String teamId);
+
   Future<ApiResponseTeam> joinMembership(String teamId);
+
+  Future<ApiResponseTeam> leaveTeam(String teamId);
+
+  Future<ApiResponseTeam> acceptInvitation(String teamId);
+
+  Future<ApiResponseTeam> denyInvitation(String teamId);
+
+  Future<ApiResponseTeam> invite(String teamId, String profileId);
 }
