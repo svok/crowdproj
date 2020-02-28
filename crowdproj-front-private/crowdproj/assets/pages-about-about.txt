@@ -6,7 +6,7 @@ This is a template project to build a serverless project utilizing all of:
 1. Frontend having static pages and Angular single page application.
 1. [Serverles Framework](https://serverlessp.com/) to automate deployment.
 
-![](resource:assets/pages/about/some.jpg)
+![](resource:assets/pages-about-some.jpg)
 
 ## Installation
 

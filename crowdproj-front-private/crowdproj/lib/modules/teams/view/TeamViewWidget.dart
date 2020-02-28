@@ -46,7 +46,7 @@ class TeamViewWidget extends StatelessWidget {
         Container(
           decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: AssetImage("assets/pages/teams/default-team-photo.jpeg"),
+              image: AssetImage("assets/pages-teams-default-photo.jpeg"),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
                 Color.fromRGBO(58, 66, 86, .90),

@@ -11,6 +11,7 @@ group = rootProject.group
 version = rootProject.version
 
 repositories {
+    mavenLocal()
     jcenter()
     mavenCentral()
 }
@@ -22,6 +23,8 @@ dependencies {
     val commonsValidatorVersion: String by project
 
     implementation(project(":crowdproj-front-private:crowdproj", "webDistConfig"))
+//    implementation("io.kotless", "lang", kotlessVersion)
+//    implementation("io.kotless", "lang-local", kotlessVersion)
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)
     implementation("commons-validator", "commons-validator", commonsValidatorVersion)
@@ -56,7 +59,8 @@ kotless {
         //Optional parameter, by default technical name will be generated
         route53 = Route53(apiVersion, apiDomain, apiDomain)
         deployment {
-            name = "name"
+            name = "crowdproj-front-private"
+            version = "2"
         }
     }
 
@@ -74,17 +78,21 @@ kotless {
     }
 }
 
+sourceSets.getByName("main") {
+    java.srcDir("src/main/java")
+}
+
 tasks {
     val copyStatic = task<Sync>("copyWebDist") {
         dependsOn(project(":crowdproj-front-private:crowdproj").getTasksByName("setWebArtifact", false))
-        project(":crowdproj-front-private:crowdproj").configurations.forEach {
-            println("CONFIGf: ${it.name}")
+        from(project(":crowdproj-front-private:crowdproj").configurations.getByName("webDistConfig").artifacts.files).
+        exclude {
+            it.name.endsWith(".map")
         }
-        from(project(":crowdproj-front-private:crowdproj").configurations.getByName("webDistConfig").artifacts.files)
-        into("$buildDir/web-static")
+        into("$buildDir/web-static/pra")
     }
 
-    withType<KotlinJvmCompile> {
+    val kc = withType<KotlinJvmCompile> {
         dependsOn(copyStatic)
         kotlinOptions {
             jvmTarget = "1.8"
@@ -93,6 +101,6 @@ tasks {
         }
     }
 
-//    getByName("generate").dependsOn(copyStatic)
+//    getByName("generate").dependsOn(kc)
 
 }

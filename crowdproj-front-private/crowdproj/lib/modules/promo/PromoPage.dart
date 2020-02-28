@@ -70,23 +70,23 @@ class _PromoPageState extends State<PromoPage> {
       ? _imgListCache
       : [
           _Slide(
-            'assets/pages/promo/01.jpeg',
+            'assets/pages-promo-01.jpeg',
             PromoLocalizations.of(context).title,
           ),
           _Slide(
-            'assets/pages/promo/02.jpeg',
+            'assets/pages-promo-02.jpeg',
             "Какой-то текст  2",
           ),
           _Slide(
-            'assets/pages/promo/03.jpeg',
+            'assets/pages-promo-03.jpeg',
             "Какой-то текст 3",
           ),
           _Slide(
-            'assets/pages/promo/04.jpeg',
+            'assets/pages-promo-04.jpeg',
             "Какой-то текст 4",
           ),
           _Slide(
-            'assets/pages/promo/05.jpeg',
+            'assets/pages-promo-05.jpeg',
             "Какой-то текст 5",
           ),
         ].map((el) {

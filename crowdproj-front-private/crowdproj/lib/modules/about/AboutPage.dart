@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:crowdproj/common/RouteDescription.dart';
-import 'package:crowdproj/common/RouteSettingsArgs.dart';
 import 'package:crowdproj/modules/layouts/PageSimple.dart';
 
 import 'package:crowdproj/translations/HomeLocalizations.dart';
@@ -47,5 +46,5 @@ class _AboutPageState extends State<AboutPage> {
           : Container();
 
   Future<String> _getMd() async =>
-      await rootBundle.loadString('assets/pages/about/about.md');
+      await rootBundle.loadString('assets/pages-about-about.txt');
 }
