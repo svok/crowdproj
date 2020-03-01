@@ -1,0 +1,15 @@
+theme:
+  siteName: 'My Site'
+  components:
+    - type: pageContent
+    - type: readme
+    - type: license
+  menu:
+    - type: page
+      itemId: 'About'
+    - type: link
+      title: 'Contact'
+      url: '/contact'
+    - type: link
+      title: 'LogIn'
+      url: '/pra'
