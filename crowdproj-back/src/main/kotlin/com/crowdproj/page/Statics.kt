@@ -55,14 +55,6 @@ fun Routing.siteStatics() {
             file("shortener.js", "js/shortener.js")
         }
 
-//        static("pra") {
-//            files("assets")
-//            file("flutter_service_worker.js")
-//            file("main.dart.js")
-//            file("index.html")
-//            default("index.html")
-//        }
-
         file("favicon.apng", "favicon.apng")
     }
 }

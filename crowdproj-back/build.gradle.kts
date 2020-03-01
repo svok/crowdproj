@@ -60,7 +60,7 @@ kotless {
         route53 = Route53(apiVersion, apiDomain, apiDomain)
         deployment {
             name = "crowdproj-front-private"
-            version = "2"
+            version = project.version.toString()
         }
     }
 
@@ -73,6 +73,7 @@ kotless {
         terraform {
             files {
                 add(file("src/main/tf/extensions.tf"))
+//                add(file("src/main/tf/ttf-files.ft"))
             }
         }
     }
