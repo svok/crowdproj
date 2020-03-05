@@ -77,10 +77,6 @@ kotless {
     }
 }
 
-sourceSets.getByName("main") {
-    java.srcDir("src/main/java")
-}
-
 tasks {
 
     val copyStaticPublic = task<Sync>("copyWebDistPublic") {

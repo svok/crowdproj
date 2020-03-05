@@ -52,7 +52,7 @@ tasks {
 
     val conf = project.configurations.create("webDistConfig")
     val setWebArtifact by creating {
-        dependsOn("orchidBuild")
+        dependsOn(orchidBuild)
         artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
     }
 
