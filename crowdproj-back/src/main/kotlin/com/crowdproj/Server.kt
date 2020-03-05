@@ -23,9 +23,9 @@ class Server : Kotless() {
         app.routing {
             siteStatics()
 
-            get("/") {
-                call.respondHtml { main() }
-            }
+//            get("/") {
+//                call.respondHtml { main() }
+//            }
 
             get("/r") {
                 val k = call.parameters["k"] ?: ""

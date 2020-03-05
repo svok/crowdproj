@@ -6,34 +6,15 @@ import java.io.File
 
 fun Routing.siteStatics() {
     static {
-        staticRootFolder = File("build/web-static/pra")
+        staticRootFolder = File("build/web-static")
+        files("main")
+        default("main/index.html")
         static("pra") {
+            staticRootFolder = File("build/web-static/pra")
             static("assets") {
-                static("assets") {
-                    files("assets/assets")
-                }
-                static("fonts") {
-                    file("MaterialIcons-Regular.ttf","assets/fonts/MaterialIcons-Regular.ttf")
-                    static("Roboto") {
-                        files("assets/fonts/Roboto")
-                    }
-                }
-                static("packages") {
-                    static("flutter_markdown") {
-                        static("assets") {
-                            file("logo.png", "assets/packages/flutter_markdown/assets/logo.png")
-                        }
-                    }
-                    static("font_awesome_flutter") {
-                        static("lib") {
-                            static("fonts") {
-                                file("fa-brands-400.ttf", "assets/packages/font_awesome_flutter/lib/fonts/fa-brands-400.ttf")
-                                file("fa-regular-400.ttf", "assets/packages/font_awesome_flutter/lib/fonts/fa-regular-400.ttf")
-                                file("fa-solid-900.ttf", "assets/packages/font_awesome_flutter/lib/fonts/fa-solid-900.ttf")
-                            }
-                        }
-                    }
-                }
+                static("assets") { files("assets/assets") }
+                static("fonts") { files("assets/fonts") }
+                static("packages") { files("assets/packages") }
                 file("AssetManifest.json", "assets/AssetManifest.json")
                 file("FontManifest.json", "assets/FontManifest.json")
             }
@@ -42,19 +23,5 @@ fun Routing.siteStatics() {
             file("index.html")
             default("index.html")
         }
-    }
-
-    static {
-        staticRootFolder = File("src/main/static")
-
-        static("css") {
-            file("shortener.css", "css/shortener.css")
-        }
-
-        static("js") {
-            file("shortener.js", "js/shortener.js")
-        }
-
-        file("favicon.apng", "favicon.apng")
     }
 }

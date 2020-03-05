@@ -1,4 +1,6 @@
 ---
+title: "Crowdproj: self organizing projects"
+name: home
 layout: index
 components:
   - type: pageContent

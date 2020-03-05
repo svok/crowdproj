@@ -39,3 +39,21 @@ orchid {
 //    destDir = "path/to/new/destination/directory" // defaults to 'build/docs/orchid'
     runTask = "build"                             // specify a task to run with 'gradle orchidRun'
 }
+
+tasks {
+
+    orchidBuild {
+        inputs.dir("src")
+        outputs.dir("$buildDir/docs")
+        doFirst {
+            delete("$buildDir/docs")
+        }
+    }
+
+    val conf = project.configurations.create("webDistConfig")
+    val setWebArtifact by creating {
+        dependsOn("orchidBuild")
+        artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
+    }
+
+}

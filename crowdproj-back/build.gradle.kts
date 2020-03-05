@@ -23,8 +23,6 @@ dependencies {
     val commonsValidatorVersion: String by project
 
     implementation(project(":crowdproj-front-private:crowdproj", "webDistConfig"))
-//    implementation("io.kotless", "lang", kotlessVersion)
-//    implementation("io.kotless", "lang-local", kotlessVersion)
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)
     implementation("commons-validator", "commons-validator", commonsValidatorVersion)
@@ -60,7 +58,7 @@ kotless {
         route53 = Route53(apiVersion, apiDomain, apiDomain)
         deployment {
             name = "crowdproj-front-private"
-            version = project.version.toString()
+            version = "1"
         }
     }
 
@@ -84,9 +82,22 @@ sourceSets.getByName("main") {
 }
 
 tasks {
-    val copyStatic = task<Sync>("copyWebDist") {
-        dependsOn(project(":crowdproj-front-private:crowdproj").getTasksByName("setWebArtifact", false))
-        from(project(":crowdproj-front-private:crowdproj").configurations.getByName("webDistConfig").artifacts.files).
+
+    val copyStaticPublic = task<Sync>("copyWebDistPublic") {
+        val proj = project(":crowdproj-front-public")
+        dependsOn(proj.getTasksByName("setWebArtifact", false))
+        from(proj.configurations.getByName("webDistConfig").artifacts.files).
+        exclude {
+            it.name.endsWith(".ico")
+        }
+        into("$buildDir/web-static/main")
+    }
+
+    val copyStaticPrivate = task<Sync>("copyWebDistPrivate") {
+        val proj = project(":crowdproj-front-private:crowdproj")
+        dependsOn(copyStaticPublic)
+        dependsOn(proj.getTasksByName("setWebArtifact", false))
+        from(proj.configurations.getByName("webDistConfig").artifacts.files).
         exclude {
             it.name.endsWith(".map")
         }
@@ -94,14 +105,12 @@ tasks {
     }
 
     val kc = withType<KotlinJvmCompile> {
-        dependsOn(copyStatic)
+        dependsOn(copyStaticPrivate)
         kotlinOptions {
             jvmTarget = "1.8"
             languageVersion = "1.3"
             apiVersion = "1.3"
         }
     }
-
-//    getByName("generate").dependsOn(kc)
 
 }
