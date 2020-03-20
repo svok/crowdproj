@@ -19,6 +19,7 @@ local.properties
 
 /crowdproj-models-kt/*
 !/crowdproj-models-kt/build.gradle.kts
+!/crowdproj-models-kt/.openapi-generator-ignore
 /crowdproj-front-private/crowdproj_models/*
 !/crowdproj-front-private/crowdproj_models/build.gradle.kts
 /buildSrc/.gradle/

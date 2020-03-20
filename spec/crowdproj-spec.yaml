@@ -599,9 +599,9 @@ components:
           type: string
           description: Profile Status
           enum:
-            - closed
-            - open
-            - deleted
+            - profileClosed
+            - profileActive
+            - profileDeleted
       xml:
         name: Profile
 

@@ -20,6 +20,7 @@ tasks {
     val flutterBinPath: String by project
 
     create<GenerateTask>("generateKotlinModels") {
+        val genPackage = "${project.group}.rest"
         group = "openapi"
         val spec = "$rootDir/spec/crowdproj-spec.yaml"
         val dest = "$rootDir/crowdproj-models-kt"
@@ -28,28 +29,37 @@ tasks {
         generatorName.set("kotlin-server")
         inputSpec.set(spec)
         outputDir.set(dest)
-        modelPackage.set("${project.group}.models")
+        modelPackage.set("$genPackage.models")
+        apiPackage.set("$genPackage.apis")
+        packageName.set(genPackage)
+        invokerPackage.set("$genPackage.infrastructure")
         generateModelDocumentation.set(true)
         generateModelTests.set(true)
         configOptions.putAll(
             mutableMapOf(
-                "modelMutable" to "true",
+//                "modelMutable" to "true",
                 "swaggerAnnotations" to "true"
             )
         )
-        systemProperties.putAll(
-            mapOf(
-                "models" to "",
-                "modelTests" to "",
-                "modelDocs" to ""
-            )
-        )
+//        systemProperties.putAll(
+//            mapOf(
+//                "models" to "",
+//                "modelTests" to "",
+//                "modelDocs" to "",
+//                "apis" to "",
+//                "apiTests" to "",
+//                "apiDocs" to ""
+//            )
+//        )
     }
     val cleanKotlinModels by creating(Delete::class) {
         group = "openapi"
         val modelsKt = project(":crowdproj-models-kt").projectDir
         fileTree(modelsKt).visit {
-            if (!file.name.endsWith(".kts")) {
+            if (file.name !in arrayOf(
+                    "build.gradle.kts",
+                    ".openapi-generator-ignore"
+                )) {
                 delete(file)
             }
         }
@@ -65,11 +75,11 @@ tasks {
         inputSpec.set(specFile)
         outputDir.set(destDir)
         packageName.set(project.group.toString())
-        modelPackage.set("${project.group}.models")
+//        modelPackage.set("${project.group}.models")
         generateModelDocumentation.set(true)
         generateModelTests.set(true)
-        apiPackage.set("${project.group}.api")
-        invokerPackage.set("${project.group}.invoker")
+//        apiPackage.set("${project.group}.api")
+//        invokerPackage.set("${project.group}.invoker")
         additionalProperties.set(
             mapOf(
                 "pubName" to "crowdproj_models",

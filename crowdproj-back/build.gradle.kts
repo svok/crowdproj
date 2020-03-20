@@ -22,6 +22,7 @@ dependencies {
     val awsVersion: String by project
     val commonsValidatorVersion: String by project
 
+    implementation(project(":crowdproj-models-kt"))
     implementation(project(":crowdproj-front-private:crowdproj", "webDistConfig"))
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)

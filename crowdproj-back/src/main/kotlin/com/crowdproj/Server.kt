@@ -1,6 +1,7 @@
 package com.crowdproj
 
 import com.crowdproj.page.Main.main
+import com.crowdproj.page.restProfiles
 import io.kotless.dsl.ktor.Kotless
 import com.crowdproj.page.siteStatics
 import com.crowdproj.storage.URLStorage
@@ -22,6 +23,7 @@ class Server : Kotless() {
     override fun prepare(app: Application) {
         app.routing {
             siteStatics()
+            restProfiles()
 
 //            get("/") {
 //                call.respondHtml { main() }
