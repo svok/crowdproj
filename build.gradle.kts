@@ -58,12 +58,43 @@ tasks {
         fileTree(modelsKt).visit {
             if (file.name !in arrayOf(
                     "build.gradle.kts",
-                    ".openapi-generator-ignore"
+                    ".openapi-generator-ignore",
+                    "src",
+                    "main",
+                    "kotlin",
+                    "com",
+                    "crowdproj",
+                    "rest",
+                    "Paths.kt"
                 )) {
                 delete(file)
             }
         }
     }
+
+    create<GenerateTask>("generateJavaModels") {
+        val genPackage = "${project.group}.rest"
+        group = "openapi"
+        val spec = "$rootDir/spec/crowdproj-spec.yaml"
+        val dest = "$rootDir/crowdproj-models-jv"
+        inputs.files(spec)
+        outputs.files(fileTree(dest))
+        generatorName.set("spring")
+        inputSpec.set(spec)
+        outputDir.set(dest)
+        modelPackage.set("$genPackage.models")
+        apiPackage.set("$genPackage.apis")
+        packageName.set(genPackage)
+        invokerPackage.set("$genPackage.infrastructure")
+        generateModelDocumentation.set(true)
+        generateModelTests.set(true)
+        configOptions.putAll(
+            mutableMapOf(
+                "swaggerAnnotations" to "true"
+            )
+        )
+    }
+
 
     create<GenerateTask>("generateDartModels") {
         group = "openapi"

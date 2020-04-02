@@ -166,61 +166,31 @@ paths:
           in: query
           description: "Simulate server activity instead of real performance and return a pre-stored request result"
           required: false
+          allowEmptyValue: true
           schema:
             type: string
             enum:
+              - none
               - public
               - private
       responses:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/ApiResponseTeam'
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponseTeam'
-        400:
-          description: Invalid ID supplied
-          content: {}
-        404:
-          description: Team not found
-          content: {}
-      security:
-        - api_key: []
-    post:
-      tags:
-        - team
-      summary: Updates a team in the store with form data
-      operationId: updateTeamWithForm
-      parameters:
-        - name: teamId
-          in: path
-          description: ID of team that needs to be updated
-          required: true
-          schema:
-            type: integer
-            format: int64
-      requestBody:
-        content:
-          application/x-www-form-urlencoded:
-            schema:
-              properties:
-                name:
-                  type: string
-                  description: Updated name of the team
-                status:
-                  type: string
-                  description: Updated status of the team
-      responses:
-        405:
-          description: Invalid input
-          content: {}
-      security:
-        - crowdproj_auth:
-            - write:teams
-            - read:teams
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTeam'
+        # 400:
+        #   description: Invalid ID supplied
+        #   content: {}
+        # 404:
+        #   description: Team not found
+        #   content: {}
+    #      security:
+    #        - api_key: []
     delete:
       tags:
         - team
@@ -516,9 +486,6 @@ paths:
         200:
           description: successful operation
           content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Profile'
             application/json:
               schema:
                 $ref: '#/components/schemas/Profile'
@@ -596,14 +563,17 @@ components:
         phone:
           type: string
         profileStatus:
-          type: string
-          description: Profile Status
-          enum:
-            - profileClosed
-            - profileActive
-            - profileDeleted
+          $ref: '#/components/schemas/ProfileStatus'
       xml:
         name: Profile
+
+    ProfileStatus:
+      type: string
+      description: Profile Status
+      enum:
+        - profileClosed
+        - profileActive
+        - profileDeleted
 
     Tag:
       type: object
@@ -628,6 +598,7 @@ components:
       properties:
         id:
           type: string
+          example: "123-456-789-dsfl-lkow"
         #        category:
         #          $ref: '#/components/schemas/Category'
         name:
@@ -671,10 +642,10 @@ components:
       type: string
       description: Visibility type of the team
       enum:
-        - public
-        - registeredOnly
-        - groupOnly
-        - membersOnly
+        - teamPublic
+        - teamRegisteredOnly
+        - teamGroupOnly
+        - teamMembersOnly
 
     TeamJoinability:
       type: string
@@ -712,14 +683,17 @@ components:
       properties:
         timeReceived:
           type: string
+          example: "2019-02-03T16:17:18.000Z"
         timeFinished:
           type: string
+          example: "2019-02-03T16:17:18.100Z"
         status:
           type: string
           description: "Result of the request handling by server"
+          example: "responseOk"
           enum:
-            - ok
-            - error
+            - responseOk
+            - responseError
         errors:
           type: array
           description: "Errors, warnings and info messages concerning the response"
@@ -746,23 +720,29 @@ components:
         code:
           type: string
           description: "Error code"
+          example: "validation-invalid-symbols"
         field:
           type: string
           description: "Field the error concerns to"
+          example: "firstName"
         message:
           type: string
           description: "Short message describing the error"
+          example: "Field must contain only letters and -' symbols"
         description:
           type: string
           description: "Extended description of the error"
+          example: "The field firstName must contain only letter, i.e. symbols a-z, А-Я, etc. Also \"-\" (dash) and \"'\" (single quotation) are allowed. Examples: Johnes, O'neil, Frederic-Rich"
         level:
           type: string
           description: "Error level"
+          example: "error"
           enum:
             - fatal
             - error
             - warning
             - info
+            - hint
 
   securitySchemes:
     crowdproj_auth:

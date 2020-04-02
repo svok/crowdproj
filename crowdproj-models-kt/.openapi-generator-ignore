@@ -29,3 +29,4 @@ README.md
 settings.gradle
 **/AppMain.kt
 **/Configuration.kt
+**/Paths.kt

@@ -14,7 +14,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:1.2.1")
+//    implementation("ch.qos.logback:logback-classic:1.2.1")
 
 }
 
@@ -22,7 +22,7 @@ sourceSets {
     main {
         java {
             srcDir("src")
-            exclude("**/apis/**")
+//            exclude("**/apis/**")
         }
     }
 }

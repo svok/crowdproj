@@ -2,6 +2,7 @@
 #**/.gradle
 .idea
 /build/
+**/build
 #**/build/
 **/*.iml
 
@@ -20,6 +21,9 @@ local.properties
 /crowdproj-models-kt/*
 !/crowdproj-models-kt/build.gradle.kts
 !/crowdproj-models-kt/.openapi-generator-ignore
+!/crowdproj-models-kt/src
+/crowdproj-models-kt/src/main/kotlin/com/crowdproj/rest/*
+!/crowdproj-models-kt/src/main/kotlin/com/crowdproj/rest/Paths.kt
 /crowdproj-front-private/crowdproj_models/*
 !/crowdproj-front-private/crowdproj_models/build.gradle.kts
 /buildSrc/.gradle/

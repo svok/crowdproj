@@ -3,7 +3,8 @@ include(":crowdproj-models-kt")
 include(":crowdproj-front-private:crowdproj_models")
 include(":crowdproj-front-private:crowdproj")
 include(":crowdproj-front-public")
-include(":crowdproj-back")
+include(":crowdproj-back-main")
+include(":crowdproj-back-app")
 
 pluginManagement {
 
@@ -32,3 +33,4 @@ pluginManagement {
         maven(url = "https://jitpack.io")
     }
 }
+include("crowdproj-back-main")
