@@ -3,15 +3,14 @@ package com.crowdproj.ktor.storage.team
 import com.crowdproj.ktor.storage.common.toApiErrors
 import com.crowdproj.main.team.TeamContext
 import com.crowdproj.main.team.TeamService
+import com.crowdproj.main.team.models.TeamModel
 import com.crowdproj.rest.Paths
 import com.crowdproj.rest.apis.TeamApi
 import com.crowdproj.rest.models.*
 import io.ktor.application.call
-import io.ktor.auth.OAuthAccessTokenResponse
-import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
 import io.ktor.http.HttpStatusCode
 import io.ktor.locations.get
+import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
@@ -71,10 +70,14 @@ fun Routing.restTeams() {
 //            if (principal == null) {
 //                call.respond(HttpStatusCode.Unauthorized)
 //            } else {
-            val timeEnd = Instant.now()
+            val request = call.receive<ApiQueryTeamSave>()
+            val context = TeamContext(
+                requestTeam = request.data?.toMain() ?: TeamModel.NONE
+            )
+            service.createTeam(context)
             val result = ApiResponseTeam(
                 timeReceived = timeStart.toString(),
-                timeFinished = timeEnd.toString(),
+                timeFinished = Instant.now().toString(),
                 status = ApiResponseTeam.Status.responseOk,
                 errors = emptyArray(),
                 data = arrayOf(teamResult)
@@ -91,10 +94,9 @@ fun Routing.restTeams() {
 //            if (principal == null) {
 //                call.respond(HttpStatusCode.Unauthorized)
 //            } else {
-            val timeEnd = Instant.now()
             val result = ApiResponseTeam(
                 timeReceived = timeStart.toString(),
-                timeFinished = timeEnd.toString(),
+                timeFinished = Instant.now().toString(),
                 status = ApiResponseTeam.Status.responseOk,
                 errors = emptyArray(),
                 data = arrayOf(teamResult)
@@ -138,5 +140,5 @@ fun Routing.restTeams() {
         call.respond(HttpStatusCode.OK, result)
     }
 
-//    TeamApi()
+    TeamApi()
 }

@@ -4,11 +4,12 @@ import com.crowdproj.main.common.ContextStatuses
 import com.crowdproj.main.common.IMainError
 import com.crowdproj.main.common.KonveyorEnvironment
 import com.crowdproj.main.team.models.TeamModel
-import com.crowdproj.main.team.models.TeamQuery
+import com.crowdproj.main.team.models.TeamFindQuery
 
 data class TeamContext(
-    var query: TeamQuery = TeamQuery.EMPTY,
+    var query: TeamFindQuery = TeamFindQuery.EMPTY,
     var requestTeamId: String = "",
+    var requestTeam: TeamModel = TeamModel.NONE,
 
     var result: MutableList<TeamModel> = mutableListOf(),
     var errors: MutableList<IMainError> = mutableListOf(),
