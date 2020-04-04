@@ -1,10 +1,20 @@
 rootProject.name = "crowdproj"
+
+include(":crowdproj-common")
+
 include(":crowdproj-models-kt")
 include(":crowdproj-front-private:crowdproj_models")
 include(":crowdproj-front-private:crowdproj")
 include(":crowdproj-front-public")
 include(":crowdproj-back-main")
 include(":crowdproj-back-app")
+
+include(":crowdproj-teams")
+include(":crowdproj-teams:generated-models-kt")
+include(":crowdproj-teams:generated-models-dt")
+include(":crowdproj-teams:back-main")
+include(":crowdproj-teams:back-kotless-app")
+include(":crowdproj-teams:front")
 
 pluginManagement {
 

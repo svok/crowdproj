@@ -1,0 +1,8 @@
+
+/generated-models-kt/*
+!/generated-models-kt/.openapi-generator-ignore
+!/generated-models-kt/build.gradle.kts
+
+/generated-models-dt/*
+!/generated-models-dt/.openapi-generator-ignore
+!/generated-models-dt/build.gradle.kts

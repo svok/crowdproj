@@ -1,0 +1,308 @@
+openapi: 3.0.1
+info:
+  title: Crowdproj models
+  description: 'This spec contains a [Crowdproj](http://crowdpwoj.com) project models and api description.'
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: sokatov@gmail.com
+  license:
+    name: Proprietar
+    # url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: http://swagger.io
+servers:
+  - url: https://crowdproj.com/v1
+  - url: http://localhost:8080
+tags:
+  - name: tags
+    description: Full description of the tags
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://swagger.io
+  - name: profiles
+    description: Description of the user profiles
+  - name: groups
+    description: Definitions of the groups of users/teams
+    # externalDocs:
+    #   description: Find out more about our store
+    #   url: http://swagger.io
+paths:
+  /tags:
+    put:
+      tags:
+        - tags
+      summary: Update an existing team
+      operationId: updateTeam
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagSave'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagSave'
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTag'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTag'
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Team not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+      x-codegen-request-body-name: body
+    post:
+      tags:
+        - tags
+      summary: Add a new team to the store
+      operationId: addTeam
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagSave'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagSave'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+      x-codegen-request-body-name: body
+  /tags/find:
+    post:
+      tags:
+        - tags
+      summary: "List tags"
+      description: "Get tags satisfying request filter"
+      operationId: findTeams
+      parameters:
+#        - name: status
+#          in: query
+#          description: Status values that need to be considered for filter
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: array
+#            items:
+#              $ref: '#/components/schemas/TStatus'
+#        - name: tags
+#          in: query
+#          description: Tags to filter by
+#          required: false
+#          style: form
+#          explode: true
+#          schema:
+#            type: array
+#            items:
+#              type: string
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagFind'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTagFind'
+        required: true
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTag'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTag'
+        400:
+          description: Invalid status value
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+
+  /tags/{tagId}:
+    get:
+      tags:
+        - tags
+      summary: Find team by ID
+      description: Returns a single team
+      operationId: getTeamById
+      parameters:
+        - name: tagId
+          in: path
+          description: ID of the tag to return
+          required: true
+          schema:
+            type: string
+        - name: stub
+          in: query
+          description: "Simulate server activity instead of real performance and return a pre-stored request result"
+          required: false
+          allowEmptyValue: true
+          schema:
+            type: string
+            enum:
+              - none
+              - public
+              - private
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTag'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTag'
+        # 400:
+        #   description: Invalid ID supplied
+        #   content: {}
+        # 404:
+        #   description: Team not found
+        #   content: {}
+    #      security:
+    #        - api_key: []
+    delete:
+      tags:
+        - tags
+      summary: Deletes a tag
+      operationId: deleteTag
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: tagId
+          in: path
+          description: Tag id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Tag not found
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:tags
+            - read:tags
+components:
+  schemas:
+
+    ApiQuery:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiQuery'
+    ApiResponse:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiResponse'
+    ApiError:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiError'
+
+    Tag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: "Tag's ID that is used in DB and communications"
+        name:
+          type: string
+          description: "The tag name that is shown to users"
+        description:
+          type: string
+          description: "The description of the tag"
+      xml:
+        name: Tag
+
+    ApiQueryTagFind:
+      allOf:
+        - $ref: '#/components/schemas/ApiQuery'
+        - type: object
+          properties:
+            tagIds:
+              type: array
+              items:
+                type: string
+
+    ApiQueryTagSave:
+      allOf:
+        - $ref: '#/components/schemas/ApiQuery'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Tag'
+
+    ApiResponseTag:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+
+  securitySchemes:
+    crowdproj_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://teamstore.swagger.io/oauth/dialog
+          scopes:
+            write:teams: modify teams in your account
+            read:teams: read your teams
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

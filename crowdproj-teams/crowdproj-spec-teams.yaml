@@ -1,0 +1,403 @@
+openapi: 3.0.1
+info:
+  title: Crowdproj models
+  description: 'This spec contains a [Crowdproj](http://crowdpwoj.com) project models and api description.'
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: sokatov@gmail.com
+  license:
+    name: Proprietar
+    # url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: http://swagger.io
+servers:
+  - url: https://crowdproj.com/v1
+  - url: http://localhost:8080
+tags:
+  - name: teams
+    description: Full description of the teams
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://swagger.io
+paths:
+  /teams:
+    put:
+      tags:
+        - team
+      summary: Update an existing team
+      operationId: updateTeam
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamSave'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamSave'
+          text/plain:
+            schema:
+              type: string
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTeam'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApiResponseTeam'
+            text/plain:
+              schema:
+                type: string
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Team not found
+          content: {}
+        405:
+          description: Validation exception
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+      x-codegen-request-body-name: body
+    post:
+      tags:
+        - team
+      summary: Add a new team to the store
+      operationId: addTeam
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamSave'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamSave'
+        required: true
+      responses:
+        200:
+          description: Successful operation
+
+        405:
+          description: Invalid input
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+      x-codegen-request-body-name: body
+  /teams/find:
+    post:
+      tags:
+        - team
+      summary: "List teams"
+      description: "Get team satisfying request filter"
+      operationId: findTeams
+      parameters:
+        - name: status
+          in: query
+          description: Status values that need to be considered for filter
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TeamStatus'
+        - name: tags
+          in: query
+          description: Tags to filter by
+          required: false
+          style: form
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+      requestBody:
+        description: Team object that needs to be added to the store
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamFind'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/ApiQueryTeamFind'
+        required: true
+
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTeam'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTeam'
+        400:
+          description: Invalid status value
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+
+  /teams/{teamId}:
+    get:
+      tags:
+        - team
+      summary: Find team by ID
+      description: Returns a single team
+      operationId: getTeamById
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of the team to return
+          required: true
+          schema:
+            type: string
+        - name: stub
+          in: query
+          description: "Simulate server activity instead of real performance and return a pre-stored request result"
+          required: false
+          allowEmptyValue: true
+          schema:
+            type: string
+            enum:
+              - none
+              - public
+              - private
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTeam'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ApiResponseTeam'
+        # 400:
+        #   description: Invalid ID supplied
+        #   content: {}
+        # 404:
+        #   description: Team not found
+        #   content: {}
+    #      security:
+    #        - api_key: []
+    delete:
+      tags:
+        - team
+      summary: Deletes a team
+      operationId: deleteTeam
+      parameters:
+        - name: api_key
+          in: header
+          schema:
+            type: string
+        - name: teamId
+          in: path
+          description: Team id to delete
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid ID supplied
+          content: {}
+        404:
+          description: Team not found
+          content: {}
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+  /teams/{teamId}/uploadImage:
+    post:
+      tags:
+        - team
+      summary: uploads an image
+      operationId: uploadFile
+      parameters:
+        - name: teamId
+          in: path
+          description: ID of team to update
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                additionalMetadata:
+                  type: string
+                  description: Additional data to pass to server
+                file:
+                  type: string
+                  description: file to upload
+                  format: binary
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+      security:
+        - crowdproj_auth:
+            - write:teams
+            - read:teams
+components:
+  schemas:
+
+    ApiQuery:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiQuery'
+    ApiResponse:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiResponse'
+    ApiError:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiError'
+
+    Profile:
+      $ref: '../crowdproj-profiles/crowdproj-spec-profiles.yaml#/components/schemas/Profile'
+
+    Tag:
+      $ref: '../crowdproj-tags/crowdproj-spec-tags.yaml#/components/schemas/Tag'
+
+    Team:
+      required:
+        - name
+        - summary
+      type: object
+      properties:
+        id:
+          type: string
+          example: "123-456-789-dsfl-lkow"
+        #        category:
+        #          $ref: '#/components/schemas/Category'
+        name:
+          type: string
+          description: "Name qualifying the team"
+          example: "New York swimming team"
+        summary:
+          type: string
+          description: "A brief description for the team to be shown in the list of teams"
+          example: "We are the swimming team. We do swimming sports etc..."
+        description:
+          type: string
+          description: "The team description field in markdown format."
+          example: "# New York swimming team\n\nYou are **welcome** ..."
+        owner:
+          $ref: '#/components/schemas/Profile'
+        photoUrls:
+          type: array
+          xml:
+            name: photoUrl
+            wrapped: true
+          items:
+            type: string
+        tags:
+          type: array
+          xml:
+            name: tag
+            wrapped: true
+          items:
+            $ref: '#/components/schemas/Tag'
+        visibility:
+          $ref: '#/components/schemas/TeamVisibility'
+        joinability:
+          $ref: '#/components/schemas/TeamJoinability'
+        status:
+          $ref: '#/components/schemas/TeamStatus'
+      xml:
+        name: Team
+
+    TeamVisibility:
+      type: string
+      description: Visibility type of the team
+      enum:
+        - teamPublic
+        - teamRegisteredOnly
+        - teamGroupOnly
+        - teamMembersOnly
+
+    TeamJoinability:
+      type: string
+      description: How users can join this team
+      enum:
+        - byOwner
+        - byMember
+        - byUser
+
+    TeamStatus:
+      type: string
+      description: team status in the store
+      enum:
+        - active
+        - pending
+        - closed
+        - deleted
+
+
+    ApiQueryTeamFind:
+      allOf:
+        - $ref: '#/components/schemas/ApiQuery'
+        - type: object
+          properties:
+            tagIds:
+              type: array
+              items:
+                type: string
+
+    ApiQueryTeamSave:
+      allOf:
+        - $ref: '#/components/schemas/ApiQuery'
+        - type: object
+          properties:
+            data:
+              $ref: '#/components/schemas/Team'
+
+    ApiResponseTeam:
+      allOf:
+        - $ref: '#/components/schemas/ApiResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Team'
+
+  securitySchemes:
+    crowdproj_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://teamstore.swagger.io/oauth/dialog
+          scopes:
+            write:teams: modify teams in your account
+            read:teams: read your teams
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header
