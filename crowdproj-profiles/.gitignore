@@ -1,3 +1,4 @@
+**/build
 
 /generated-models-kt/*
 !/generated-models-kt/.openapi-generator-ignore
