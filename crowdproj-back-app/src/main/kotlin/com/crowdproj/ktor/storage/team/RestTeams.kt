@@ -140,5 +140,5 @@ fun Routing.restTeams() {
         call.respond(HttpStatusCode.OK, result)
     }
 
-    TeamApi()
+//    TeamApi()
 }
