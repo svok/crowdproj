@@ -26,6 +26,20 @@ class TeamService(
         getTeamKonveyor.exec(context = context)
     }
 
+    suspend fun createTeam(context: TeamContext) {
+        if (context.env == KonveyorEnvironment.EMPTY) {
+            context.env = environment
+        }
+        createTeamKonveyor.exec(context = context)
+    }
+
+    suspend fun updateTeam(context: TeamContext) {
+        if (context.env == KonveyorEnvironment.EMPTY) {
+            context.env = environment
+        }
+        updateTeamKonveyor.exec(context = context)
+    }
+
     companion object {
         private val findTeamsKonveyor = konveyor<TeamContext> {
             exec { status = ContextStatuses.processing }
@@ -43,6 +57,28 @@ class TeamService(
             exec {
                 try {
                     env.storage.get(requestTeamId)?.also { result.add(it) }
+                } catch (e: Exception) {
+                    addFatal(ErrorStorage(message = e.message ?: ""))
+                }
+            }
+        }
+        private val createTeamKonveyor = konveyor<TeamContext> {
+            exec { status = ContextStatuses.processing }
+            exec {
+                try {
+                    val id = env.storage.create(requestTeam)
+                    result.add(requestTeam.copy(id = id))
+                } catch (e: Exception) {
+                    addFatal(ErrorStorage(message = e.message ?: ""))
+                }
+            }
+        }
+        private val updateTeamKonveyor = konveyor<TeamContext> {
+            exec { status = ContextStatuses.processing }
+            exec {
+                try {
+                    env.storage.update(requestTeam)
+                    result.add(requestTeam.copy())
                 } catch (e: Exception) {
                     addFatal(ErrorStorage(message = e.message ?: ""))
                 }

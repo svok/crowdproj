@@ -10,3 +10,13 @@ fun TagModel.toApiTag() = Tag(
     name = name,
     description = description
 )
+
+fun Tag?.toMain() =
+    if (this == null) TagModel.NONE
+    else TagModel(
+        id = id ?: "",
+        name = name ?: "",
+        description = description ?: ""
+    )
+
+fun Array<Tag>?.toMain() = this?.map { it.toMain() }

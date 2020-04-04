@@ -8,7 +8,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ScanRequest
 import com.crowdproj.main.team.ITeamStorage
 import com.crowdproj.main.team.models.TeamModel
-import com.crowdproj.main.team.models.TeamQuery
+import com.crowdproj.main.team.models.TeamFindQuery
 import io.kotless.AwsResource
 import io.kotless.PermissionLevel
 import io.kotless.dsl.lang.DynamoDBTable
@@ -23,7 +23,7 @@ object DynamoDbTeamsStorage : ITeamStorage {
     private val client = AmazonDynamoDBClientBuilder.standard().withKotlessLocal(AwsResource.DynamoDB).build()
     private val dynamoDB = DynamoDB(client)
 
-    override suspend fun findTeams(query: TeamQuery): Sequence<TeamModel> {
+    override suspend fun findTeams(query: TeamFindQuery): Sequence<TeamModel> {
         val request = ScanRequest()
             .withTableName(tableName)
             .withConsistentRead(true)
