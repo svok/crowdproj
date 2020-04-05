@@ -14,7 +14,7 @@ include(":crowdproj-teams:generated-models-kt")
 include(":crowdproj-teams:generated-models-dt")
 include(":crowdproj-teams:back-main")
 include(":crowdproj-teams:back-kotless-app")
-include(":crowdproj-teams:front")
+include(":crowdproj-teams:front-teams")
 
 pluginManagement {
 

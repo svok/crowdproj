@@ -16,6 +16,10 @@ repositories {
     mavenCentral()
 }
 
+application {
+    applicationName = parent!!.name
+}
+
 dependencies {
     val kotlessVersion: String by project
     val ktorVersion: String by project
@@ -30,12 +34,10 @@ dependencies {
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)
     implementation("commons-validator", "commons-validator", commonsValidatorVersion)
     implementation("com.amazonaws", "aws-java-sdk-dynamodb", awsVersion)
+//    implementation("software.amazon.awssdk:dynamodb:2.11.9")
 
-//    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-//    implementation("io.ktor:ktor-metrics:$ktorVersion")
     implementation("io.ktor:ktor-locations:$ktorVersion")
     implementation("io.ktor:ktor-gson:$ktorVersion")
-//    implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
 
 
@@ -51,25 +53,37 @@ kotless {
 
     config {
         bucket = "$awsBucket.teams"
-        prefix = apiVersion
+        prefix = "${apiVersion}-teams"
 
 //        dsl {
 //            workDirectory = file("src/main/static")
 //        }
 
         terraform {
+            backend {
+                key = parent!!.name
+            }
+            provider {
+            }
             profile = awsProfile
             region = awsRegions.split(Regex(",\\s*")).first()
         }
-
+        optimization {
+            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.None
+        }
     }
 
     webapp {
         //Optional parameter, by default technical name will be generated
-        route53 = Route53(apiVersion, apiDomain, apiDomain)
+        route53 = Route53("$apiVersion-teams", apiDomain, apiDomain)
         deployment {
-            name = "crowdproj-front-private"
+            name = parent!!.name
             version = "1"
+        }
+
+        lambda {
+            kotless {
+            }
         }
     }
 
@@ -80,6 +94,7 @@ kotless {
         }
 
         terraform {
+            allowDestroy = true
             files {
                 add(file("src/main/tf/extensions.tf"))
 //                add(file("src/main/tf/ttf-files.ft"))
@@ -90,7 +105,7 @@ kotless {
 
 tasks {
 
-    val kc = withType<KotlinJvmCompile> {
+    withType<KotlinJvmCompile> {
         kotlinOptions {
             jvmTarget = "1.8"
             languageVersion = "1.3"
