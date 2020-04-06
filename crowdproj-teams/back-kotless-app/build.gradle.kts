@@ -1,3 +1,4 @@
+import io.kotless.plugin.gradle.dsl.KotlessConfig
 import io.kotless.plugin.gradle.dsl.kotless
 import io.kotless.plugin.gradle.dsl.Webapp.Route53
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile
@@ -61,7 +62,6 @@ kotless {
 
         terraform {
             backend {
-                key = parent!!.name
             }
             provider {
             }
@@ -69,7 +69,8 @@ kotless {
             region = awsRegions.split(Regex(",\\s*")).first()
         }
         optimization {
-            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.None
+            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
+            autowarm = KotlessConfig.Optimization.Autowarm(enable = false, minutes = 0)
         }
     }
 

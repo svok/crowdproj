@@ -68,7 +68,7 @@ object DynamoDbTeamsStorage : ITeamStorage {
 //        )
         val result = client.getItem(tableName, mapOf(
             "id" to AttributeValue().withS(teamId)
-        )).item.let { TeamModel.from(Item.fromMap(it as Map<String,Any>)) }
+        )).item?.let { TeamModel.from(Item.fromMap(it as Map<String,Any>)) }
         return result
 //        val item = table.getItem(KeyAttribute("id", teamId)) ?: return null
 
