@@ -97,7 +97,7 @@ kotless {
         terraform {
             allowDestroy = true
             files {
-                add(file("src/main/tf/dynamodb-teams.tf"))
+                add(file("src/main/tf/dynamodb.tf"))
             }
         }
     }
@@ -117,7 +117,7 @@ tasks {
         doLast {
             println("COOOPY")
             copy {
-                from("src/main/tf/dynamodb-teams-access.tf")
+                from("src/main/tf/dynamodb-access.tf")
                 into(myGenDirectory)
                 println("COOOPY IN $myGenDirectory")
             }

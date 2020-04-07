@@ -6,13 +6,13 @@ import com.crowdproj.rest.teams.models.Profile
 import com.crowdproj.rest.teams.models.ProfileStatus
 
 fun ProfileModel.toApiProfile(): Profile = Profile(
-    id = id,
-    alias = alias,
-    fName = fName,
-    mName = mName,
-    lName = lName,
-    email = email,
-    phone = phone,
+    id = id.takeIf { it.isNotBlank() },
+    alias = alias.takeIf { it.isNotBlank() },
+    fName = fName.takeIf { it.isNotBlank() },
+    mName = mName.takeIf { it.isNotBlank() },
+    lName = lName.takeIf { it.isNotBlank() },
+    email = email.takeIf { it.isNotBlank() },
+    phone = phone.takeIf { it.isNotBlank() },
     profileStatus = status.toApiProfileStatus()
 )
 

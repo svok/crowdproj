@@ -63,16 +63,13 @@ object DynamoDbTeamsStorage : ITeamStorage {
     }
 
     override suspend fun get(teamId: String): TeamModel? {
-//        val table = dynamoDB.getTable(
-//            tableName
-//        )
-        val result = client.getItem(tableName, mapOf(
-            "id" to AttributeValue().withS(teamId)
-        )).item?.let { TeamModel.from(Item.fromMap(it as Map<String,Any>)) }
-        return result
-//        val item = table.getItem(KeyAttribute("id", teamId)) ?: return null
-
-//        return TeamModel.from(item)
+        val table = dynamoDB.getTable(tableName)
+//        val result = client.getItem(tableName, mapOf(
+//            "id" to AttributeValue().withS(teamId)
+//        )).item?.let { TeamModel.from(Item.fromMap(it as Map<String,Any>)) }
+//        return result
+        val item = table.getItem(KeyAttribute("id", teamId)) ?: return null
+        return TeamModel.from(item)
     }
 
     override suspend fun create(team: TeamModel): String {
@@ -82,12 +79,8 @@ object DynamoDbTeamsStorage : ITeamStorage {
     }
 
     override suspend fun update(team: TeamModel) {
-        val table: Table = dynamoDB.getTable(
-            tableName
-        )
-
+        val table: Table = dynamoDB.getTable(tableName)
         val item = team.toItem()
-
         table.putItem(item)
     }
 
