@@ -97,8 +97,7 @@ kotless {
         terraform {
             allowDestroy = true
             files {
-                add(file("src/main/tf/extensions.tf"))
-//                add(file("src/main/tf/ttf-files.ft"))
+                add(file("src/main/tf/dynamodb-teams.tf"))
             }
         }
     }
@@ -111,6 +110,17 @@ tasks {
             jvmTarget = "1.8"
             languageVersion = "1.3"
             apiVersion = "1.3"
+        }
+    }
+
+    withType<io.kotless.plugin.gradle.tasks.gen.KotlessGenerateTask> {
+        doLast {
+            println("COOOPY")
+            copy {
+                from("src/main/tf/dynamodb-teams-access.tf")
+                into(myGenDirectory)
+                println("COOOPY IN $myGenDirectory")
+            }
         }
     }
 

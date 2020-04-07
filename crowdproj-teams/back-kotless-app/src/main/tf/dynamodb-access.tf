@@ -1,19 +1,3 @@
-resource "aws_dynamodb_table" "crowdproj-teams-table" {
-  name = "crowdproj-teams-table"
-  billing_mode = "PROVISIONED"
-  read_capacity = 20
-  write_capacity = 20
-  hash_key = "id"
-
-  attribute {
-    name = "id"
-    type = "S"
-  }
-
-}
-
-//data "aws_caller_identity" "current" {}
-//data "aws_region" "current" {}
 data "aws_iam_policy_document" "crowdproj_teams_table" {
   statement {
     sid    = "AllowRWDynamoDBTable"
