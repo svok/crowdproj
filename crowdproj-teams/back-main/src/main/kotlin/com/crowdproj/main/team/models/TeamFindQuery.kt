@@ -7,7 +7,7 @@ data class TeamFindQuery(
     val onDate: Instant = Instant.MAX,
     val timeCreatedFrom: Instant = Instant.MIN,
     val timeCreatedTill: Instant = Instant.MAX,
-    val offset: String = "",
+    val offset: Long = 0L,
     val limit: Long = DEFAULT_TEAMS_LIMIT,
     val statuses: Set<TeamStatusEnum> = mutableSetOf(),
     val visibilities: Set<TeamVisibility> = mutableSetOf(),

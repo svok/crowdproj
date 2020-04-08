@@ -340,6 +340,16 @@ components:
         - $ref: '#/components/schemas/ApiQuery'
         - type: object
           properties:
+            offset:
+              type: integer
+              format: int64
+              description: "This is a pagination parameter. \"Offset\" elements will be skipped from the beginning of the result set"
+              example: 10
+            limit:
+              type: integer
+              format: int64
+              description: "This is a pagination parameter. Only \"limit\" elements will be returned in the result set"
+              example: 100
             tagIds:
               type: array
               items:

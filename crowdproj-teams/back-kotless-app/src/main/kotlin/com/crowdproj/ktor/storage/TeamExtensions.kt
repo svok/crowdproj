@@ -6,6 +6,7 @@ import com.crowdproj.ktor.teams.storage.tag.toMain
 import com.crowdproj.main.profile.ProfileModel
 import com.crowdproj.main.tag.TagModel
 import com.crowdproj.main.team.models.*
+import com.crowdproj.main.team.models.TeamFindQuery.Companion.DEFAULT_TEAMS_LIMIT
 import com.crowdproj.rest.teams.models.ApiQueryTeamFind
 import com.crowdproj.rest.teams.models.ApiQueryTeamSave
 import com.crowdproj.rest.teams.models.Team
@@ -108,4 +109,10 @@ fun TeamFindQuery.Companion.from(query: ApiQueryTeamFind) = TeamFindQuery(
 
 fun TeamSaveQuery.Companion.from(query: ApiQueryTeamSave) = TeamSaveQuery(
     team = query.data?.toMain() ?: TeamModel.NONE
+)
+
+fun ApiQueryTeamFind?.toMain() = if (this == null) TeamFindQuery.EMPTY
+else TeamFindQuery(
+    offset = offset ?: 0L,
+    limit = limit ?: DEFAULT_TEAMS_LIMIT
 )

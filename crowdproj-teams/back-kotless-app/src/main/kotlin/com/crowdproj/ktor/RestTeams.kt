@@ -4,12 +4,8 @@ import com.crowdproj.ktor.storage.*
 import com.crowdproj.main.team.TeamContext
 import com.crowdproj.main.team.TeamService
 import com.crowdproj.main.team.models.TeamModel
-import com.crowdproj.rest.teams.models.ApiError
-import com.crowdproj.rest.teams.models.ApiQueryTeamGet
-import com.crowdproj.rest.teams.models.ApiQueryTeamSave
-import com.crowdproj.rest.teams.models.ApiResponseTeam
-import io.kotless.PermissionLevel
-import io.kotless.dsl.lang.DynamoDBTable
+import com.crowdproj.rest.teams.apis.TeamApi
+import com.crowdproj.rest.teams.models.*
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
@@ -48,6 +44,14 @@ fun Routing.restTeams() {
             val request = call.receive<ApiQueryTeamGet>()
             it.requestTeamId = request.teamId ?: ""
             service.getTeam(it)
+        }
+    }
+
+    post("/teams/index") {
+        handleRequest {
+            val request = call.receive<ApiQueryTeamFind>()
+            it.query = request.toMain()
+            service.findTeams(it)
         }
     }
 
