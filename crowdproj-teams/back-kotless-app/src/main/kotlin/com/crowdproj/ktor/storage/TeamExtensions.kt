@@ -21,7 +21,7 @@ fun TeamModel.toItem() = Item()
     .apply { if (summary.isNotBlank()) withString("summary", summary) }
     .apply { if (description.isNotBlank()) withString("description", description) }
     .apply { if (owner.id.isNotBlank()) withString("ownerId", owner.id) }
-    .apply { if (photoUrls.isNotEmpty()) withStringSet("phoroUrls", photoUrls) }
+    .apply { if (photoUrls.isNotEmpty()) withStringSet("photoUrls", photoUrls) }
     .apply { if (tags.isNotEmpty()) withStringSet("tagIds", tags.map { it.id }.toSet()) }
     .apply { if (visibility != TeamVisibility.none) withString("visibility", visibility.toString()) }
     .apply { if (joinability != TeamJoinability.none) withString("joinability", joinability.toString()) }
@@ -90,8 +90,8 @@ fun TeamModel.toApiResult() = Team(
     summary = summary,
     description = description.takeIf { it.isNotBlank() },
     owner = owner.toApiProfile(),
-    photoUrls = photoUrls.toTypedArray(),
-    tags = tags.toApiTags().toTypedArray(),
+    photoUrls = photoUrls.takeIf { it.isNotEmpty() }?.toTypedArray(),
+    tags = tags.takeIf { it.isNotEmpty() }?.toApiTags()?.toTypedArray(),
     visibility = visibility.toApiTeamVisibility()
 )
 
@@ -102,10 +102,6 @@ fun TeamVisibility.toApiTeamVisibility(): ApiTeamVisibility? = when (this) {
     TeamVisibility.membersOnly -> ApiTeamVisibility.teamMembersOnly
     TeamVisibility.registeredOnly -> ApiTeamVisibility.teamRegisteredOnly
 }
-
-fun TeamFindQuery.Companion.from(query: ApiQueryTeamFind) = TeamFindQuery(
-    tagIds = query.tagIds?.toSet() ?: emptySet()
-)
 
 fun TeamSaveQuery.Companion.from(query: ApiQueryTeamSave) = TeamSaveQuery(
     team = query.data?.toMain() ?: TeamModel.NONE

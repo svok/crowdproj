@@ -53,7 +53,6 @@ object DynamoDbTeamsStorage : ITeamStorage {
 
         if (query.limit != 0L) {
             request.withMaxResultSize((query.limit + query.offset).toInt())
-//            request.withScanIndexForward(query.limit > 0L)
         }
 
         val scanResult = table.scan(request)
