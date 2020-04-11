@@ -4,9 +4,6 @@ plugins {
 
 dependencies {
     val konveyorVersion: String by project
-
-    implementation(project(":crowdproj-common:crowdproj-common-kt"))
-
     implementation(kotlin("stdlib-jdk8"))
     implementation("codes.spectrum:konveyor:$konveyorVersion")
 }

@@ -29,7 +29,7 @@ dependencies {
 
     implementation(project(":crowdproj-teams:generated-models-kt"))
     implementation(project(":crowdproj-teams:back-main"))
-    implementation(project(":crowdproj-common"))
+    implementation(project(":crowdproj-common:crowdproj-common-kt"))
 
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)

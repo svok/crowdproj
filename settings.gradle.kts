@@ -9,11 +9,19 @@ include(":crowdproj-front-public")
 include(":crowdproj-back-main")
 include(":crowdproj-back-app")
 
+// common
+include(":crowdproj-common")
+include(":crowdproj-common:crowdproj-common-kt")
+include(":crowdproj-common:crowdproj-common-dt")
+
+// teams backend
 include(":crowdproj-teams")
 include(":crowdproj-teams:generated-models-kt")
 include(":crowdproj-teams:generated-models-dt")
 include(":crowdproj-teams:back-main")
 include(":crowdproj-teams:back-kotless-app")
+include(":crowdproj-teams:front-teams-models")
+include(":crowdproj-teams:front-teams-rest")
 include(":crowdproj-teams:front-teams")
 
 pluginManagement {

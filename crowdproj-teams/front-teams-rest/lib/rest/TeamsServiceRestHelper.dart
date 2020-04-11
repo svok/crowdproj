@@ -1,17 +1,18 @@
-import 'package:crowdproj/api/models/ApiResponse.dart' as local;
-import 'package:crowdproj/api/models/Profile.dart' as local;
-import 'package:crowdproj/api/models/Team.dart' as local;
-import 'package:crowdproj/api/models/TeamVisibility.dart' as local;
-import 'package:crowdproj/api/models/TeamJoinability.dart' as local;
-import 'package:crowdproj/api/models/TeamStatus.dart' as local;
-import 'package:crowdproj_models/model/profile.dart' as remote;
-import 'package:crowdproj_models/model/team.dart' as remote;
-import 'package:crowdproj_models/model/api_error.dart' as remote;
-import 'package:crowdproj_models/model/api_response.dart' as remote;
-import 'package:crowdproj_models/model/api_response_team.dart' as remote;
-import 'package:crowdproj_models/model/team_joinability.dart' as remote;
-import 'package:crowdproj_models/model/team_status.dart' as remote;
-import 'package:crowdproj_models/model/team_visibility.dart' as remote;
+import 'package:crowdproj_teams_models/models/ApiResponse.dart' as local;
+import 'package:crowdproj_teams_models/models/Profile.dart' as local;
+import 'package:crowdproj_teams_models/models/Team.dart' as local;
+import 'package:crowdproj_teams_models/models/TeamVisibility.dart' as local;
+import 'package:crowdproj_teams_models/models/TeamJoinability.dart' as local;
+import 'package:crowdproj_teams_models/models/TeamStatus.dart' as local;
+
+import 'package:generated_models_teams/model/profile.dart' as remote;
+import 'package:generated_models_teams/model/team.dart' as remote;
+import 'package:generated_models_teams/model/api_error.dart' as remote;
+import 'package:generated_models_teams/model/api_response.dart' as remote;
+import 'package:generated_models_teams/model/api_response_team.dart' as remote;
+import 'package:generated_models_teams/model/team_joinability.dart' as remote;
+import 'package:generated_models_teams/model/team_status.dart' as remote;
+import 'package:generated_models_teams/model/team_visibility.dart' as remote;
 
 class TeamsServiceRestHelper {
 
