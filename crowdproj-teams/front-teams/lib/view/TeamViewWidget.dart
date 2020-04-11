@@ -1,6 +1,8 @@
 import 'package:crowdproj_teams/translations/TeamsLocalizations.dart';
 import 'package:crowdproj_teams_models/models/ApiResponse.dart';
 import 'package:crowdproj_teams_models/models/Team.dart';
+import 'package:crowdproj_teams_models/models/TeamAccess.dart';
+import 'package:crowdproj_teams_models/models/TeamRelations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
