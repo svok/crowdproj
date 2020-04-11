@@ -40,6 +40,14 @@ class AppSession {
 
     // Clean up storage for debug mode
 //    if (kDebugMode) await _securePrefs.clear();
+    await TeamsModule.init(
+      transportService: TeamsServiceStub(),
+      locateTo: (BuildContext context,
+          {MaterialPageRoute pageRoute,
+            RouteDescription routeDescription,
+            dynamic arguments}) async =>
+      {},
+    );
 
     final _cognitoSecureStorage = CognitoSecureStorage(_securePrefs);
     final _userPool = CognitoConfig.userPool(_cognitoSecureStorage);
@@ -47,14 +55,6 @@ class AppSession {
     final _locale = _parseLocale(await AppPlatform.getLanguage());
     await _auth.init();
 
-    await TeamsModule.init(
-      transportService: TeamsModule().transportService,
-      locateTo: (BuildContext context,
-              {MaterialPageRoute pageRoute,
-              RouteDescription routeDescription,
-              dynamic arguments}) async =>
-          {},
-    );
 
     _instance = AppSession._(
       userPool: _userPool,
