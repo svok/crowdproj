@@ -14,7 +14,7 @@ description: A new Flutter Front application
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
   meta: ^1.1.8
@@ -23,6 +23,8 @@ dependencies:
 
   crowdproj_models:
     path: ../crowdproj_models
+  crowdproj_teams:
+    path: ../../crowdproj-teams/front-teams
 
   flutter_localizations:
     sdk: flutter

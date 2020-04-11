@@ -1,0 +1,4 @@
+class TeamsPageArgs {
+  TeamsPageArgs(): super();
+}
+

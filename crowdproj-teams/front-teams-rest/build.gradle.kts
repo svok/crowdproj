@@ -9,7 +9,8 @@ flutter {
 tasks {
 
     create("build") {
-        dependsOn(flutterBuildRunner)
+        group = "build"
+        dependsOn(flutterPubUpgrade)
     }
 
 }

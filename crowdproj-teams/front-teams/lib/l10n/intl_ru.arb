@@ -1,0 +1,127 @@
+{
+  "@@last_modified": "2020-01-19T18:46:11.236888",
+  "AuthLocalizations_title": "Authentication",
+  "@AuthLocalizations_title": {
+    "description": "Default title for AuthPage",
+    "type": "text",
+    "placeholders": {}
+  },
+  "AuthLocalizations_titleLogin": "Sign In",
+  "@AuthLocalizations_titleLogin": {
+    "description": "Title for Login page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "AuthLocalizations_titleRegister": "Sign Up",
+  "@AuthLocalizations_titleRegister": {
+    "description": "Title for Registration page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "AuthLocalizations_titleConfirm": "Confirm",
+  "@AuthLocalizations_titleConfirm": {
+    "description": "Title for email and/or phone number confirmation page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "AuthLocalizations_titleUpdate": "Update Account",
+  "@AuthLocalizations_titleUpdate": {
+    "description": "Title for user account update page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "AuthLocalizations_signoutFor": "Sign out: {userName}",
+  "@AuthLocalizations_signoutFor": {
+    "description": "Title for email and/or phone number confirmation page",
+    "type": "text",
+    "placeholders": {
+      "userName": {}
+    }
+  },
+  "AuthLocalizations_emailError": "Email format is invalid: {faultyEmail}",
+  "@AuthLocalizations_emailError": {
+    "description": "Title for email and/or phone number confirmation page",
+    "type": "text",
+    "placeholders": {
+      "faultyEmail": {}
+    }
+  },
+  "ErrorLocalizations_titleErrorCoded": "Error: {code}",
+  "@ErrorLocalizations_titleErrorCoded": {
+    "description": "Title error page with error code",
+    "type": "text",
+    "placeholders": {
+      "code": {}
+    }
+  },
+  "ErrorLocalizations_titleErrorUncoded": "Error",
+  "@ErrorLocalizations_titleErrorUncoded": {
+    "description": "Title error page without error code",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ErrorLocalizations_labelFailedPage": "Failed page",
+  "@ErrorLocalizations_labelFailedPage": {
+    "description": "Label for failed page field on Error page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ErrorLocalizations_labelErrorDescription": "Error description",
+  "@ErrorLocalizations_labelErrorDescription": {
+    "description": "Label for error description field on Error page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ErrorLocalizations_errorWithoutCode": "Sorry. An error has occured. The error description: {description}",
+  "@ErrorLocalizations_errorWithoutCode": {
+    "description": "Description for an error having no code",
+    "type": "text",
+    "placeholders": {
+      "description": {}
+    }
+  },
+  "ErrorLocalizations_error404": "Sorry. The page you are loogin for is not found here",
+  "@ErrorLocalizations_error404": {
+    "description": "Description for error 404",
+    "type": "text",
+    "placeholders": {}
+  },
+  "ErrorLocalizations_unknownError": "Sorry. Unknown error has occured. The error description: {description}",
+  "@ErrorLocalizations_unknownError": {
+    "description": "Description for unknown error",
+    "type": "text",
+    "placeholders": {
+      "description": {}
+    }
+  },
+  "HomeLocalizations_title": "Hello World",
+  "@HomeLocalizations_title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "HomeLocalizations_titleAbout": "About",
+  "@HomeLocalizations_titleAbout": {
+    "description": "Title for the about page",
+    "type": "text",
+    "placeholders": {}
+  },
+  "PromoLocalizations_title": "Promo World",
+  "@PromoLocalizations_title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_title": "Teams",
+  "@TeamsLocalizations_title": {
+    "description": "Title for the Demo application",
+    "type": "text",
+    "placeholders": {}
+  },
+  "TeamsLocalizations_titleMyTeams": "My Teams",
+  "@TeamsLocalizations_titleMyTeams": {
+    "description": "Title for pages with the users teams lists",
+    "type": "text",
+    "placeholders": {}
+  }
+}

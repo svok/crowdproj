@@ -24,7 +24,7 @@ dependencies {
 
     implementation(project(":crowdproj-models-kt"))
     implementation(project(":crowdproj-back-main"))
-    implementation(project(":crowdproj-front-private:crowdproj", "webDistConfig"))
+    implementation(project(":crowdproj-front-private:crowdproj-front", "webDistConfig"))
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)
     implementation("commons-validator", "commons-validator", commonsValidatorVersion)
@@ -100,7 +100,7 @@ tasks {
     }
 
     val copyStaticPrivate = task<Sync>("copyWebDistPrivate") {
-        val proj = project(":crowdproj-front-private:crowdproj")
+        val proj = project(":crowdproj-front-private:crowdproj-front")
         dependsOn(copyStaticPublic)
         dependsOn(proj.getTasksByName("setWebArtifact", false))
         from(proj.configurations.getByName("webDistConfig").artifacts.files).
