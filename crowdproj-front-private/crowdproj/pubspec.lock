@@ -122,10 +122,45 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
+  crowdproj_common:
+    dependency: transitive
+    description:
+      path: "../../crowdproj-common/crowdproj-common-dt"
+      relative: true
+    source: path
+    version: "0.0.1"
   crowdproj_models:
     dependency: "direct main"
     description:
       path: "../crowdproj_models"
+      relative: true
+    source: path
+    version: "0.0.1"
+  crowdproj_teams:
+    dependency: "direct main"
+    description:
+      path: "../../crowdproj-teams/front-teams"
+      relative: true
+    source: path
+    version: "0.0.1"
+  crowdproj_teams_models:
+    dependency: transitive
+    description:
+      path: "../../crowdproj-teams/front-teams-models"
+      relative: true
+    source: path
+    version: "0.0.1"
+  crowdproj_teams_rest:
+    dependency: transitive
+    description:
+      path: "../../crowdproj-teams/front-teams-rest"
+      relative: true
+    source: path
+    version: "0.0.1"
+  crowdproj_teams_stub:
+    dependency: transitive
+    description:
+      path: "../../crowdproj-teams/front-teams-stub"
       relative: true
     source: path
     version: "0.0.1"
@@ -235,6 +270,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.27"
+  generated_models_teams:
+    dependency: transitive
+    description:
+      path: "../../crowdproj-teams/generated-models-dt"
+      relative: true
+    source: path
+    version: "0.0.1"
   glob:
     dependency: transitive
     description:

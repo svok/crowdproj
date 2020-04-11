@@ -21,7 +21,7 @@ class TeamsModule implements IModule {
   @override
   final LocateTo locateTo;
 
-  void init(
+  static void init(
       {@required ITeamsService transportService,
       @required LocateTo locateTo}) async {
     _instance = TeamsModule.main(

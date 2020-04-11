@@ -5,8 +5,10 @@ import 'package:crowdproj/modules/promo/PromoPage.dart';
 import 'package:crowdproj/modules/auth/CognitoConfig.dart';
 import 'package:crowdproj/modules/auth/AuthService.dart';
 import 'package:crowdproj/modules/auth/CognitoSecureStorage.dart';
+import 'package:crowdproj_common/common/RouteDescription.dart';
 import 'package:crowdproj_common/common/platforms/AppPlatform.dart';
 import 'package:crowdproj_common/common/storage/IAppPreferences.dart';
+import 'package:crowdproj_teams/crowdproj_teams.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
 import 'package:crowdproj_teams_stub/TeamsServiceStub.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +32,7 @@ class AppSession {
 
   static AppSession get get => _instance;
 
-  ITeamsService _teamsService = TeamsServiceStub();
-  ITeamsService get teamsService => _teamsService;
+  ITeamsService get teamsService => TeamsModule().transportService;
 
   static Future<void> init(BuildContext context) async {
     final _securePrefs = AppPlatform.getStorage('crowdproj.prefs');
@@ -45,6 +46,15 @@ class AppSession {
     final _auth = AuthService(_userPool);
     final _locale = _parseLocale(await AppPlatform.getLanguage());
     await _auth.init();
+
+    await TeamsModule.init(
+      transportService: TeamsModule().transportService,
+      locateTo: (BuildContext context,
+              {MaterialPageRoute pageRoute,
+              RouteDescription routeDescription,
+              dynamic arguments}) async =>
+          {},
+    );
 
     _instance = AppSession._(
       userPool: _userPool,
