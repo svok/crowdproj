@@ -1,6 +1,7 @@
 import 'package:amazon_cognito_identity_dart/cognito.dart';
 import 'package:crowdproj/modules/auth/AuthPage.dart';
 import 'package:crowdproj/modules/home/HomePage.dart';
+import 'package:crowdproj/modules/navigator/LocateToNavigator.dart';
 import 'package:crowdproj/modules/promo/PromoPage.dart';
 import 'package:crowdproj/modules/auth/CognitoConfig.dart';
 import 'package:crowdproj/modules/auth/AuthService.dart';
@@ -42,11 +43,7 @@ class AppSession {
 //    if (kDebugMode) await _securePrefs.clear();
     await TeamsModule.init(
       transportService: TeamsServiceStub(),
-      locateTo: (BuildContext context,
-          {MaterialPageRoute pageRoute,
-            RouteDescription routeDescription,
-            dynamic arguments}) async =>
-      {},
+      locateTo: LocateToNavigator.locateTo,
     );
 
     final _cognitoSecureStorage = CognitoSecureStorage(_securePrefs);
