@@ -3,6 +3,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     id("com.github.ben-manes.versions")
     id("org.openapi.generator")
+    id("org.ysb33r.terraform.wrapper")
 }
 
 group = "com.crowdproj"
@@ -28,4 +29,5 @@ tasks {
         group = "build"
         delete("$projectDir/res")
     }
+
 }

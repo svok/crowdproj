@@ -35,7 +35,11 @@ tasks {
     val cleanDartModels by creating(Delete::class) {
         group = "openapi"
         fileTree(project.projectDir).visit {
-            if (!file.name.endsWith(".kts")) {
+            if (file.name !in listOf(
+                    "build.gradle.kts",
+                    ".openapi-generator-ignore"
+                )
+            ) {
                 delete(file)
             }
         }

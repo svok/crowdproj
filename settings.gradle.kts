@@ -29,6 +29,7 @@ pluginManagement {
     val versionsPluginVersion: String by settings
     val kotlessVersion: String by settings
     val orchidVersion: String by settings
+    val terraformPluginVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion apply false
@@ -38,6 +39,12 @@ pluginManagement {
         id("io.kotless") version kotlessVersion apply false
 
         id("com.eden.orchidPlugin") version orchidVersion
+
+        id("org.ysb33r.terraform.base") version terraformPluginVersion apply false
+        id("org.ysb33r.terraform") version terraformPluginVersion apply false
+        id("org.ysb33r.terraform.rc") version terraformPluginVersion apply false
+        id("org.ysb33r.terraform.wrapper") version terraformPluginVersion apply false
+
     }
 
     repositories {

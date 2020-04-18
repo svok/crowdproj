@@ -1,5 +1,9 @@
 plugins {
     id("com.eden.orchidPlugin")
+//    id("org.ysb33r.terraform.base")
+    id("org.ysb33r.terraform")
+//    id("org.ysb33r.terraform.rc")
+//    id("org.ysb33r.terraform.wrapper")
 }
 
 repositories {
@@ -40,6 +44,12 @@ orchid {
     runTask = "build"                             // specify a task to run with 'gradle orchidRun'
 }
 
+terraform {
+    variables {
+        `var`("sourcePath", orchid.destDir)
+    }
+}
+
 tasks {
 
     orchidBuild {
@@ -54,6 +64,16 @@ tasks {
     val setWebArtifact by creating {
         dependsOn(orchidBuild)
         artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
+    }
+
+//    val tfInit by getting {
+//        dependsOn(or)
+//    }
+    tfInit {
+        dependsOn(orchidBuild)
+    }
+    tfApply {
+        dependsOn(orchidBuild)
     }
 
     clean {
