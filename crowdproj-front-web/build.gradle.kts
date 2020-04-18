@@ -56,4 +56,8 @@ tasks {
         artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
     }
 
+    clean {
+        delete("$projectDir/out")
+    }
+
 }

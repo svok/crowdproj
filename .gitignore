@@ -17,6 +17,8 @@ gradle-app.setting
 gradle-local.properties
 local.properties
 
+/res
+
 /crowdproj-models-kt/*
 !/crowdproj-models-kt/build.gradle.kts
 !/crowdproj-models-kt/.openapi-generator-ignore

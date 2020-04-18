@@ -23,4 +23,9 @@ tasks {
         dependsOn(project(":crowdproj-teams").getTasksByName("build", false))
         dependsOn(project(":crowdproj-front-app").getTasksByName("build", false))
     }
+
+    val clean by creating(Delete::class) {
+        group = "build"
+        delete("$projectDir/res")
+    }
 }

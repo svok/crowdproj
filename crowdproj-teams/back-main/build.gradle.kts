@@ -18,4 +18,8 @@ tasks {
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
     }
+
+    clean {
+        delete("$projectDir/out")
+    }
 }

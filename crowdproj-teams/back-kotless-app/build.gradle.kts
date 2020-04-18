@@ -124,4 +124,7 @@ tasks {
         }
     }
 
+    clean {
+        delete("$projectDir/out")
+    }
 }
