@@ -2,7 +2,7 @@
 # See https://dart.dev/tools/pub/glossary#lockfile
 packages:
   amazon_cognito_identity_dart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "."
       ref: HEAD
@@ -88,7 +88,7 @@ packages:
     source: hosted
     version: "6.8.2"
   carousel_slider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: carousel_slider
       url: "https://pub.dartlang.org"
@@ -132,33 +132,40 @@ packages:
   crowdproj_common:
     dependency: "direct main"
     description:
-      path: "../../crowdproj-common/crowdproj-common-dt"
+      path: "../crowdproj-common/crowdproj-common-dt"
+      relative: true
+    source: path
+    version: "0.0.1"
+  crowdproj_teams:
+    dependency: "direct main"
+    description:
+      path: "../crowdproj-teams/front-teams"
       relative: true
     source: path
     version: "0.0.1"
   crowdproj_teams_models:
     dependency: "direct main"
     description:
-      path: "../front-teams-models"
+      path: "../crowdproj-teams/front-teams-models"
       relative: true
     source: path
     version: "0.0.1"
   crowdproj_teams_rest:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      path: "../front-teams-rest"
+      path: "../crowdproj-teams/front-teams-rest"
       relative: true
     source: path
     version: "0.0.1"
   crowdproj_teams_stub:
     dependency: "direct main"
     description:
-      path: "../front-teams-stub"
+      path: "../crowdproj-teams/front-teams-stub"
       relative: true
     source: path
     version: "0.0.1"
   crypted_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "."
       ref: HEAD
@@ -188,14 +195,14 @@ packages:
     source: hosted
     version: "1.3.3"
   devicelocale:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: devicelocale
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.3"
   dio:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: dio
       url: "https://pub.dartlang.org"
@@ -257,7 +264,7 @@ packages:
     source: sdk
     version: "0.0.0"
   font_awesome_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
@@ -273,7 +280,7 @@ packages:
   generated_models_teams:
     dependency: transitive
     description:
-      path: "../generated-models-dt"
+      path: "../crowdproj-teams/generated-models-dt"
       relative: true
     source: path
     version: "0.0.1"
@@ -362,7 +369,7 @@ packages:
     source: hosted
     version: "0.12.6"
   meta:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: meta
       url: "https://pub.dartlang.org"
@@ -390,7 +397,7 @@ packages:
     source: hosted
     version: "1.0.1+2"
   openapi_dart_common:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: openapi_dart_common
       url: "https://pub.dartlang.org"
@@ -460,14 +467,14 @@ packages:
     source: hosted
     version: "2.1.3"
   rxdart:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.23.1"
   shared_preferences:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences
       url: "https://pub.dartlang.org"
@@ -556,7 +563,7 @@ packages:
     source: hosted
     version: "1.1.6"
   url_launcher:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: url_launcher
       url: "https://pub.dartlang.org"
@@ -584,7 +591,7 @@ packages:
     source: hosted
     version: "0.1.1+1"
   uuid:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: uuid
       url: "https://pub.dartlang.org"

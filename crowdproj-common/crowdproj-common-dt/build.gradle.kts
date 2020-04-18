@@ -9,7 +9,7 @@ flutter {
 tasks {
 
     create("build") {
-        dependsOn(flutterBuildRunner)
+        dependsOn(flutterPubUpgrade)
     }
 
     create<Delete>("clean") {

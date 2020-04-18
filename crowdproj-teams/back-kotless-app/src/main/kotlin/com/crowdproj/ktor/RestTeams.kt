@@ -84,7 +84,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleRequest(
         ApiResponseTeam(
             timeReceived = timeStart.toString(),
             timeFinished = Instant.now().toString(),
-            status = ApiResponseTeam.Status.responseOk,
+            status = ApiResponseStatus.responseOk,
             errors = context.errors.toApiErrors().toTypedArray(),
             data = context.result.toApiResults().toTypedArray()
         )
@@ -92,7 +92,7 @@ private suspend fun PipelineContext<Unit, ApplicationCall>.handleRequest(
         ApiResponseTeam(
             timeReceived = timeStart.toString(),
             timeFinished = Instant.now().toString(),
-            status = ApiResponseTeam.Status.responseOk,
+            status = ApiResponseStatus.responseOk,
             errors = arrayOf(
                 ApiError(
                     code = "error-handler",

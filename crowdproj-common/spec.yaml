@@ -1,0 +1,412 @@
+openapi: 3.0.1
+info:
+  title: Crowdproj models
+  description: 'This spec contains a [Crowdproj](http://crowdpwoj.com) project models and api description.'
+  # termsOfService: http://swagger.io/terms/
+  contact:
+    email: sokatov@gmail.com
+  license:
+    name: Proprietar
+    # url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+# externalDocs:
+#   description: Find out more about Swagger
+#   url: http://swagger.io
+servers:
+  - url: https://crowdproj.com/v1
+  - url: http://localhost:8080
+tags:
+  - name: teams
+    description: Full description of the teams
+    # externalDocs:
+    #   description: Find out more
+    #   url: http://swagger.io
+  - name: profiles
+    description: Description of the user profiles
+  - name: groups
+    description: Definitions of the groups of users/teams
+    # externalDocs:
+    #   description: Find out more about our store
+    #   url: http://swagger.io
+paths:
+  # /store/inventory:
+  #   get:
+  #     tags:
+  #       - store
+  #     summary: Returns team inventories by status
+  #     description: Returns a map of status codes to quantities
+  #     operationId: getInventory
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/json:
+  #             schema:
+  #               type: object
+  #               additionalProperties:
+  #                 type: integer
+  #                 format: int32
+  #     security:
+  #       - api_key: []
+  # /store/order:
+  #   post:
+  #     tags:
+  #       - store
+  #     summary: Place an order for a team
+  #     operationId: placeOrder
+  #     requestBody:
+  #       description: order placed for purchasing the team
+  #       content:
+  #         '*/*':
+  #           schema:
+  #             $ref: '#/components/schemas/Order'
+  #       required: true
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #       400:
+  #         description: Invalid Order
+  #         content: {}
+  #     x-codegen-request-body-name: body
+  # /store/order/{orderId}:
+  #   get:
+  #     tags:
+  #       - store
+  #     summary: Find purchase order by ID
+  #     description: For valid response try integer IDs with value >= 1 and <= 10.         Other
+  #       values will generated exceptions
+  #     operationId: getOrderById
+  #     parameters:
+  #       - name: orderId
+  #         in: path
+  #         description: ID of team that needs to be fetched
+  #         required: true
+  #         schema:
+  #           maximum: 10.0
+  #           minimum: 1.0
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       200:
+  #         description: successful operation
+  #         content:
+  #           application/xml:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #           application/json:
+  #             schema:
+  #               $ref: '#/components/schemas/Order'
+  #       400:
+  #         description: Invalid ID supplied
+  #         content: {}
+  #       404:
+  #         description: Order not found
+  #         content: {}
+  #   delete:
+  #     tags:
+  #       - store
+  #     summary: Delete purchase order by ID
+  #     description: For valid response try integer IDs with positive integer value.         Negative
+  #       or non-integer values will generate API errors
+  #     operationId: deleteOrder
+  #     parameters:
+  #       - name: orderId
+  #         in: path
+  #         description: ID of the order that needs to be deleted
+  #         required: true
+  #         schema:
+  #           minimum: 1.0
+  #           type: integer
+  #           format: int64
+  #     responses:
+  #       400:
+  #         description: Invalid ID supplied
+  #         content: {}
+  #       404:
+  #         description: Order not found
+  #         content: {}
+  /profile:
+    post:
+      tags:
+        - profile
+      summary: Create profile
+      description: This can only be done by the logged in profile.
+      operationId: createProfile
+      requestBody:
+        description: Created profile object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /profile/createWithArray:
+    post:
+      tags:
+        - profile
+      summary: Creates list of profiles with given input array
+      operationId: createProfilesWithArrayInput
+      requestBody:
+        description: List of profile object
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /profile/createWithList:
+    post:
+      tags:
+        - profile
+      summary: Creates list of profiles with given input array
+      operationId: createProfilesWithListInput
+      requestBody:
+        description: List of profile object
+        content:
+          '*/*':
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      x-codegen-request-body-name: body
+  /profile/login:
+    get:
+      tags:
+        - profile
+      summary: Logs profile into the system
+      operationId: loginProfile
+      parameters:
+        - name: profilename
+          in: query
+          description: The profile name for login
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: The password for login in clear text
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          headers:
+            X-Rate-Limit:
+              description: calls per hour allowed by the profile
+              schema:
+                type: integer
+                format: int32
+            X-Expires-After:
+              description: date in UTC when token expires
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/xml:
+              schema:
+                type: string
+            application/json:
+              schema:
+                type: string
+        400:
+          description: Invalid profilename/password supplied
+          content: {}
+  /profile/logout:
+    get:
+      tags:
+        - profile
+      summary: Logs out current logged in profile session
+      operationId: logoutProfile
+      responses:
+        default:
+          description: successful operation
+          content: {}
+  /profile/{username}:
+    get:
+      tags:
+        - profile
+      summary: Get profile by user name
+      operationId: getProfileByName
+      parameters:
+        - name: username
+          in: path
+          description: 'The name that needs to be fetched. Use user1 for testing. '
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        400:
+          description: Invalid username supplied
+          content: {}
+        404:
+          description: Profile not found
+          content: {}
+    put:
+      tags:
+        - profile
+      summary: Updated profile
+      description: This can only be done by the logged in profile.
+      operationId: updateProfile
+      parameters:
+        - name: username
+          in: path
+          description: name that need to be updated
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: Updated user object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Profile'
+        required: true
+      responses:
+        400:
+          description: Invalid profile supplied
+          content: {}
+        404:
+          description: Profile not found
+          content: {}
+      x-codegen-request-body-name: body
+    delete:
+      tags:
+        - profile
+      summary: Delete profile
+      description: This can only be done by the logged in profile.
+      operationId: deleteProfile
+      parameters:
+        - name: username
+          in: path
+          description: The name that needs to be deleted
+          required: true
+          schema:
+            type: string
+      responses:
+        400:
+          description: Invalid username supplied
+          content: {}
+        404:
+          description: Profile not found
+          content: {}
+components:
+  schemas:
+    ApiQuery:
+      type: object
+      description: "Basic query structure that must be sent to request some fuctionality from the server"
+      properties:
+        stub:
+          type: string
+          description: "The request requires not normal operation but a stub data from the server"
+        debug:
+          type: string
+          description: "Request a debug information from the server"
+
+    ApiResponse:
+      type: object
+      description: "Basic response structure that to be received from the server due to API request"
+      properties:
+        timeReceived:
+          type: string
+          example: "2019-02-03T16:17:18.000Z"
+        timeFinished:
+          type: string
+          example: "2019-02-03T16:17:18.100Z"
+        status:
+          $ref: '#/components/schemas/ApiResponseStatus'
+        errors:
+          type: array
+          description: "Errors, warnings and info messages concerning the response"
+          items:
+            $ref: '#/components/schemas/ApiError'
+        debug:
+          type: object
+
+    ApiResponseStatus:
+      type: string
+      description: "Result of the request handling by server"
+      example: "responseOk"
+      enum:
+        - responseOk
+        - responseError
+
+    ApiError:
+      type: object
+      description: "Error description"
+      properties:
+        code:
+          type: string
+          description: "Error code"
+          example: "validation-invalid-symbols"
+        field:
+          type: string
+          description: "Field the error concerns to"
+          example: "firstName"
+        message:
+          type: string
+          description: "Short message describing the error"
+          example: "Field must contain only letters and -' symbols"
+        description:
+          type: string
+          description: "Extended description of the error"
+          example: "The field firstName must contain only letter, i.e. symbols a-z, А-Я, etc. Also \"-\" (dash) and \"'\" (single quotation) are allowed. Examples: Johnes, O'neil, Frederic-Rich"
+        level:
+          type: string
+          description: "Error level"
+          example: "error"
+          enum:
+            - fatal
+            - error
+            - warning
+            - info
+            - hint
+
+  securitySchemes:
+    crowdproj_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: http://teamstore.swagger.io/oauth/dialog
+          scopes:
+            write:teams: modify teams in your account
+            read:teams: read your teams
+        authorizationCode:
+          authorizationUrl: https://example.com/oauth/authorize
+          tokenUrl: https://example.com/oauth/token
+          scopes:
+            read: Grants read access
+            write: Grants write access
+            admin: Grants access to admin operations
+    api_key:
+      type: apiKey
+      name: api_key
+      in: header

@@ -9,11 +9,11 @@ version = rootProject.version
 
 tasks {
 
-    val specFile = "${project.projectDir}/crowdproj-spec-teams.yaml"
+    val specFile = "${project.projectDir}/spec.yaml"
 
     val modelsKt = project(":crowdproj-teams:generated-models-kt")
 
-    create<GenerateTask>("generateKotlinModels") {
+    val generateKotlinModels by creating(GenerateTask::class) {
         group = "openapi"
         val destDir = modelsKt.projectDir
         val genPackage = "${project.group}.rest.teams"
@@ -66,42 +66,50 @@ tasks {
 
     val modelsDt = project(":crowdproj-teams:generated-models-dt")
 
-    create<GenerateTask>("generateDartModels") {
-        group = "openapi"
-        val destDir = modelsDt.projectDir
-        val genPackage = "${project.group}.rest.teams"
-        inputs.files(specFile)
-        outputs.files(fileTree(destDir), file("$destDir/pubspec.yaml"))
-        generatorName.set("dart-dio")
-        inputSpec.set(specFile)
-        outputDir.set(destDir.absolutePath)
-        packageName.set(project.group.toString())
-//        modelPackage.set("${project.group}.models")
-        generateModelDocumentation.set(true)
-        generateModelTests.set(true)
-//        apiPackage.set("${project.group}.api")
-//        invokerPackage.set("${project.group}.invoker")
-        additionalProperties.set(
-            mapOf(
-                "pubName" to "generated_models_teams",
-                "pubDescription" to "Crowdproj Teams API generated REST-interface",
-                "pubVersion" to project.version.toString()
-            )
-        )
-    }
+//    val generateDartModels by creating(GenerateTask::class) {
+//        group = "openapi"
+//        val destDir = modelsDt.projectDir
+//        val genPackage = "${project.group}.rest.teams"
+//        inputs.files(specFile)
+//        outputs.files(fileTree(destDir), file("$destDir/spec.yaml"))
+//        generatorName.set("dart-dio")
+//        inputSpec.set(specFile)
+//        outputDir.set(destDir.absolutePath)
+//        packageName.set(project.group.toString())
+////        modelPackage.set("${project.group}.models")
+//        generateModelDocumentation.set(true)
+//        generateModelTests.set(true)
+////        apiPackage.set("${project.group}.api")
+////        invokerPackage.set("${project.group}.invoker")
+//        additionalProperties.set(
+//            mapOf(
+//                "pubName" to "generated_models_teams",
+//                "pubDescription" to "Crowdproj Teams API generated REST-interface",
+//                "pubVersion" to project.version.toString()
+//            )
+//        )
+//    }
+//
+//    val cleanDartModels by creating(Delete::class) {
+//        group = "openapi"
+//        fileTree(modelsDt.projectDir).visit {
+//            if (!file.name.endsWith(".kts")) {
+//                delete(file)
+//            }
+//        }
+//    }
 
-    val cleanDartModels by creating(Delete::class) {
-        group = "openapi"
-        fileTree(modelsDt.projectDir).visit {
-            if (!file.name.endsWith(".kts")) {
-                delete(file)
-            }
-        }
+    create("build") {
+        group = "build"
+//        dependsOn(generateDartModels)
+        dependsOn(generateKotlinModels)
+        dependsOn(project(":crowdproj-teams:front-teams").getTasksByName("build", false))
+        dependsOn(project(":crowdproj-teams:back-kotless-app").getTasksByName("build", false))
     }
 
     create<Delete>("clean", Delete::class) {
         group = BasePlugin.BUILD_GROUP
-        dependsOn(cleanDartModels)
+//        dependsOn(cleanDartModels)
         dependsOn(cleanKotlinModels)
     }
 

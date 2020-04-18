@@ -1,14 +1,5 @@
 rootProject.name = "crowdproj"
 
-include(":crowdproj-models-kt")
-include(":crowdproj-front-private:crowdproj_models")
-include(":crowdproj-front-public")
-include(":crowdproj-back-main")
-include(":crowdproj-back-app")
-
-// crowdptoj personal front application
-include(":crowdproj-front-private:crowdproj-front")
-
 // common
 include(":crowdproj-common")
 include(":crowdproj-common:crowdproj-common-kt")
@@ -24,6 +15,12 @@ include(":crowdproj-teams:front-teams-models")
 include(":crowdproj-teams:front-teams-rest")
 include(":crowdproj-teams:front-teams-stub")
 include(":crowdproj-teams:front-teams")
+
+// crowdptoj personal front application
+include(":crowdproj-front-app")
+
+// crowdptoj public web site
+include(":crowdproj-front-web")
 
 pluginManagement {
 

@@ -9,7 +9,7 @@ version = rootProject.version
 
 tasks {
 
-    val specFile = "${project.projectDir}/crowdproj-spec-profiles.yaml"
+    val specFile = "${project.projectDir}/spec.yaml"
 
     val modelsKt = project(":crowdproj-profiles:generated-models-kt")
 
@@ -71,7 +71,7 @@ tasks {
         val destDir = modelsDt.projectDir
         val genPackage = "${project.group}.rest.profiles"
         inputs.files(specFile)
-        outputs.files(fileTree(destDir), file("$destDir/pubspec.yaml"))
+        outputs.files(fileTree(destDir), file("$destDir/spec.yaml"))
         generatorName.set("dart-dio")
         inputSpec.set(specFile)
         outputDir.set(destDir.absolutePath)
