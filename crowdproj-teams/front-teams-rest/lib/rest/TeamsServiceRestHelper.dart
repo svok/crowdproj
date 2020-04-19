@@ -5,6 +5,7 @@ import 'package:crowdproj_teams_models/models/TeamVisibility.dart' as local;
 import 'package:crowdproj_teams_models/models/TeamJoinability.dart' as local;
 import 'package:crowdproj_teams_models/models/TeamStatus.dart' as local;
 
+import 'package:generated_models_teams/model/api_response_status.dart' as remote;
 import 'package:generated_models_teams/model/profile.dart' as remote;
 import 'package:generated_models_teams/model/team.dart' as remote;
 import 'package:generated_models_teams/model/api_error.dart' as remote;
@@ -30,10 +31,19 @@ class TeamsServiceRestHelper {
         timeFinished: DateTime.tryParse(remote.timeFinished),
       );
 
-  static local.ApiResponseStatuses fromResponseStatus(String str) =>
-      local.ApiResponseStatuses.values.firstWhere(
-              (e) => e.toString().toLowerCase() == str.toLowerCase(),
-          orElse: () => null); //return null if not found
+  static local.ApiResponseStatuses fromResponseStatus(remote.ApiResponseStatus status) {
+    switch (status) {
+      case remote.ApiResponseStatus.responseOk:
+        return local.ApiResponseStatuses.success;
+      case remote.ApiResponseStatus.responseError:
+        return local.ApiResponseStatuses.error;
+      default:
+        return null;
+    }
+  }
+//      local.ApiResponseStatuses.values.firstWhere(
+//              (e) => e.toString().toLowerCase() == status.toString().toLowerCase(),
+//          orElse: () => null); //return null if not found
 
   static local.ErrorLevels fromErrorLevels(String str) =>
       local.ErrorLevels.values.firstWhere(
