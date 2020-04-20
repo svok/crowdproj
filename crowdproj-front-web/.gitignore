@@ -1,3 +1,7 @@
 /build
 **/out
+/src/tf/main/terraform.tfstate
+/src/tf/main/terraform.tfstate.backup
+/src/tf/main/.terraform.tfstate.lock.info
+
 

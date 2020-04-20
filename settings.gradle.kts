@@ -44,6 +44,7 @@ pluginManagement {
         id("org.ysb33r.terraform") version terraformPluginVersion apply false
         id("org.ysb33r.terraform.rc") version terraformPluginVersion apply false
         id("org.ysb33r.terraform.wrapper") version terraformPluginVersion apply false
+        id("org.ysb33r.terraform.remotestate.s3") version terraformPluginVersion apply false
 
     }
 

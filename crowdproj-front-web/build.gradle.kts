@@ -2,6 +2,7 @@ plugins {
     id("com.eden.orchidPlugin")
 //    id("org.ysb33r.terraform.base")
     id("org.ysb33r.terraform")
+//    id("org.ysb33r.terraform.remotestate.s3")
 //    id("org.ysb33r.terraform.rc")
 //    id("org.ysb33r.terraform.wrapper")
 }
@@ -32,6 +33,9 @@ dependencies {
 //    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidAsciidoc:$orchidVersion")
 }
 
+val orchidDest = "$buildDir/docs"
+val orchidContentDest = orchidDest
+
 orchid {
     // Theme is required
     theme = "BsDoc"
@@ -42,38 +46,62 @@ orchid {
 //    srcDir  = "path/to/new/source/directory"      // defaults to 'src/orchid/resources'
 //    destDir = "path/to/new/destination/directory" // defaults to 'build/docs/orchid'
     runTask = "build"                             // specify a task to run with 'gradle orchidRun'
+    destDir = orchidDest
 }
 
 terraform {
+    val awsRegions: String by project
+    val apiVersion: String by project
+    val apiDomain: String by project
+    val awsBucket: String by project
+
+    val bucketState = awsBucket
+    val bucketPublic = "$awsBucket.$apiVersion-public"
+
     variables {
-        `var`("sourcePath", orchid.destDir)
+        `var`("sourcePath", orchidContentDest)
+        `var`("region", awsRegions)
+        `var`("domainZone", apiDomain)
+        `var`("domain", "$apiVersion.$apiDomain")
+        `var`("bucketPublic", bucketPublic)
+        `var`("enable_gzip", true)
+        `var`("enable_health_check", false)
+//        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
+//        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
     }
+//    remote {
+//        setPrefix("states-$apiVersion/state-public")
+//        s3 {
+//            setRegion(awsRegions)
+//            setBucket(bucketState)
+//        }
+//    }
 }
 
 tasks {
 
     orchidBuild {
         inputs.dir("src")
-        outputs.dir("$buildDir/docs")
+        outputs.dir(orchidDest)
         doFirst {
-            delete("$buildDir/docs")
+            delete(orchidDest)
         }
     }
 
-    val conf = project.configurations.create("webDistConfig")
-    val setWebArtifact by creating {
-        dependsOn(orchidBuild)
-        artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
-    }
+//    val conf = project.configurations.create("webDistConfig")
+//    val setWebArtifact by creating {
+//        dependsOn(orchidBuild)
+//        artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
+//    }
 
 //    val tfInit by getting {
 //        dependsOn(or)
 //    }
     tfInit {
-        dependsOn(orchidBuild)
+//        dependsOn(orchidBuild)
     }
     tfApply {
-        dependsOn(orchidBuild)
+//        dependsOn(orchidBuild)
     }
 
     clean {
