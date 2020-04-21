@@ -22,17 +22,19 @@ variable "enable_health_check" {
   default     = false
   description = "If true, it creates a Route53 health check that monitors the www endpoint and an alarm that triggers whenever it's not reachable. Please note this comes at an extra monthly cost on your AWS account"
 }
-
 //variable "health_check_alarm_sns_topics" {
 //  type        = list(string)
 //  default     = []
 //  description = "A list of SNS topics to notify whenever the health check fails or comes back to normal"
 //}
-
 variable "enable_gzip" {
   type        = string
   default     = true
   description = "Whether to make CloudFront automatically compress content for web requests that include `Accept-Encoding: gzip` in the request header"
+}
+variable "mime_types" {
+  type = map(string)
+  default = {}
 }
 
 //terraform {
@@ -118,14 +120,6 @@ EOF
 //  }
 }
 
-//resource "aws_s3_bucket" "redirect" {
-//  bucket = "${var.bucketPublic}_1"
-//
-//  website {
-//    redirect_all_requests_to = aws_s3_bucket.main.id
-//  }
-//}
-
 resource "aws_s3_bucket_object" "dist" {
   for_each = fileset(var.sourcePath, "**/*.*")
 
@@ -134,6 +128,13 @@ resource "aws_s3_bucket_object" "dist" {
   source = "${var.sourcePath}/${each.value}"
   # etag makes the file update when it changes; see https://stackoverflow.com/questions/56107258/terraform-upload-file-to-s3-on-every-apply
   etag   = filemd5("${var.sourcePath}/${each.value}")
+  acl = "public-read"
+//  content_type = lookup(
+//    var.mime_types,
+//    length(split(".", each.value)) > 0 ? element(split(".", each.value), -1) : "",
+//    "text/plain"
+//  )
+  content_type  = lookup(var.mime_types, split(".", each.value)[length(split(".", each.value)) - 1])
 }
 
 locals {

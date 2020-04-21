@@ -66,6 +66,19 @@ terraform {
         `var`("bucketPublic", bucketPublic)
         `var`("enable_gzip", true)
         `var`("enable_health_check", false)
+        map(mapOf<String, String>(
+            "txt" to "text/plain",
+            "html" to "text/html",
+            "css" to "text/style",
+            "jpg" to "image/jpeg",
+            "jpeg" to "image/jpeg",
+            "ttf" to "font/ttf",
+            "js" to "application/javascript",
+            "map" to "application/javascript",
+            "json" to "application/json",
+            "xml" to "text/xml",
+            "ico" to "image/vnd.microsoft.icon"
+        ), "mime_types")
 //        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
 //        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
     }
