@@ -49,12 +49,15 @@ kotless {
     val apiVersion: String by project
     val apiDomain: String by project
     val awsBucket: String by project
+    val awsBucketState: String by project
     val awsProfile: String by project
     val awsRegions: String by project
 
+    val serviceAlias = "${apiVersion}-teams"
+
     config {
-        bucket = "$awsBucket.teams"
-        prefix = "${apiVersion}-teams"
+        bucket = "$awsBucket.$serviceAlias"
+        prefix = serviceAlias
 
 //        dsl {
 //            workDirectory = file("src/main/static")
@@ -62,6 +65,8 @@ kotless {
 
         terraform {
             backend {
+                bucket = awsBucketState
+                key = "states-$apiVersion/state-teams"
             }
             provider {
             }
@@ -76,7 +81,7 @@ kotless {
 
     webapp {
         //Optional parameter, by default technical name will be generated
-        route53 = Route53("$apiVersion-teams", apiDomain, apiDomain)
+        route53 = Route53(serviceAlias, apiDomain, apiDomain)
         deployment {
             name = parent!!.name
             version = "1"
@@ -97,6 +102,7 @@ kotless {
         terraform {
             allowDestroy = true
             files {
+                add(file("src/main/tf/bucket-init.tf"))
                 add(file("src/main/tf/dynamodb.tf"))
             }
         }

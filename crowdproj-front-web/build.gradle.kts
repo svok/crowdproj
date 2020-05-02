@@ -54,15 +54,16 @@ terraform {
     val apiVersion: String by project
     val apiDomain: String by project
     val awsBucket: String by project
+    val awsBucketState: String by project
 
-    val bucketState = awsBucket
-    val bucketPublic = "$awsBucket.$apiVersion-public"
+    val serviceAlias = "$apiVersion-public"
+    val bucketPublic = "$awsBucket.$serviceAlias"
 
     variables {
         `var`("sourcePath", orchidContentDest)
         `var`("region", awsRegions)
         `var`("domainZone", apiDomain)
-        `var`("domain", "$apiVersion.$apiDomain")
+        `var`("domain", "$serviceAlias.$apiDomain")
         `var`("bucketPublic", bucketPublic)
         `var`("enable_gzip", true)
         `var`("enable_health_check", false)
@@ -86,7 +87,7 @@ terraform {
         setPrefix("states-$apiVersion/state-public")
         s3 {
             setRegion(awsRegions)
-            setBucket(bucketState)
+            setBucket(awsBucketState)
         }
     }
 }
