@@ -37,21 +37,14 @@ variable "mime_types" {
   default = {}
 }
 
-//terraform {
-//  backend "s3" {
-//  }
-//}
-//
-//data "terraform_remote_state" "aws_tf_remote_state" {
-//  backend = "s3"
-//  config = {
-//    bucket = var.bucketState
-//    key    = "statuses/status-v001-public.tfstate"
-//    region = var.region
-//    encrypt = true
-////    dynamodb_table = var.stateTable
-//  }
-//}
+terraform {
+  backend "s3" {
+  }
+}
+
+variable "remote_state" {
+  type = map(string)
+}
 
 provider "aws" {
   region = var.region
@@ -59,28 +52,6 @@ provider "aws" {
   version = "~> 2.7"
 }
 
-
-//resource "aws_s3_bucket" "b" {
-//  bucket = "com.crowdproj"
-//  acl    = "public-read"
-//  policy = "${file("policy.json")}"
-//
-//  website {
-//    index_document = "index.html"
-//    error_document = "error.html"
-//
-////    routing_rules = <<EOF
-////[{
-////    "Condition": {
-////        "KeyPrefixEquals": "docs/"
-////    },
-////    "Redirect": {
-////        "ReplaceKeyPrefixWith": "documents/"
-////    }
-////}]
-////EOF
-//  }
-//}
 
 resource "aws_s3_bucket" "state" {
   bucket = var.bucketState

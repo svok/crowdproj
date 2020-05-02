@@ -2,7 +2,7 @@ plugins {
     id("com.eden.orchidPlugin")
 //    id("org.ysb33r.terraform.base")
     id("org.ysb33r.terraform")
-//    id("org.ysb33r.terraform.remotestate.s3")
+    id("org.ysb33r.terraform.remotestate.s3")
 //    id("org.ysb33r.terraform.rc")
 //    id("org.ysb33r.terraform.wrapper")
 }
@@ -82,13 +82,13 @@ terraform {
 //        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
 //        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
     }
-//    remote {
-//        setPrefix("states-$apiVersion/state-public")
-//        s3 {
-//            setRegion(awsRegions)
-//            setBucket(bucketState)
-//        }
-//    }
+    remote {
+        setPrefix("states-$apiVersion/state-public")
+        s3 {
+            setRegion(awsRegions)
+            setBucket(bucketState)
+        }
+    }
 }
 
 tasks {
@@ -101,21 +101,14 @@ tasks {
         }
     }
 
-//    val conf = project.configurations.create("webDistConfig")
-//    val setWebArtifact by creating {
-//        dependsOn(orchidBuild)
-//        artifacts.add(conf.name, fileTree("$buildDir/docs/orchid").dir)
-//    }
-
-//    val tfInit by getting {
-//        dependsOn(or)
-//    }
-    tfInit {
-//        dependsOn(orchidBuild)
-    }
     tfApply {
-//        dependsOn(orchidBuild)
+        dependsOn(tfInit)
+        dependsOn(orchidBuild)
     }
+
+//    tfStatePush {
+//        stateFilePath = "$buildDir/tf/main/terraform.tfstate"
+//    }
 
     clean {
         delete("$projectDir/out")
