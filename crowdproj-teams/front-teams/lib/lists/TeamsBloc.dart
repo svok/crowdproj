@@ -14,7 +14,9 @@ import 'TeamsEventUpdate.dart';
 import 'TeamsState.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
-  TeamsBloc(this.context, this.teamRelation) : super();
+  TeamsBloc(this.context, this.teamRelation) : super() {
+    print("TeamsBloc CREATED");
+  }
 
   final TeamRelations teamRelation;
   final BuildContext context;
@@ -69,13 +71,17 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
       errors: [],
       isWaiting: true,
     );
-    final result = await TeamsModule().transportService.getTeams(query);
-    yield TeamsState(
-      query: query,
-      teams: result.teams,
-      errors: result.errors,
-      hasReachedMax: result.teams.length < query.limit,
-    );
+    try {
+      final result = await TeamsModule().transportService.getTeams(query);
+      yield TeamsState(
+        query: query,
+        teams: result.teams,
+        errors: result.errors,
+        hasReachedMax: result.teams.length < query.limit,
+      );
+    } catch(e) {
+      print("ERROR INITIALIZATION ${e.toString()}");
+    }
   }
 
   Stream<TeamsState> _readNext(TeamsEventReadNext event) async* {

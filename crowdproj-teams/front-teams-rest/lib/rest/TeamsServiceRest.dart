@@ -1,11 +1,14 @@
-import 'package:generated_models_teams/api.dart';
-import 'package:generated_models_teams/api/team_api.dart';
-import 'package:generated_models_teams/model/api_query_team_find.dart';
-import 'package:generated_models_teams/model/api_query_team_get.dart';
-import 'package:generated_models_teams/model/api_query_team_save.dart';
+import 'TeamsServiceRestHelper.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
 
-import 'package:crowdproj_teams_models/models/TeamsQuery.dart';
+import 'package:generated_models_teams/api.dart' as remote;
+import 'package:generated_models_teams/api/team_api.dart' as remote;
+import 'package:generated_models_teams/model/api_query_team_find.dart' as remote;
+import 'package:generated_models_teams/model/api_query_team_get.dart' as remote;
+import 'package:generated_models_teams/model/api_query_team_save.dart' as remote;
+import 'package:generated_models_teams/model/api_response_team.dart' as remote;
+
+import 'package:crowdproj_teams_models/models/TeamsQuery.dart' as local;
 import 'package:crowdproj_teams_models/models/Team.dart' as local;
 import 'package:crowdproj_teams_models/models/Profile.dart' as local;
 import 'package:crowdproj_teams_models/models/ApiResponse.dart' as local;
@@ -16,8 +19,8 @@ import 'package:dio/dio.dart';
 
 class TeamsServiceRest extends ITeamsService {
   String basePath;
-  GeneratedModelsTeams _models;
-  TeamApi _api;
+  remote.GeneratedModelsTeams _models;
+  remote.TeamApi _api;
 
   TeamsServiceRest({this.basePath}) : super() {
     BaseOptions _options = new BaseOptions(
@@ -26,13 +29,13 @@ class TeamsServiceRest extends ITeamsService {
       receiveTimeout: 3000,
     );
     Dio _dio = Dio(_options);
-    _models = GeneratedModelsTeams(dio: _dio);
+    _models = remote.GeneratedModelsTeams(dio: _dio);
     _api = _models.getTeamApi();
   }
 
   @override
   Future<local.ApiResponseTeam> saveTeam(local.Team team) async {
-    final webRes = await _api.addTeam(ApiQueryTeamSave((builder) => builder
+    final webRes = await _api.addTeam(remote.ApiQueryTeamSave((builder) => builder
         ..data = TeamsServiceRestHelper.toTeamBuilder(team)
     ));
     final res = webRes.data;
@@ -45,20 +48,35 @@ class TeamsServiceRest extends ITeamsService {
 
   @override
   Future<local.ApiResponseTeam> getTeam(String teamId) async {
-      final webRes = await _api.getTeam(ApiQueryTeamGet((builder) => builder.teamId = teamId));
+      final webRes = await _api.getTeam(remote.ApiQueryTeamGet((builder) => builder.teamId = teamId));
     final res = webRes.data;
     return TeamsServiceRestHelper.fromApiResponseTeam(res);
   }
 
-  Future<local.ApiResponseTeam> getTeams(TeamsQuery query) async {
-    final webRes = await _api.findTeams(ApiQueryTeamFind((builder) => builder
-        ..limit = query.limit
-        ..offset = query.offset
+  Future<local.ApiResponseTeam> getTeams(local.TeamsQuery query) async {
+    Response<remote.ApiResponseTeam> webRes;
+    try {
+      Response<remote.ApiResponseTeam> webRes = await _api.findTeams(
+          remote.ApiQueryTeamFind((builder) =>
+          builder
+            ..limit = query.limit
+            ..offset = query.offset
 //      ..s = query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
 //      tags: query.tagIds,
-    ));
-    final res = webRes.data;
-    return TeamsServiceRestHelper.fromApiResponseTeam(res);
+          ));
+      return webRes.data.toLocal();
+    } catch(e) {
+      return local.ApiResponseTeam(
+        errors: List<local.ApiError>()
+            ..add(local.ApiError(
+              code: webRes?.statusCode?.toString() ?? "unknown-error",
+              field: "",
+              message: e.toString(),
+              description: "Server error",
+              level: local.ErrorLevels.fatal,
+            ))
+      );
+    }
   }
 
   @override

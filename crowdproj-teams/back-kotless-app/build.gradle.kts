@@ -111,9 +111,11 @@ kotless {
 
 tasks {
 
+    val kotlinJvmTarget: String by project
+
     withType<KotlinJvmCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = kotlinJvmTarget
             languageVersion = "1.3"
             apiVersion = "1.3"
         }

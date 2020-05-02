@@ -3,24 +3,23 @@ import 'package:crowdproj_common/common/storage/AppPreferencesCrypted.dart';
 import 'package:crowdproj_common/common/storage/AppPreferencesShared.dart';
 import 'package:crowdproj_common/common/storage/IAppPreferences.dart';
 import 'package:devicelocale/devicelocale.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart'
     show debugDefaultTargetPlatformOverride;
 import 'package:flutter/material.dart';
 
 class AppPlatform {
   void setupRuntimeEnvironment() {
-    TargetPlatform targetPlatform;
-    if (Platform.isMacOS) {
-      targetPlatform = TargetPlatform.iOS;
-    } else if (Platform.isLinux || Platform.isWindows) {
-      targetPlatform = TargetPlatform.android;
-    } else {
-      targetPlatform = TargetPlatform.fuchsia;
-    }
-    if (targetPlatform != null) {
-      debugDefaultTargetPlatformOverride = targetPlatform;
-    }
+//    TargetPlatform targetPlatform;
+//    if (Platform.isMacOS) {
+//      targetPlatform = TargetPlatform.iOS;
+//    } else if (Platform.isLinux || Platform.isWindows) {
+////      targetPlatform = TargetPlatform.android;
+////    } else {
+//      targetPlatform = TargetPlatform.fuchsia;
+//    }
+//    if (targetPlatform != null) {
+//      debugDefaultTargetPlatformOverride = targetPlatform;
+//    }
   }
 
   void configWindow(String data, String title, String path) {}

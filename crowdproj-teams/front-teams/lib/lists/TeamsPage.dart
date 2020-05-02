@@ -36,8 +36,11 @@ class _TeamsPageState extends State<TeamsPage> {
     return PageSimple(
       title: localizer.titleTeams,
       body: BlocProvider(
-        create: (context) =>
-            TeamsBloc(context, TeamRelations.accessed)..add(TeamsEventInit()),
+        create: (context) {
+          print("CREATING TeamsBloc");
+          return TeamsBloc(context, TeamRelations.accessed)
+            ..add(TeamsEventInit());
+        },
         child: TeamsWidget(),
       ),
       floatingActionButton: Row(

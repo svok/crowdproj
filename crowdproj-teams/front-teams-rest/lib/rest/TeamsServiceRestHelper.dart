@@ -24,7 +24,8 @@ class TeamsServiceRestHelper {
   static local.ApiResponseTeam fromApiResponseTeam(
       remote.ApiResponseTeam remote) =>
       local.ApiResponseTeam(
-        teams: remote.data.map((remoteTeam) => fromTeam(remoteTeam)),
+//        teams: remote.data.map((remoteTeam) => fromTeam(remoteTeam)),
+        teams: List<local.Team>(),
         status: fromResponseStatus(remote.status),
         errors: remote.errors.map((el) => fromApiError(el)),
         timeRequested: DateTime.tryParse(remote.timeReceived),
@@ -148,4 +149,15 @@ class TeamsServiceRestHelper {
               local.toString().toLowerCase(),
           orElse: () => null); //return null if not found
 
+}
+
+extension RemoteApiResponseTeam on remote.ApiResponseTeam {
+  local.ApiResponseTeam toLocal() => local.ApiResponseTeam(
+//        teams: remote.data.map((remoteTeam) => fromTeam(remoteTeam)),
+    teams: List<local.Team>(),
+    status: TeamsServiceRestHelper.fromResponseStatus(status),
+    errors: errors.map((el) => TeamsServiceRestHelper.fromApiError(el)),
+    timeRequested: DateTime.tryParse(timeReceived),
+    timeFinished: DateTime.tryParse(timeFinished),
+  );
 }

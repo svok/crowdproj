@@ -9,11 +9,14 @@ dependencies {
 }
 
 tasks {
+
+    val kotlinJvmTarget: String by project
+
     compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = kotlinJvmTarget
     }
     compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = kotlinJvmTarget
     }
 
     clean {

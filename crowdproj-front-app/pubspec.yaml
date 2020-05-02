@@ -14,7 +14,7 @@ description: A new Flutter Front application
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.8.0 <3.0.0"
 
 dependencies:
   meta: ^1.1.8
@@ -31,6 +31,8 @@ dependencies:
     path: ../crowdproj-teams/front-teams-models
   crowdproj_teams_stub:
     path: ../crowdproj-teams/front-teams-stub
+  crowdproj_teams_rest:
+    path: ../crowdproj-teams/front-teams-rest
 
   flutter_localizations:
     sdk: flutter
@@ -38,16 +40,16 @@ dependencies:
   intl:
   intl_translation:
   font_awesome_flutter:
-  rxdart: ^0.23.1
+  rxdart:
   dio: ^3.0.9
-  openapi_dart_common: ^2.0.1
-  flutter_markdown: ^0.3.4
+  openapi_dart_common:
+  flutter_markdown:
 
-  bloc: ^3.0.0
-  flutter_bloc: ^3.2.0
+  bloc:
+  flutter_bloc:
 
-  carousel_slider: ^1.4.1
-  url_launcher: ^5.4.2
+  carousel_slider:
+  url_launcher:
   amazon_cognito_identity_dart:
     git:
       url: git://github.com/BerndWessels/amazon-cognito-identity-dart.git
@@ -55,11 +57,11 @@ dependencies:
     git:
       url: git@github.com:svok/crypted_preferences.git
 #      url: git@github.com:jaumard/crypted_preferences.git
-  devicelocale: ^0.2.3
-  shared_preferences: ^0.5.6+3
-  provider: ^4.0.4
-  uuid: ^2.0.4
-  equatable: ^1.1.1
+  devicelocale:
+  shared_preferences:
+  provider:
+  uuid:
+  equatable:
 #  window_utils:
 #    git: https://github.com/rive-app/window_utils
 

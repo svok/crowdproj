@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'CpSlide.dart';
 
 class CpCarousel extends StatefulWidget {
-  const CpCarousel(this.images);
+  CpCarousel(this.images);
 
   final List<CpSlide> images;
+  final CarouselController buttonCarouselController = CarouselController();
 
   @override
   _CpCarouselState createState() {
@@ -39,7 +40,7 @@ class _CpCarouselState extends State<CpCarousel> {
                   onTap: () {
                     setState(() {
                       _current = index;
-                      carouselSlider.jumpToPage(index);
+                      widget.buttonCarouselController.jumpToPage(index);
                     });
                   },
                   child: Container(
@@ -110,18 +111,23 @@ class _CpCarouselState extends State<CpCarousel> {
       List<Widget> imageWidgets, BuildContext context) {
     final media = MediaQuery.of(context);
     carouselSlider = CarouselSlider(
+      carouselController: widget.buttonCarouselController,
       items: imageWidgets,
-      autoPlay: false,
-      height: media.size.height - media.padding.top - media.padding.bottom - 32,
-      enableInfiniteScroll: false,
-      viewportFraction: 1.0,
-      enlargeCenterPage: true,
-      onPageChanged: (index) {
-        setState(() {
-          _current = index;
-        });
-      },
+      options: CarouselOptions(
+        autoPlay: false,
+        height:
+            media.size.height - media.padding.top - media.padding.bottom - 32,
+        enableInfiniteScroll: false,
+        viewportFraction: 1.0,
+        enlargeCenterPage: true,
+        onPageChanged: (index, reason) {
+          setState(() {
+            _current = index;
+          });
+        },
+      ),
     );
+
     return carouselSlider;
   }
 }

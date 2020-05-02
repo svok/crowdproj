@@ -110,10 +110,12 @@ tasks {
         into("$buildDir/web-static/pra")
     }
 
+    val kotlinJvmTarget: String by project
+
     val kc = withType<KotlinJvmCompile> {
         dependsOn(copyStaticPrivate)
         kotlinOptions {
-            jvmTarget = "1.8"
+            jvmTarget = kotlinJvmTarget
             languageVersion = "1.3"
             apiVersion = "1.3"
         }

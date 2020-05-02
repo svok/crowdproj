@@ -6,11 +6,11 @@ import 'package:crowdproj/modules/promo/PromoPage.dart';
 import 'package:crowdproj/modules/auth/CognitoConfig.dart';
 import 'package:crowdproj/modules/auth/AuthService.dart';
 import 'package:crowdproj/modules/auth/CognitoSecureStorage.dart';
-import 'package:crowdproj_common/common/RouteDescription.dart';
 import 'package:crowdproj_common/common/platforms/AppPlatform.dart';
 import 'package:crowdproj_common/common/storage/IAppPreferences.dart';
 import 'package:crowdproj_teams/crowdproj_teams.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
+import 'package:crowdproj_teams_rest/rest/TeamsServiceRest.dart';
 import 'package:crowdproj_teams_stub/TeamsServiceStub.dart';
 import 'package:flutter/material.dart';
 
@@ -42,7 +42,8 @@ class AppSession {
     // Clean up storage for debug mode
 //    if (kDebugMode) await _securePrefs.clear();
     await TeamsModule.init(
-      transportService: TeamsServiceStub(),
+//      transportService: TeamsServiceStub(),
+      transportService: TeamsServiceRest(basePath: "https://v001-teams.crowdproj.com"),
       locateTo: LocateToNavigator.locateTo,
     );
 
