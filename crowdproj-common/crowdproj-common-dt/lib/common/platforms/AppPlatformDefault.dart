@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 
 class AppPlatform {
   void setupRuntimeEnvironment() {
-//    TargetPlatform targetPlatform;
+    TargetPlatform targetPlatform;
 //    if (Platform.isMacOS) {
 //      targetPlatform = TargetPlatform.iOS;
 //    } else if (Platform.isLinux || Platform.isWindows) {
@@ -17,9 +17,9 @@ class AppPlatform {
 ////    } else {
 //      targetPlatform = TargetPlatform.fuchsia;
 //    }
-//    if (targetPlatform != null) {
-//      debugDefaultTargetPlatformOverride = targetPlatform;
-//    }
+    if (targetPlatform != null) {
+      debugDefaultTargetPlatformOverride = targetPlatform;
+    }
   }
 
   void configWindow(String data, String title, String path) {}

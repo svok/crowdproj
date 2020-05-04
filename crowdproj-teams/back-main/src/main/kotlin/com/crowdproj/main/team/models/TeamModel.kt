@@ -16,7 +16,8 @@ data class TeamModel(
     var joinability: TeamJoinability = TeamJoinability.none,
     var timeCreated: Instant = Instant.MIN,
     var lock: String = "",
-    var status: TeamStatusEnum = TeamStatusEnum.none
+    var status: TeamStatusEnum = TeamStatusEnum.none,
+    var relations: MutableSet<TeamRelations> = mutableSetOf()
 ) {
 
     companion object {

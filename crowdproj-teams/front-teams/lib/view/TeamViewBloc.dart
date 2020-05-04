@@ -87,7 +87,7 @@ class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    print('TeamBloc - Error\'s occured: $error, $stackTrace');
+    print('TeamViewBloc - Error\'s occured: $error, $stackTrace');
   }
 
 }

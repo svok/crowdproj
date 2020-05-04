@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:crowdproj_teams/TeamsModule.dart';
+import 'package:crowdproj_teams_models/models/ApiResponse.dart';
 import 'package:crowdproj_teams_models/models/Team.dart';
 import 'package:crowdproj_teams_models/models/TeamAccess.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
           teamUpdated: team.copyWith(),
         );
       }
-    } else if(teamId != null) {
+    } else if (teamId != null) {
       yield TeamUpdateState(
         teamId: teamId,
         team: Team(id: teamId),
@@ -87,7 +88,6 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
   }
 
   _sendTeamError(String teamId, Team team) {
-
 //    // target style
 //    final args = TeamPageArguments(teamId: teamId, team: team);
 //    TeamsModule().locateTo(context, routeDescription = ErrorPage.route, arguments = ErroPageArgs(
@@ -114,12 +114,29 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
     yield state.copyWith(
       isWaiting: true,
     );
-    final response = await service.saveTeam(state.teamUpdated);
-      yield TeamUpdateState(
-        team: response.team,
-        teamUpdated: response.team.copyWith(),
-        errors: response.errors,
-      );
+    ApiResponseTeam response;
+    try {
+      response = await service.saveTeam(state.teamUpdated);
+    } catch (e) {
+      print(e);
+      response = ApiResponseTeam(
+          teams: [],
+          status: ApiResponseStatuses.error,
+          errors: [
+            ApiError(
+              code: "unknown",
+              field: "",
+              message: e.toString(),
+              description: e.toString(),
+              level: ErrorLevels.fatal,
+            )
+          ]);
+    }
+    yield TeamUpdateState(
+      team: response.team,
+      teamUpdated: response.team.copyWith(),
+      errors: response.errors,
+    );
   }
 
   Stream<TeamUpdateState> _resetTeam(TeamUpdateEventReset event) async* {
@@ -136,6 +153,6 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    print('TeamBloc - Error\'s occured: $error, $stackTrace');
+    print('TeamUpdateBloc - Error\'s occured: $error, $stackTrace');
   }
 }

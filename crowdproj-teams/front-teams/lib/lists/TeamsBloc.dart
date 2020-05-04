@@ -73,11 +73,12 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
     );
     try {
       final result = await TeamsModule().transportService.getTeams(query);
+      final resultsNumber = result.teams?.length ?? 0;
       yield TeamsState(
         query: query,
         teams: result.teams,
         errors: result.errors,
-        hasReachedMax: result.teams.length < query.limit,
+        hasReachedMax: resultsNumber < query.limit,
       );
     } catch(e) {
       print("ERROR INITIALIZATION ${e.toString()}");

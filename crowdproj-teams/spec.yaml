@@ -334,6 +334,17 @@ components:
         - closed
         - deleted
 
+    TeamRelations:
+      type: string
+      description: Relations of the user to the team
+      enum:
+        - own
+        - member
+        - invitations
+        - accessed
+        - applied
+        - unavailable
+
 
     ApiQueryTeamFind:
       allOf:

@@ -13,7 +13,6 @@ import 'package:crowdproj_teams_models/models/Team.dart' as local;
 import 'package:crowdproj_teams_models/models/Profile.dart' as local;
 import 'package:crowdproj_teams_models/models/ApiResponse.dart' as local;
 
-import 'TeamsServiceRestHelper.dart';
 
 import 'package:dio/dio.dart';
 
@@ -36,10 +35,10 @@ class TeamsServiceRest extends ITeamsService {
   @override
   Future<local.ApiResponseTeam> saveTeam(local.Team team) async {
     final webRes = await _api.addTeam(remote.ApiQueryTeamSave((builder) => builder
-        ..data = TeamsServiceRestHelper.toTeamBuilder(team)
+        ..data = team.toRemoteBuilder()
     ));
     final res = webRes.data;
-    final localRes = TeamsServiceRestHelper.fromApiResponseTeam(res);
+    final localRes = res.toLocal();
     if (localRes?.status == local.ApiResponseStatuses.success) {
       notifyListeners();
     }
@@ -50,13 +49,13 @@ class TeamsServiceRest extends ITeamsService {
   Future<local.ApiResponseTeam> getTeam(String teamId) async {
       final webRes = await _api.getTeam(remote.ApiQueryTeamGet((builder) => builder.teamId = teamId));
     final res = webRes.data;
-    return TeamsServiceRestHelper.fromApiResponseTeam(res);
+    return res.toLocal();
   }
 
   Future<local.ApiResponseTeam> getTeams(local.TeamsQuery query) async {
     Response<remote.ApiResponseTeam> webRes;
     try {
-      Response<remote.ApiResponseTeam> webRes = await _api.findTeams(
+      webRes = await _api.findTeams(
           remote.ApiQueryTeamFind((builder) =>
           builder
             ..limit = query.limit
@@ -64,9 +63,10 @@ class TeamsServiceRest extends ITeamsService {
 //      ..s = query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
 //      tags: query.tagIds,
           ));
-      return webRes.data.toLocal();
+      return webRes.data?.toLocal();
     } catch(e) {
       return local.ApiResponseTeam(
+        status: local.ApiResponseStatuses.error,
         errors: List<local.ApiError>()
             ..add(local.ApiError(
               code: webRes?.statusCode?.toString() ?? "unknown-error",
