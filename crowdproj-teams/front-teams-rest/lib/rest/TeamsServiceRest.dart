@@ -24,8 +24,8 @@ class TeamsServiceRest extends ITeamsService {
   TeamsServiceRest({this.basePath}) : super() {
     BaseOptions _options = new BaseOptions(
       baseUrl: basePath,
-      connectTimeout: 5000,
-      receiveTimeout: 3000,
+//      connectTimeout: 50000,
+//      receiveTimeout: 30000,
     );
     Dio _dio = Dio(_options);
     _models = remote.GeneratedModelsTeams(dio: _dio);

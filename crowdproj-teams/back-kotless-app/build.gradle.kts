@@ -56,7 +56,7 @@ kotless {
     val serviceAlias = "${apiVersion}-teams"
 
     config {
-        bucket = "$awsBucket.$serviceAlias"
+        bucket = "$awsBucket.$apiVersion-backend"
         prefix = serviceAlias
 
 //        dsl {
@@ -66,7 +66,7 @@ kotless {
         terraform {
             backend {
                 bucket = awsBucketState
-                key = "states-$apiVersion/state-teams"
+                key = "states-$apiVersion/state-teams.tfstate"
             }
             provider {
             }
@@ -102,7 +102,7 @@ kotless {
         terraform {
             allowDestroy = true
             files {
-                add(file("src/main/tf/bucket-init.tf"))
+//                add(file("src/main/tf/bucket-init.tf"))
                 add(file("src/main/tf/dynamodb.tf"))
             }
         }
