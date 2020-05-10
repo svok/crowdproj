@@ -1,4 +1,4 @@
-package com.crowdproj.ktor.teams.storage.tag
+package com.crowdproj.aws.storage
 
 import com.crowdproj.main.tag.TagModel
 import com.crowdproj.rest.teams.models.Tag

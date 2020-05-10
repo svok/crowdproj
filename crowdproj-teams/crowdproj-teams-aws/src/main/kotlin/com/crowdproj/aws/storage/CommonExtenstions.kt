@@ -1,4 +1,4 @@
-package com.crowdproj.ktor.storage
+package com.crowdproj.aws.storage
 
 import com.crowdproj.common.IMainError
 import com.crowdproj.common.MainErrorLevels

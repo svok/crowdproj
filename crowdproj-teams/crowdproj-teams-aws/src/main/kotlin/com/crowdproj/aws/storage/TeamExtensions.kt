@@ -1,8 +1,6 @@
-package com.crowdproj.ktor.storage
+package com.crowdproj.aws.storage
 
 import com.amazonaws.services.dynamodbv2.document.Item
-import com.crowdproj.ktor.teams.storage.tag.toApiTags
-import com.crowdproj.ktor.teams.storage.tag.toMain
 import com.crowdproj.main.profile.ProfileModel
 import com.crowdproj.main.tag.TagModel
 import com.crowdproj.main.team.models.*

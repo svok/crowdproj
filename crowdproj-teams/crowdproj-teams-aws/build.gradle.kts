@@ -4,6 +4,8 @@ version = rootProject.version
 plugins {
     kotlin("jvm")
     id("com.github.johnrengelman.shadow")
+    id("org.ysb33r.terraform")
+    id("org.ysb33r.terraform.remotestate.s3")
 }
 
 repositories {
@@ -54,3 +56,54 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
 }
+
+terraform {
+    val awsRegions: String by project
+    val apiVersion: String by project
+    val apiDomain: String by project
+    val awsBucket: String by project
+    val awsBucketState: String by project
+
+    val serviceAlias = "$apiVersion-teams"
+    val bucketPublic = "$awsBucket.$serviceAlias"
+
+    variables {
+//        `var`("sourcePath", )
+        `var`("region", awsRegions)
+        `var`("domainZone", apiDomain)
+        `var`("domain", "$serviceAlias.$apiDomain")
+        `var`("bucketPublic", bucketPublic)
+        `var`("enable_gzip", true)
+        `var`("enable_health_check", false)
+        map(mapOf<String, String>(
+            "txt" to "text/plain",
+            "html" to "text/html",
+            "css" to "text/style",
+            "jpg" to "image/jpeg",
+            "jpeg" to "image/jpeg",
+            "ttf" to "font/ttf",
+            "js" to "application/javascript",
+            "map" to "application/javascript",
+            "json" to "application/json",
+            "xml" to "text/xml",
+            "ico" to "image/vnd.microsoft.icon"
+        ), "mime_types")
+//        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
+//        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
+    }
+    remote {
+        setPrefix("states-$apiVersion/state-public")
+        s3 {
+            setRegion(awsRegions)
+            setBucket(awsBucketState)
+        }
+    }
+}
+
+tasks {
+    tfApply {
+        dependsOn(tfInit)
+        dependsOn(shadowJar)
+    }
+}
+

@@ -1,4 +1,4 @@
-package com.crowdproj.ktor.storage
+package com.crowdproj.aws.storage
 
 import com.crowdproj.main.profile.ProfileModel
 import com.crowdproj.main.profile.ProfileStatusEnum

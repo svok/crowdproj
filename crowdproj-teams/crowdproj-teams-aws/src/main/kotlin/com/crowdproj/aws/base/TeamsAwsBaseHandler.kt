@@ -1,8 +1,8 @@
 package com.crowdproj.aws.base
 
-import com.crowdproj.ktor.storage.DynamoDbTeamsStorage
-import com.crowdproj.ktor.storage.toApiErrors
-import com.crowdproj.ktor.storage.toApiResults
+import com.crowdproj.aws.storage.DynamoDbTeamsStorage
+import com.crowdproj.aws.storage.toApiErrors
+import com.crowdproj.aws.storage.toApiResults
 import com.crowdproj.main.team.TeamContext
 import com.crowdproj.main.team.TeamService
 import com.crowdproj.rest.teams.models.ApiError

@@ -1,4 +1,4 @@
-package com.crowdproj.ktor.storage
+package com.crowdproj.aws.storage
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
