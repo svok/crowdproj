@@ -24,7 +24,7 @@ application {
 dependencies {
     val kotlessVersion: String by project
     val ktorVersion: String by project
-    val awsVersion: String by project
+    val awsDynamoVersion: String by project
     val commonsValidatorVersion: String by project
 
     implementation(project(":crowdproj-teams:generated-models-kt"))
@@ -34,7 +34,7 @@ dependencies {
     implementation("io.kotless", "ktor-lang", kotlessVersion)
     implementation("io.kotless", "ktor-lang-local", kotlessVersion)
     implementation("commons-validator", "commons-validator", commonsValidatorVersion)
-    implementation("com.amazonaws", "aws-java-sdk-dynamodb", awsVersion)
+    implementation("com.amazonaws", "aws-java-sdk-dynamodb", awsDynamoVersion)
 //    implementation("software.amazon.awssdk:dynamodb:2.11.9")
 
     implementation("io.ktor:ktor-locations:$ktorVersion")
@@ -69,9 +69,11 @@ kotless {
                 key = "states-$apiVersion/state-teams.tfstate"
             }
             provider {
+//                version = "2.60.0"
             }
             profile = awsProfile
             region = awsRegions.split(Regex(",\\s*")).first()
+//            version = "0.12.24"
         }
         optimization {
             mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
@@ -104,6 +106,10 @@ kotless {
             files {
 //                add(file("src/main/tf/bucket-init.tf"))
                 add(file("src/main/tf/dynamodb.tf"))
+                add(file("src/main/tf/cors-teams-index.tf"))
+                add(file("src/main/tf/cors-teams-create.tf"))
+                add(file("src/main/tf/cors-teams-update.tf"))
+                add(file("src/main/tf/cors-teams-get.tf"))
             }
         }
     }

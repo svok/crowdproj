@@ -12,6 +12,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
+import io.ktor.routing.options
 import io.ktor.routing.post
 import io.ktor.util.pipeline.PipelineContext
 import java.time.Instant
@@ -27,6 +28,7 @@ fun Routing.restTeams() {
             service.createTeam(it)
         }
     }
+//    options("/teams/create") {}
 
     // Update a team
     post("/teams/update") {
@@ -38,6 +40,7 @@ fun Routing.restTeams() {
 
 //        }
     }
+//    options("/teams/update") {}
 
     post("/teams/get") {
         handleRequest {
@@ -46,6 +49,7 @@ fun Routing.restTeams() {
             service.getTeam(it)
         }
     }
+//    options("/teams/get") {}
 
     post("/teams/index") {
         handleRequest {
@@ -54,6 +58,7 @@ fun Routing.restTeams() {
             service.findTeams(it)
         }
     }
+//    options("/teams/index") {}
 
 //    TeamApi()
 }

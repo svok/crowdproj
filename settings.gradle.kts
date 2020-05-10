@@ -11,6 +11,7 @@ include(":crowdproj-teams:generated-models-kt")
 include(":crowdproj-teams:generated-models-dt")
 include(":crowdproj-teams:back-main")
 include(":crowdproj-teams:back-kotless-app")
+include(":crowdproj-teams:crowdproj-teams-aws")
 include(":crowdproj-teams:front-teams-models")
 include(":crowdproj-teams:front-teams-rest")
 include(":crowdproj-teams:front-teams-stub")
@@ -30,12 +31,14 @@ pluginManagement {
     val kotlessVersion: String by settings
     val orchidVersion: String by settings
     val terraformPluginVersion: String by settings
+    val shadowJarVersion: String by settings
 
     plugins {
         kotlin("jvm") version kotlinVersion apply false
         kotlin("multiplatform") version kotlinVersion apply false
         id("com.github.ben-manes.versions") version versionsPluginVersion apply false
         id("org.openapi.generator") version openapiGeneratorVersion apply false
+        id("com.github.johnrengelman.shadow") version shadowJarVersion apply false
         id("io.kotless") version kotlessVersion apply false
 
         id("com.eden.orchidPlugin") version orchidVersion
