@@ -65,34 +65,30 @@ terraform {
     val awsBucketState: String by project
 
     val serviceAlias = "$apiVersion-teams"
-    val bucketPublic = "$awsBucket.$serviceAlias"
+    val bucketBackend = "$awsBucket.$apiVersion"
 
+    this.executable(mapOf(
+        "version" to "0.12.24"
+    ))
     variables {
 //        `var`("sourcePath", )
         `var`("region", awsRegions)
         `var`("domainZone", apiDomain)
         `var`("domain", "$serviceAlias.$apiDomain")
-        `var`("bucketPublic", bucketPublic)
-        `var`("enable_gzip", true)
-        `var`("enable_health_check", false)
+        `var`("bucketJarName", "$awsBucket.$serviceAlias")
+        `var`("bucketBackend", bucketBackend)
+        `var`("handlerJar", tasks.shadowJar.get().archiveFile.get().asFile.absoluteFile)
         map(mapOf<String, String>(
-            "txt" to "text/plain",
-            "html" to "text/html",
-            "css" to "text/style",
-            "jpg" to "image/jpeg",
-            "jpeg" to "image/jpeg",
-            "ttf" to "font/ttf",
-            "js" to "application/javascript",
-            "map" to "application/javascript",
-            "json" to "application/json",
-            "xml" to "text/xml",
-            "ico" to "image/vnd.microsoft.icon"
-        ), "mime_types")
+            "teams-create" to "com.crowdproj.aws.handlers.TeamsCreateHandler::handleRequest",
+            "teams-update" to "com.crowdproj.aws.handlers.TeamsUpdateHandler::handleRequest",
+            "teams-index" to "com.crowdproj.aws.handlers.TeamsIndexHandler::handleRequest",
+            "teams-get" to "com.crowdproj.aws.handlers.TeamsGetHandler::handleRequest"
+        ), "handlers")
 //        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
 //        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
     }
     remote {
-        setPrefix("states-$apiVersion/state-public")
+        setPrefix("states-$apiVersion/state-teams")
         s3 {
             setRegion(awsRegions)
             setBucket(awsBucketState)
@@ -104,6 +100,7 @@ tasks {
     tfApply {
         dependsOn(tfInit)
         dependsOn(shadowJar)
+        inputs.file(shadowJar.get().archiveFile)
     }
 }
 

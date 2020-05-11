@@ -76,8 +76,9 @@ kotless {
 //            version = "0.12.24"
         }
         optimization {
-            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
-            autowarm = KotlessConfig.Optimization.Autowarm(enable = false, minutes = 0)
+//            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
+            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.None
+//            autowarm = KotlessConfig.Optimization.Autowarm(enable = false, minutes = 0)
         }
     }
 

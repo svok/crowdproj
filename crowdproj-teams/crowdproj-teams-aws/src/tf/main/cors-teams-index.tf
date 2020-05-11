@@ -5,17 +5,17 @@
 
 
 resource "aws_api_gateway_method" "cors_teams_index" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_kotless_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_index.id}"
+  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  resource_id = aws_api_gateway_resource.teams_index.id
   http_method   = "OPTIONS"
   authorization = "NONE"
   api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "cors_teams_index" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_kotless_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_index.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_index.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  resource_id = aws_api_gateway_resource.teams_index.id
+  http_method = aws_api_gateway_method.cors_teams_index.http_method
 
   type = "MOCK"
 
@@ -25,9 +25,9 @@ resource "aws_api_gateway_integration" "cors_teams_index" {
 }
 
 resource "aws_api_gateway_method_response" "cors_teams_index" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_kotless_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_index.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_index.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  resource_id = aws_api_gateway_resource.teams_index.id
+  http_method = aws_api_gateway_method.cors_teams_index.http_method
   status_code = 200
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = true,
@@ -41,14 +41,14 @@ resource "aws_api_gateway_method_response" "cors_teams_index" {
 }
 
 resource "aws_api_gateway_integration_response" "cors_teams_index" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_kotless_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_index.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_index.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  resource_id = aws_api_gateway_resource.teams_index.id
+  http_method = aws_api_gateway_method.cors_teams_index.http_method
   status_code = 200
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = "'*'",
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Requested-With'",
-    "method.response.header.Access-Control-Allow-Methods" = "'GET,OPTIONS,POST,PUT,DELETE'"
+    "method.response.header.Access-Control-Allow-Methods" = "'OPTIONS,POST'"
 //    "method.response.header.Access-Control-Allow-Headers" = "'*'",
 //    "method.response.header.Access-Control-Allow-Methods" = "'*'"
   }
@@ -62,6 +62,6 @@ resource "aws_api_gateway_integration_response" "cors_teams_index" {
 //  source = "squidfunk/api-gateway-enable-cors/aws"
 //  version = "0.3.1"
 //
-//  api_id          = "${aws_api_gateway_rest_api.back_kotless_app.id}"
-//  api_resource_id = "${aws_api_gateway_resource.teams_index.id}"
+//  api_id          = aws_api_gateway_rest_api.back_crowdproj_app.id
+//  api_resource_id = aws_api_gateway_resource.teams_index.id
 //}

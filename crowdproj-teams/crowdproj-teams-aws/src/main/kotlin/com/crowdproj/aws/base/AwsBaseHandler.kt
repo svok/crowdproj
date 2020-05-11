@@ -2,9 +2,6 @@ package com.crowdproj.aws.base
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler
-import com.crowdproj.rest.teams.models.ApiError
-import com.crowdproj.rest.teams.models.ApiResponseStatus
-import com.crowdproj.rest.teams.models.ApiResponseTeam
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import kotlinx.coroutines.runBlocking
@@ -23,26 +20,33 @@ abstract class AwsBaseHandler<T, R>(
         outputStream: OutputStream,
         context: Context
     ) {
-        val context = createContext()
-        context.timeStart = Instant.now()
+        context.logger.log("CRPWDPROJ GOT REQIEST")
+        val localContext = createContext()
+        localContext.timeStart = Instant.now()
         val objectMapper = ObjectMapper()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         runBlocking {
             val obj = try {
-                context.request = objectMapper.readValue<T>(inputStream, requestClass) ?: throw EmptyDataException()
-                handlePost(context)
+                localContext.request = objectMapper.readValue<T>(inputStream, requestClass) ?: throw EmptyDataException()
+                context.logger.log("CRPWDPROJ GOT QUERY: ${localContext.request}")
+                handlePost(localContext)
             } catch (e: EmptyDataException) {
-                context.exception = e
-                handleError(context)
+                localContext.exception = e
+                handleError(localContext)
             } catch (e: Exception) {
-                context.exception = e
-                handleError(context)
+                localContext.exception = e
+                handleError(localContext)
             }
         }
 
-        val responseJson = objectMapper.writeValueAsString(context.response)
-        val writer = OutputStreamWriter(outputStream, "UTF-8");
+        val responseObject = AwsResponse(
+                statusCode = 200,
+                headers = mutableMapOf(),
+                body = objectMapper.writeValueAsString(localContext.response)
+        )
+        val responseJson = objectMapper.writeValueAsString(responseObject)
+        val writer = OutputStreamWriter(outputStream, "UTF-8")
         writer.write(responseJson.toString())
         writer.close()
     }

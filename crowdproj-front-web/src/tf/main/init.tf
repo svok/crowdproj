@@ -52,7 +52,6 @@ provider "aws" {
   version = "~> 2.7"
 }
 
-
 resource "aws_s3_bucket" "state" {
   bucket = var.bucketState
 }
