@@ -31,14 +31,9 @@ resource "aws_api_gateway_method" "teams_index" {
   authorization = "NONE"
 }
 
-resource "aws_iam_role" "teams_index_post" {
-  name = "v001-teams-index-post"
-  assume_role_policy = data.aws_iam_policy_document.merged_0_assume.json
-}
-
 resource "aws_lambda_function" "teams_index_post" {
   function_name = "v001-teams-index-post"
-  role = aws_iam_role.teams_get_post.arn
+  role = aws_iam_role.teams_index_post.arn
   s3_bucket = var.bucketBackend
   s3_key = aws_s3_bucket_object.merged_0.key
   source_code_hash = base64sha256(filebase64sha512(aws_s3_bucket_object.merged_0.source))
@@ -51,4 +46,14 @@ resource "aws_lambda_function" "teams_index_post" {
       KOTLESS_PACKAGES = "com.crowdproj"
     }
   }
+}
+
+resource "aws_iam_role" "teams_index_post" {
+  name = "v001-teams-index-post"
+  assume_role_policy = data.aws_iam_policy_document.merged_0_assume.json
+}
+
+resource "aws_iam_role_policy" "crowdproj_teams_index_post" {
+  role = aws_iam_role.teams_index_post.name
+  policy = data.aws_iam_policy_document.crowdproj_teams_table.json
 }

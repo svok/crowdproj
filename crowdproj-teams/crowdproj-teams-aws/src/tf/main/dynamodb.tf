@@ -35,14 +35,3 @@ data "aws_iam_policy_document" "crowdproj_teams_table" {
     ]
   }
 }
-
-resource "aws_iam_role_policy" "crowdproj_teams_table" {
-  role = aws_iam_role.merged_0.name
-  policy = data.aws_iam_policy_document.crowdproj_teams_table.json
-}
-
-resource "aws_iam_role_policy" "crowdproj_teams_index_post" {
-  role = aws_iam_role.teams_index_post.name
-  policy = data.aws_iam_policy_document.crowdproj_teams_table.json
-}
-
