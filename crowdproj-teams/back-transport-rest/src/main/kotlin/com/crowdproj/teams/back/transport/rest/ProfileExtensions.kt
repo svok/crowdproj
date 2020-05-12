@@ -5,7 +5,7 @@ import com.crowdproj.rest.teams.models.ProfileStatus
 import com.crowdproj.teams.back.transport.rest.common.models.ProfileModel
 import com.crowdproj.teams.back.transport.rest.common.models.ProfileStatusEnum
 
-fun ProfileModel.toApiProfile(): Profile = Profile(
+fun ProfileModel.toApi(): Profile = Profile(
     id = id.takeIf { it.isNotBlank() },
     alias = alias.takeIf { it.isNotBlank() },
     fName = fName.takeIf { it.isNotBlank() },

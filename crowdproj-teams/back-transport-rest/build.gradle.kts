@@ -20,5 +20,12 @@ dependencies {
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+    testImplementation("io.kotest:kotest-runner-junit5:4.0.5")
 }
 
+tasks {
+    test {
+        useJUnitPlatform()
+    }
+}
