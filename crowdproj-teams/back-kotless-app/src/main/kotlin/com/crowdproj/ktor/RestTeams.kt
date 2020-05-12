@@ -1,9 +1,9 @@
 package com.crowdproj.ktor
 
 import com.crowdproj.ktor.storage.*
-import com.crowdproj.main.team.TeamContext
-import com.crowdproj.main.team.TeamService
-import com.crowdproj.main.team.models.TeamModel
+import com.crowdproj.teams.main.TeamContext
+import com.crowdproj.teams.main.TeamService
+import com.crowdproj.teams.main.models.TeamModel
 import com.crowdproj.rest.teams.apis.TeamApi
 import com.crowdproj.rest.teams.models.*
 import io.ktor.application.ApplicationCall

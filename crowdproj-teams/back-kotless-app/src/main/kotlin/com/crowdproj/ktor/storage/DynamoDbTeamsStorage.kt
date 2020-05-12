@@ -6,9 +6,9 @@ import com.amazonaws.services.dynamodbv2.document.KeyAttribute
 import com.amazonaws.services.dynamodbv2.document.Table
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.crowdproj.main.team.ITeamStorage
-import com.crowdproj.main.team.models.TeamFindQuery
-import com.crowdproj.main.team.models.TeamModel
+import com.crowdproj.teams.main.ITeamStorage
+import com.crowdproj.teams.main.models.TeamFindQuery
+import com.crowdproj.teams.main.models.TeamModel
 import io.kotless.AwsResource
 import io.kotless.PermissionLevel
 import io.kotless.dsl.lang.DynamoDBTable

@@ -41,7 +41,11 @@ val awsDynamoVersion: String by project
 
 dependencies {
     implementation(project(":crowdproj-teams:generated-models-kt"))
-    implementation(project(":crowdproj-teams:back-main"))
+    implementation(project(":crowdproj-teams:back-common"))
+    implementation(project(":crowdproj-teams:back-logics"))
+    implementation(project(":crowdproj-teams:back-storage-common"))
+    implementation(project(":crowdproj-teams:back-storage-dynamodb"))
+    implementation(project(":crowdproj-teams:back-transport-rest"))
     implementation(project(":crowdproj-common:crowdproj-common-kt"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")

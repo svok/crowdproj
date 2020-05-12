@@ -3,7 +3,7 @@ package com.crowdproj.aws.handlers
 import com.crowdproj.aws.base.RequestContext
 import com.crowdproj.aws.base.TeamsAwsBaseHandler
 import com.crowdproj.aws.base.TeamsRequestContext
-import com.crowdproj.main.team.TeamContext
+import com.crowdproj.teams.main.TeamContext
 import com.crowdproj.rest.teams.models.ApiQueryTeamGet
 import com.crowdproj.rest.teams.models.ApiResponseTeam
 

@@ -104,7 +104,7 @@ tasks {
 //        dependsOn(generateDartModels)
         dependsOn(generateKotlinModels)
         dependsOn(project(":crowdproj-teams:front-teams").getTasksByName("build", false))
-        dependsOn(project(":crowdproj-teams:back-kotless-app").getTasksByName("build", false))
+        dependsOn(project(":crowdproj-teams:crowdproj-teams-aws").getTasksByName("build", false))
     }
 
     create<Delete>("clean", Delete::class) {

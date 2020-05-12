@@ -6,11 +6,12 @@ import com.crowdproj.ktor.teams.storage.tag.toMain
 import com.crowdproj.main.profile.ProfileModel
 import com.crowdproj.main.tag.TagModel
 import com.crowdproj.main.team.models.*
-import com.crowdproj.main.team.models.TeamFindQuery.Companion.DEFAULT_TEAMS_LIMIT
+import com.crowdproj.teams.main.models.TeamFindQuery.Companion.DEFAULT_TEAMS_LIMIT
 import com.crowdproj.rest.teams.models.ApiQueryTeamFind
 import com.crowdproj.rest.teams.models.ApiQueryTeamSave
 import com.crowdproj.rest.teams.models.Team
 import com.crowdproj.rest.teams.models.TeamStatus
+import com.crowdproj.teams.main.models.*
 import com.crowdproj.rest.teams.models.TeamVisibility as ApiTeamVisibility
 import com.crowdproj.rest.teams.models.TeamJoinability as ApiTeamJoinability
 
@@ -27,24 +28,31 @@ fun TeamModel.toItem() = Item()
     .apply { if (joinability != TeamJoinability.none) withString("joinability", joinability.toString()) }
     .apply { if (status != TeamStatusEnum.none) withString("status", status.toString()) }
 
-fun TeamModel.Companion.from(item: Item) = TeamModel(
-    id = item.getString("id") ?: "",
-    name = item.getString("name") ?: "",
-    summary = item.getString("summary") ?: "",
-    description = item.getString("description") ?: "",
-    owner = item.getString("ownerId")
-        ?.let { ProfileModel(id = it) }
-        ?: ProfileModel.NONE,
-    photoUrls = item.getStringSet("photoUrls") ?: mutableSetOf(),
-    tags = item.getStringSet("tagIds")
-        ?.asSequence()
-        ?.map { TagModel(id = it) }
-        ?.toMutableSet()
-        ?: mutableSetOf(),
-    visibility = TeamVisibility.valueOf(item.getString("visibility") ?: "none"),
-    joinability = TeamJoinability.valueOf(item.getString("joinability") ?: "none"),
-    status = TeamStatusEnum.valueOf(item.getString("status") ?: "none")
-)
+fun TeamModel.Companion.from(item: Item) =
+    TeamModel(
+        id = item.getString("id") ?: "",
+        name = item.getString("name") ?: "",
+        summary = item.getString("summary") ?: "",
+        description = item.getString("description") ?: "",
+        owner = item.getString("ownerId")
+            ?.let { ProfileModel(id = it) }
+            ?: ProfileModel.NONE,
+        photoUrls = item.getStringSet("photoUrls") ?: mutableSetOf(),
+        tags = item.getStringSet("tagIds")
+            ?.asSequence()
+            ?.map { TagModel(id = it) }
+            ?.toMutableSet()
+            ?: mutableSetOf(),
+        visibility = TeamVisibility.valueOf(
+            item.getString("visibility") ?: "none"
+        ),
+        joinability = TeamJoinability.valueOf(
+            item.getString("joinability") ?: "none"
+        ),
+        status = TeamStatusEnum.valueOf(
+            item.getString("status") ?: "none"
+        )
+    )
 
 fun Team.toMain() = TeamModel(
     id = id ?: "",
@@ -103,9 +111,10 @@ fun TeamVisibility.toApiTeamVisibility(): ApiTeamVisibility? = when (this) {
     TeamVisibility.registeredOnly -> ApiTeamVisibility.teamRegisteredOnly
 }
 
-fun TeamSaveQuery.Companion.from(query: ApiQueryTeamSave) = TeamSaveQuery(
-    team = query.data?.toMain() ?: TeamModel.NONE
-)
+fun TeamSaveQuery.Companion.from(query: ApiQueryTeamSave) =
+    TeamSaveQuery(
+        team = query.data?.toMain() ?: TeamModel.NONE
+    )
 
 fun ApiQueryTeamFind?.toMain() = if (this == null) TeamFindQuery.EMPTY
 else TeamFindQuery(

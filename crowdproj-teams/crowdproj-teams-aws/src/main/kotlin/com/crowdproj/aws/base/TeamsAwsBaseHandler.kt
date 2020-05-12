@@ -1,18 +1,20 @@
 package com.crowdproj.aws.base
 
-import com.crowdproj.aws.storage.DynamoDbTeamsStorage
-import com.crowdproj.aws.storage.toApiErrors
-import com.crowdproj.aws.storage.toApiResults
-import com.crowdproj.main.team.TeamContext
-import com.crowdproj.main.team.TeamService
+import com.crowdproj.teams.main.TeamContext
+import com.crowdproj.teams.main.TeamService
 import com.crowdproj.rest.teams.models.ApiError
 import com.crowdproj.rest.teams.models.ApiResponseStatus
 import com.crowdproj.rest.teams.models.ApiResponseTeam
+import com.crowdproj.teams.back.transport.rest.toApiErrors
+import com.crowdproj.teams.back.transport.rest.toApiResults
+import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 import java.time.Instant
 
 abstract class TeamsAwsBaseHandler<T>(
     requestClass: Class<T>,
-    val service: TeamService = TeamService(storage = DynamoDbTeamsStorage)
+    val service: TeamService = TeamService(
+        storage = DynamoDbTeamsStorage
+    )
 ) : AwsBaseHandler<T, ApiResponseTeam>(
     requestClass = requestClass
 ) {

@@ -59,7 +59,7 @@ resource "aws_lambda_function" "teams_get_post" {
 }
 
 resource "aws_iam_role" "teams_get_post" {
-  name = "v001-teams-teams-get-post"
+  name = "v001-teams-get-post"
   assume_role_policy = data.aws_iam_policy_document.merged_0_assume.json
 }
 

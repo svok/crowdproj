@@ -1,6 +1,16 @@
 resource "aws_api_gateway_rest_api" "back_app" {
   name = "v001-teams-back-crowdproj-app"
-  binary_media_types = ["image/png", "image/apng", "image/gif", "image/jpeg", "image/bmp", "image/webp", "application/zip", "application/gzip", "font/ttf"]
+  binary_media_types = [
+    "image/png",
+    "image/apng",
+    "image/gif",
+    "image/jpeg",
+    "image/bmp",
+    "image/webp",
+    "application/zip",
+    "application/gzip",
+    "font/ttf"
+  ]
 }
 
 resource "aws_iam_role" "crowdproj_static_role" {
@@ -60,6 +70,7 @@ data "aws_iam_policy_document" "merged_0_assume" {
     }
     actions = ["sts:AssumeRole"]
   }
+
 }
 
 resource "aws_s3_bucket_object" "merged_0" {
