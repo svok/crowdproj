@@ -1,20 +1,20 @@
 resource "aws_api_gateway_method" "cors_teams_get" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_get.id
   http_method   = "OPTIONS"
   authorization = "NONE"
-  api_key_required = true
+//  api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "cors_teams_get" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_get.id
   http_method = aws_api_gateway_method.cors_teams_get.http_method
   type = "MOCK"
 }
 
 resource "aws_api_gateway_method_response" "cors_teams_get" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_get.id
   http_method = aws_api_gateway_method.cors_teams_get.http_method
   status_code = 200
@@ -30,7 +30,7 @@ resource "aws_api_gateway_method_response" "cors_teams_get" {
 }
 
 resource "aws_api_gateway_integration_response" "cors_teams_get" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_get.id
   http_method = aws_api_gateway_method.cors_teams_get.http_method
   status_code = 200

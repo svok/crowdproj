@@ -5,15 +5,14 @@
 
 
 resource "aws_api_gateway_method" "cors_teams_index" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method   = "OPTIONS"
   authorization = "NONE"
-  api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "cors_teams_index" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = aws_api_gateway_method.cors_teams_index.http_method
 
@@ -24,24 +23,8 @@ resource "aws_api_gateway_integration" "cors_teams_index" {
   }
 }
 
-resource "aws_api_gateway_method_response" "cors_teams_index" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
-  resource_id = aws_api_gateway_resource.teams_index.id
-  http_method = aws_api_gateway_method.cors_teams_index.http_method
-  status_code = 200
-  response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin" = true,
-    "method.response.header.Access-Control-Allow-Methods" = true,
-    "method.response.header.Access-Control-Allow-Headers" = true
-  }
-  response_models = {
-    "application/json" = "Empty"
-  }
-  depends_on = ["aws_api_gateway_method.cors_teams_index", "aws_api_gateway_method.teams_index"]
-}
-
 resource "aws_api_gateway_integration_response" "cors_teams_index" {
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = aws_api_gateway_method.cors_teams_index.http_method
   status_code = 200
@@ -55,6 +38,25 @@ resource "aws_api_gateway_integration_response" "cors_teams_index" {
   depends_on = [
     "aws_api_gateway_integration.cors_teams_index",
     "aws_api_gateway_method_response.cors_teams_index"
+  ]
+}
+
+resource "aws_api_gateway_method_response" "cors_teams_index" {
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  resource_id = aws_api_gateway_resource.teams_index.id
+  http_method = aws_api_gateway_method.cors_teams_index.http_method
+  status_code = 200
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Headers" = true
+  }
+  response_models = {
+    "application/json" = "Empty"
+  }
+  depends_on = [
+    aws_api_gateway_integration.cors_teams_index,
+    aws_api_gateway_method.cors_teams_index
   ]
 }
 

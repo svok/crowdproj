@@ -1,6 +1,6 @@
 resource "aws_api_gateway_integration" "teams_index" {
   depends_on = ["aws_api_gateway_resource.teams_index"]
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = "POST"
   integration_http_method = "POST"
@@ -13,19 +13,19 @@ resource "aws_lambda_permission" "teams_index" {
   action = "lambda:InvokeFunction"
   function_name = aws_lambda_function.teams_index_post.arn
   principal = "apigateway.amazonaws.com"
-  source_arn = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.back_crowdproj_app.id}/*/POST/teams/index"
+  source_arn = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.back_app.id}/*/POST/teams/index"
 }
 
 resource "aws_api_gateway_resource" "teams_index" {
   depends_on = ["aws_api_gateway_resource.teams"]
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   parent_id = aws_api_gateway_resource.teams.id
   path_part = "index"
 }
 
 resource "aws_api_gateway_method" "teams_index" {
   depends_on = ["aws_api_gateway_resource.teams_index"]
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = "POST"
   authorization = "NONE"

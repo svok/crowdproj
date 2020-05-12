@@ -1,3 +1,7 @@
+resource "aws_api_gateway_rest_api" "back_app" {
+  name = "v001-teams-back-crowdproj-app"
+  binary_media_types = ["image/png", "image/apng", "image/gif", "image/jpeg", "image/bmp", "image/webp", "application/zip", "application/gzip", "font/ttf"]
+}
 
 resource "aws_iam_role" "crowdproj_static_role" {
   name = "v001-teams-crowdproj-static-role"
@@ -19,9 +23,9 @@ data "aws_iam_policy_document" "crowdproj_static_assume" {
 }
 
 resource "aws_api_gateway_resource" "teams" {
-  depends_on = ["aws_api_gateway_rest_api.back_crowdproj_app"]
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
-  parent_id = aws_api_gateway_rest_api.back_crowdproj_app.root_resource_id
+  depends_on = ["aws_api_gateway_rest_api.back_app"]
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  parent_id = aws_api_gateway_rest_api.back_app.root_resource_id
   path_part = "teams"
 }
 
@@ -48,23 +52,6 @@ data "aws_iam_policy_document" "merged_0" {
   }
 }
 
-resource "aws_lambda_function" "merged_0" {
-  function_name = "v001-teams-merged-0"
-  role = aws_iam_role.merged_0.arn
-  s3_bucket = var.bucketBackend
-  s3_key = aws_s3_bucket_object.merged_0.key
-  source_code_hash = base64sha256(filebase64sha512(aws_s3_bucket_object.merged_0.source))
-  handler = "com.crowdproj.ktor.Server::handleRequest"
-  runtime = "java8"
-  timeout = 300
-  memory_size = 1024
-  environment {
-    variables = {
-      KOTLESS_PACKAGES = "com.crowdproj"
-    }
-  }
-}
-
 data "aws_iam_policy_document" "merged_0_assume" {
   statement {
     principals {
@@ -87,19 +74,14 @@ data "aws_acm_certificate" "crowdproj_com" {
   statuses = ["ISSUED"]
 }
 
-resource "aws_iam_role" "merged_0" {
-  name = "v001-teams-merged-0"
-  assume_role_policy = data.aws_iam_policy_document.merged_0_assume.json
-}
+//resource "aws_iam_role" "merged_0" {
+//  name = "v001-teams-merged-0"
+//  assume_role_policy = data.aws_iam_policy_document.merged_0_assume.json
+//}
 
 terraform {
   backend "s3" {
   }
-}
-
-resource "aws_api_gateway_rest_api" "back_crowdproj_app" {
-  name = "v001-teams-back-crowdproj-app"
-  binary_media_types = ["image/png", "image/apng", "image/gif", "image/jpeg", "image/bmp", "image/webp", "application/zip", "application/gzip", "font/ttf"]
 }
 
 resource "aws_api_gateway_domain_name" "back_crowdproj_app" {
@@ -111,10 +93,10 @@ data "aws_region" "current" {
 
 }
 
-resource "aws_iam_role_policy" "merged_0" {
-  role = aws_iam_role.merged_0.name
-  policy = data.aws_iam_policy_document.merged_0.json
-}
+//resource "aws_iam_role_policy" "merged_0" {
+//  role = aws_iam_role.merged_0.name
+//  policy = data.aws_iam_policy_document.merged_0.json
+//}
 
 resource "aws_iam_role_policy" "crowdproj_static_policy" {
   role = aws_iam_role.crowdproj_static_role.name
@@ -141,7 +123,7 @@ resource "aws_api_gateway_deployment" "crowdproj_teams" {
   lifecycle {
     create_before_destroy = true
   }
-  rest_api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
   stage_name = "1"
   variables = {
     deployed_at = timestamp()
@@ -157,7 +139,7 @@ data "aws_iam_policy_document" "crowdproj_static_policy" {
 }
 
 resource "aws_api_gateway_base_path_mapping" "back_crowdproj_app" {
-  api_id = aws_api_gateway_rest_api.back_crowdproj_app.id
+  api_id = aws_api_gateway_rest_api.back_app.id
   stage_name = aws_api_gateway_deployment.crowdproj_teams.stage_name
   domain_name = var.domain
 }

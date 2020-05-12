@@ -1,22 +1,22 @@
 resource "aws_api_gateway_method" "cors_teams_update" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_crowdproj_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_update.id}"
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  resource_id = aws_api_gateway_resource.teams_update.id
   http_method   = "OPTIONS"
   authorization = "NONE"
-  api_key_required = true
+//  api_key_required = true
 }
 
 resource "aws_api_gateway_integration" "cors_teams_update" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_crowdproj_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_update.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_update.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  resource_id = aws_api_gateway_resource.teams_update.id
+  http_method = aws_api_gateway_method.cors_teams_update.http_method
   type = "MOCK"
 }
 
 resource "aws_api_gateway_method_response" "cors_teams_update" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_crowdproj_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_update.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_update.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  resource_id = aws_api_gateway_resource.teams_update.id
+  http_method = aws_api_gateway_method.cors_teams_update.http_method
   status_code = 200
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = true,
@@ -30,9 +30,9 @@ resource "aws_api_gateway_method_response" "cors_teams_update" {
 }
 
 resource "aws_api_gateway_integration_response" "cors_teams_update" {
-  rest_api_id = "${aws_api_gateway_rest_api.back_crowdproj_app.id}"
-  resource_id = "${aws_api_gateway_resource.teams_update.id}"
-  http_method = "${aws_api_gateway_method.cors_teams_update.http_method}"
+  rest_api_id = aws_api_gateway_rest_api.back_app.id
+  resource_id = aws_api_gateway_resource.teams_update.id
+  http_method = aws_api_gateway_method.cors_teams_update.http_method
   status_code = 200
   response_parameters = {
     "method.response.header.Access-Control-Allow-Origin" = "'*'",
