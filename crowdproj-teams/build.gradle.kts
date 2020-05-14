@@ -34,16 +34,16 @@ tasks {
                 "swaggerAnnotations" to "true"
             )
         )
-//        systemProperties.putAll(
-//            mapOf(
-//                "models" to "",
-//                "modelTests" to "",
+        systemProperties.putAll(
+            mapOf(
+                "models" to "",
+                "modelTests" to ""
 //                "modelDocs" to "",
 //                "apis" to "",
 //                "apiTests" to "",
 //                "apiDocs" to ""
-//            )
-//        )
+            )
+        )
     }
     val cleanKotlinModels by creating(Delete::class) {
         group = "openapi"

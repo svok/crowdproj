@@ -57,3 +57,13 @@ resource "aws_iam_role_policy" "crowdproj_teams_index_post" {
   role = aws_iam_role.teams_index_post.name
   policy = data.aws_iam_policy_document.crowdproj_teams_table.json
 }
+
+resource "aws_cloudwatch_log_group" "teams_index_post" {
+  name              = "/aws/lambda/${aws_lambda_function.teams_index_post.function_name}"
+  retention_in_days = 14
+}
+
+resource "aws_iam_role_policy_attachment" "teams_index_post" {
+  role       = aws_iam_role.teams_index_post.name
+  policy_arn = aws_iam_policy.lambda_logging.arn
+}

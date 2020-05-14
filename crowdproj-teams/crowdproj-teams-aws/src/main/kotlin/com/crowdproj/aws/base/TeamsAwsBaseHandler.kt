@@ -11,10 +11,7 @@ import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 import java.time.Instant
 
 abstract class TeamsAwsBaseHandler<T>(
-    requestClass: Class<T>,
-    val service: TeamService = TeamService(
-        storage = DynamoDbTeamsStorage
-    )
+    requestClass: Class<T>
 ) : AwsBaseHandler<T, ApiResponseTeam>(
     requestClass = requestClass
 ) {

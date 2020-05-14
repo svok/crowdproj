@@ -4,6 +4,7 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import kotlinx.coroutines.runBlocking
 import java.io.InputStream
 import java.io.OutputStream
@@ -20,21 +21,35 @@ abstract class AwsBaseHandler<T, R>(
         outputStream: OutputStream,
         context: Context
     ) {
-        context.logger.log("CRPWDPROJ GOT REQIEST")
+        context.logger.log("CROWDPROJ GOT REQIEST")
         val localContext = createContext()
-        localContext.timeStart = Instant.now()
+            .apply {
+                timeStart = Instant.now()
+                logger = AwsLogger(context.logger)
+            }
         val objectMapper = ObjectMapper()
+            .registerKotlinModule()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         runBlocking {
             val obj = try {
-                localContext.request = objectMapper.readValue<T>(inputStream, requestClass) ?: throw EmptyDataException()
+                val json = inputStream.bufferedReader().use { it.readText() }
+                context.logger.log("LAMBDA GOT $json")
+//                localContext.request = objectMapper.readValue<T>(inputStream, requestClass) ?: throw EmptyDataException()
+                val receivedRecord = objectMapper.readTree(json) ?: throw EmptyDataException()
+                val body = receivedRecord["body"]?.asText() ?: ""
+                with(localContext) {
+                    requestData = receivedRecord
+                    request = objectMapper.readValue(body, requestClass) ?: throw EmptyDataException()
+                }
                 context.logger.log("CRPWDPROJ GOT QUERY: ${localContext.request}")
                 handlePost(localContext)
             } catch (e: EmptyDataException) {
+                context.logger.log(e.toString())
                 localContext.exception = e
                 handleError(localContext)
             } catch (e: Exception) {
+                context.logger.log(e.toString())
                 localContext.exception = e
                 handleError(localContext)
             }

@@ -6,8 +6,8 @@ import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 
 interface ITeamStorage {
     suspend fun findTeams(query: TeamFindQuery): Sequence<TeamModel>
-    suspend fun create(team: TeamModel): String
-    suspend fun update(team: TeamModel)
+    suspend fun create(team: TeamModel): TeamModel?
+    suspend fun update(team: TeamModel): TeamModel?
     suspend fun get(teamId: String): TeamModel?
 
     companion object {
@@ -16,11 +16,11 @@ interface ITeamStorage {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun create(team: TeamModel): String {
+            override suspend fun create(team: TeamModel): TeamModel? {
                 TODO("Not yet implemented")
             }
 
-            override suspend fun update(team: TeamModel) {
+            override suspend fun update(team: TeamModel): TeamModel? {
                 TODO("Not yet implemented")
             }
 

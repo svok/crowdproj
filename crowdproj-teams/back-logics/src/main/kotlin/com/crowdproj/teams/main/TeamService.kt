@@ -4,86 +4,26 @@ import codes.spectrum.konveyor.konveyor
 import com.crowdproj.common.ContextStatuses
 import com.crowdproj.teams.main.common.KonveyorEnvironment
 import com.crowdproj.teams.main.errors.ErrorStorage
+import com.crowdproj.teams.main.exceptions.ErrorSavingToDb
 import com.crowdproj.teams.storage.common.ITeamStorage
 
 class TeamService(
     storage: ITeamStorage
 ) {
-    private val environment = KonveyorEnvironment(
-        storage = storage
-    )
+    private val getService = TeamsGetService(storage)
+    private val createService = TeamsCreateService(storage)
+    private val updateService = TeamsUpdateService(storage)
+    private val findService = TeamsFindService(storage)
 
-    suspend fun findTeams(context: TeamContext) {
-        if (context.env == KonveyorEnvironment.EMPTY) {
-            context.env = environment
-        }
-        findTeamsKonveyor.exec(context)
+    private suspend fun exec(context: TeamContext, service: ITeamsService) {
+        service.exec(context)
     }
 
-    suspend fun getTeam(context: TeamContext) {
-        if (context.env == KonveyorEnvironment.EMPTY) {
-            context.env = environment
-        }
-        getTeamKonveyor.exec(context = context)
-    }
+    suspend fun findTeams(context: TeamContext) = exec(context, findService)
 
-    suspend fun createTeam(context: TeamContext) {
-        if (context.env == KonveyorEnvironment.EMPTY) {
-            context.env = environment
-        }
-        createTeamKonveyor.exec(context = context)
-    }
+    suspend fun getTeam(context: TeamContext) = exec(context, getService)
 
-    suspend fun updateTeam(context: TeamContext) {
-        if (context.env == KonveyorEnvironment.EMPTY) {
-            context.env = environment
-        }
-        updateTeamKonveyor.exec(context = context)
-    }
+    suspend fun createTeam(context: TeamContext) = exec(context, createService)
 
-    companion object {
-        private val findTeamsKonveyor = konveyor<TeamContext> {
-            exec { status = ContextStatuses.processing }
-            exec {
-                try {
-                    result = env.storage.findTeams(query).toMutableList()
-                } catch (e: Exception) {
-                    addFatal(ErrorStorage(message = e.message ?: ""))
-                }
-            }
-        }
-
-        private val getTeamKonveyor = konveyor<TeamContext> {
-            exec { status = ContextStatuses.processing }
-            exec {
-                try {
-                    env.storage.get(requestTeamId)?.also { result.add(it) }
-                } catch (e: Exception) {
-                    addFatal(ErrorStorage(message = e.message ?: ""))
-                }
-            }
-        }
-        private val createTeamKonveyor = konveyor<TeamContext> {
-            exec { status = ContextStatuses.processing }
-            exec {
-                try {
-                    val id = env.storage.create(requestTeam)
-                    result.add(requestTeam.copy(id = id))
-                } catch (e: Exception) {
-                    addFatal(ErrorStorage(message = e.message ?: ""))
-                }
-            }
-        }
-        private val updateTeamKonveyor = konveyor<TeamContext> {
-            exec { status = ContextStatuses.processing }
-            exec {
-                try {
-                    env.storage.update(requestTeam)
-                    result.add(requestTeam.copy())
-                } catch (e: Exception) {
-                    addFatal(ErrorStorage(message = e.message ?: ""))
-                }
-            }
-        }
-    }
+    suspend fun updateTeam(context: TeamContext) = exec(context, updateService)
 }

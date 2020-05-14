@@ -1,23 +1,30 @@
 package com.crowdproj.teams.storage.dynamodb
 
+import com.amazonaws.AmazonClientException
+import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder
 import com.amazonaws.services.dynamodbv2.document.DynamoDB
 import com.amazonaws.services.dynamodbv2.document.KeyAttribute
 import com.amazonaws.services.dynamodbv2.document.Table
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
+import com.crowdproj.common.ILogger
 import com.crowdproj.teams.back.transport.rest.common.models.TeamFindQuery
 import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 import com.crowdproj.teams.storage.common.ITeamStorage
+import com.crowdproj.teams.storage.common.exceptions.DbClientException
+import com.crowdproj.teams.storage.common.exceptions.DbServiceException
+import com.crowdproj.teams.storage.common.exceptions.DbUnknownException
 import java.time.Instant
 import java.util.*
 
 private const val tableName: String = "crowdproj-teams-table"
 
-object DynamoDbTeamsStorage : ITeamStorage {
+class DynamoDbTeamsStorage(
+    val logger: ILogger = ILogger.NONE
+) : ITeamStorage {
     private val client = AmazonDynamoDBClientBuilder
         .standard()
-//        .withKotlessLocal(AwsResource.DynamoDB)
         .build()
     private val dynamoDB = DynamoDB(client)
 
@@ -72,18 +79,37 @@ object DynamoDbTeamsStorage : ITeamStorage {
         return TeamModel.from(item)
     }
 
-    override suspend fun create(team: TeamModel): String {
+    override suspend fun create(team: TeamModel): TeamModel? {
         team.id = UUID.randomUUID().toString()
-        update(team)
-        return team.id
+        logger.info("CREATE TEAM for object $team")
+        return save(team)
     }
 
-    override suspend fun update(team: TeamModel) {
-        val table: Table = dynamoDB.getTable(
-            tableName
-        )
-        val item = team.toItem()
-        table.putItem(item)
+    override suspend fun update(team: TeamModel): TeamModel? {
+        logger.info("UPDATE TEAM for object $team")
+        return save(team)
     }
 
+    private fun save(team: TeamModel): TeamModel? {
+        logger.info("Saving object $team")
+        val table: Table = dynamoDB.getTable(tableName)
+        val result = try {
+            table.putItem(team.toItem())
+        } catch (e: AmazonServiceException) {
+            logger.error("Error saving object $team: $e")
+            throw DbServiceException(team, e)
+        } catch (e: AmazonClientException) {
+            logger.error("Error saving object $team: $e")
+            throw DbClientException(team, e)
+        } catch (e: Throwable) {
+            logger.error("Error saving object $team: $e")
+            throw DbUnknownException(team, e)
+        }
+        logger.info("Saved object $team")
+        return team
+    }
+
+    companion object {
+//        var cacheManager = CacheManager.getInstance()
+    }
 }

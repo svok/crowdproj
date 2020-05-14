@@ -17,8 +17,7 @@ fun TeamModel.toItem() = Item()
     .apply { if (joinability != TeamJoinability.none) withString("joinability", joinability.toString()) }
     .apply { if (status != TeamStatusEnum.none) withString("status", status.toString()) }
 
-fun TeamModel.Companion.from(item: Item) =
-    TeamModel(
+fun TeamModel.Companion.from(item: Item) = TeamModel(
         id = item.getString("id") ?: "",
         name = item.getString("name") ?: "",
         summary = item.getString("summary") ?: "",

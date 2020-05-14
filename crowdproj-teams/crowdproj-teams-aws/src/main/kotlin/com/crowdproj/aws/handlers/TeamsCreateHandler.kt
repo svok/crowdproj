@@ -8,6 +8,8 @@ import com.crowdproj.rest.teams.models.ApiQueryTeamSave
 import com.crowdproj.rest.teams.models.ApiResponseTeam
 import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 import com.crowdproj.teams.back.transport.rest.toMain
+import com.crowdproj.teams.main.TeamsCreateService
+import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 
 class TeamsCreateHandler: TeamsAwsBaseHandler<ApiQueryTeamSave>(
     requestClass = ApiQueryTeamSave::class.java
@@ -15,9 +17,12 @@ class TeamsCreateHandler: TeamsAwsBaseHandler<ApiQueryTeamSave>(
     override fun createContext(): RequestContext<ApiQueryTeamSave, ApiResponseTeam> = TeamsSaveRequestContext()
 
     override suspend fun handler(oContext: TeamsRequestContext<ApiQueryTeamSave>, iContext: TeamContext) {
+        val service = TeamsCreateService(
+            storage = DynamoDbTeamsStorage(oContext.logger)
+        )
         val request = oContext.request
         iContext.requestTeam = request.data?.toMain() ?: TeamModel.NONE
-        service.createTeam(iContext)
+        service.exec(iContext)
     }
 
 }
