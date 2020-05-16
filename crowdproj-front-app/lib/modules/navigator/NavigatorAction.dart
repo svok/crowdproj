@@ -38,7 +38,7 @@ abstract class NavigatorAction extends Equatable {
               "Access denied to the page due to insufficien access rights",
         );
       default:
-        throw UnimplementedError("Access type ${hasAccess} is not implemented");
+        throw UnimplementedError("In ${this} with Path: $path, Arguments: $arguments. Access type ${hasAccess} is not implemented");
     }
   }
 }

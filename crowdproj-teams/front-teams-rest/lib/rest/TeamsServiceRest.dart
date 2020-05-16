@@ -8,10 +8,9 @@ import 'package:generated_models_teams/model/rest_response_team.dart';
 import 'TeamsServiceRestHelper.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
 
-import 'package:crowdproj_teams_models/models/TeamsQuery.dart' ;
-import 'package:crowdproj_teams_models/models/Team.dart' ;
-import 'package:crowdproj_teams_models/models/ApiResponse.dart' ;
-
+import 'package:crowdproj_teams_models/models/TeamsQuery.dart';
+import 'package:crowdproj_teams_models/models/Team.dart';
+import 'package:crowdproj_teams_models/models/ApiResponse.dart';
 
 import 'package:dio/dio.dart';
 
@@ -33,20 +32,23 @@ class TeamsServiceRest extends ITeamsService {
 
   @override
   Future<ApiResponseTeam> saveTeam(Team team) async {
-    final webRes = await _api.addTeam(RestQueryTeamSave((builder) => builder
-        ..data = team.toRemoteBuilder()
-    ));
+    final webRes = team?.id == null
+        ? await _api.addTeam(RestQueryTeamSave(
+            (builder) => builder..data = team.toRemoteBuilder()))
+        : await _api.updateTeam(RestQueryTeamSave(
+            (builder) => builder..data = team.toRemoteBuilder()));
     final res = webRes.data;
     final localRes = res.toLocal();
-    if (localRes?.status == ApiResponseStatuses.success) {
-      notifyListeners();
-    }
+//    if (localRes?.status == ApiResponseStatuses.success) {
+    notifyListeners();
+//    }
     return localRes;
   }
 
   @override
   Future<ApiResponseTeam> getTeam(String teamId) async {
-      final webRes = await _api.getTeam(RestQueryTeamGet((builder) => builder.teamId = teamId));
+    final webRes = await _api
+        .getTeam(RestQueryTeamGet((builder) => builder.teamId = teamId));
     final res = webRes.data;
     return res.toLocal();
   }
@@ -54,9 +56,7 @@ class TeamsServiceRest extends ITeamsService {
   Future<ApiResponseTeam> getTeams(TeamsQuery query) async {
     Response<RestResponseTeam> webRes;
     try {
-      webRes = await _api.findTeams(
-          RestQueryTeamFind((builder) =>
-          builder
+      webRes = await _api.findTeams(RestQueryTeamFind((builder) => builder
             ..limit = query.limit
             ..offset = query.offset
 //      ..s = query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
@@ -65,20 +65,19 @@ class TeamsServiceRest extends ITeamsService {
       print("getTeams got a result: ${webRes}");
       print("converted to ${webRes.data?.toLocal()}");
       return webRes.data?.toLocal();
-    } catch(e, stacktrace) {
+    } catch (e, stacktrace) {
       print(e);
       print(stacktrace);
       return ApiResponseTeam(
-        status: ApiResponseStatuses.error,
-        errors: List<ApiError>()
+          status: ApiResponseStatuses.error,
+          errors: List<ApiError>()
             ..add(ApiError(
               code: webRes?.statusCode?.toString() ?? "unknown-error",
               field: "",
               message: e.toString(),
               description: "Server error",
               level: ErrorLevels.fatal,
-            ))
-      );
+            )));
     }
   }
 

@@ -78,7 +78,7 @@ class Team {
     TeamVisibility visibility,
     TeamJoinability joinability,
     TeamStatus status,
-    TeamRelations relations,
+    TeamRelations relation,
     List<TeamAccess> cans,
   }) =>
       Team(
@@ -90,7 +90,7 @@ class Team {
         visibility: visibility ?? this.visibility,
         joinability: joinability ?? this.joinability,
         status: status ?? this.status,
-        relation: relations ?? this.relation,
+        relation: relation ?? this.relation,
         cans: cans ?? this.cans,
       );
 

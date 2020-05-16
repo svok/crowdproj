@@ -132,8 +132,7 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
           ]);
     }
     yield TeamUpdateState(
-      team: response.team,
-      teamUpdated: response.team.copyWith(),
+      team: response.team, teamUpdated: response.team?.copyWith(),
       errors: response.errors,
     );
   }
