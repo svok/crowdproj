@@ -1,4 +1,6 @@
 
+import 'ProfileStatus.dart';
+
 class Profile {
   Profile({
     this.id,
@@ -8,6 +10,7 @@ class Profile {
     this.mName,
     this.phone,
     this.email,
+    this.status,
   }) : super();
 
   String id;
@@ -17,5 +20,5 @@ class Profile {
   String mName;
   String email;
   String phone;
-
+  ProfileStatus status;
 }

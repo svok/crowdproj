@@ -63,8 +63,12 @@ class TeamsServiceRest extends ITeamsService {
 //      ..s = query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
 //      tags: query.tagIds,
           ));
+      print("getTeams got a result: ${webRes}");
+      print("converted to ${webRes.data?.toLocal()}");
       return webRes.data?.toLocal();
-    } catch(e) {
+    } catch(e, stacktrace) {
+      print(e);
+      print(stacktrace);
       return local.ApiResponseTeam(
         status: local.ApiResponseStatuses.error,
         errors: List<local.ApiError>()

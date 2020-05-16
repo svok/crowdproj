@@ -31,7 +31,7 @@ class ApiResponseTeam extends ApiResponse {
         );
   List<Team> teams;
 
-  Team get team => teams?.first;
+  Team get team => teams == null || teams.isEmpty ? null : teams?.first;
 }
 
 class ApiError {

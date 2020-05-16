@@ -59,7 +59,11 @@ internal class TeamExtensionsKtTest : StringSpec() {
                 ),
                 visibility = TeamVisibility.teamPublic,
                 joinability = TeamJoinability.byUser,
-                status = TeamStatus.active
+                status = TeamStatus.active,
+                cans = setOf(
+                    "can 1",
+                    "can 2"
+                )
             )
 
             val api2Team = apiTeam.toMain().toApi()
@@ -73,6 +77,7 @@ internal class TeamExtensionsKtTest : StringSpec() {
             api2Team.photoUrls shouldBe apiTeam.photoUrls
             api2Team.status shouldBe apiTeam.status
             api2Team.visibility shouldBe apiTeam.visibility
+            api2Team.cans shouldBe apiTeam.cans
 //            api2Team shouldBe apiTeam
         }
     }

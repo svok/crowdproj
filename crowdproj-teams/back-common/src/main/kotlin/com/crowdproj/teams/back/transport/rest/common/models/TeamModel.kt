@@ -11,12 +11,12 @@ data class TeamModel(
     var owner: ProfileModel = ProfileModel.NONE,
     var photoUrls: Set<String> = mutableSetOf(),
     var tags: Set<TagModel> = mutableSetOf(),
+    var timeCreated: Instant = Instant.MIN,
+    var cans: MutableSet<String> = mutableSetOf(),
     var visibility: TeamVisibility = TeamVisibility.none,
     var joinability: TeamJoinability = TeamJoinability.none,
-    var timeCreated: Instant = Instant.MIN,
-    var lock: String = "",
     var status: TeamStatusEnum = TeamStatusEnum.none,
-    var relations: MutableSet<TeamRelations> = mutableSetOf()
+    var lock: String = ""
 ) {
 
     companion object {

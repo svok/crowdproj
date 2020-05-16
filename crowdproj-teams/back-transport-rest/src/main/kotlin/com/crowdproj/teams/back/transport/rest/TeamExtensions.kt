@@ -13,15 +13,16 @@ import com.crowdproj.rest.teams.models.TeamVisibility as ApiTeamVisibility
 
 fun Team.toMain() = TeamModel(
     id = id ?: "",
-    name = name ?: "",
-    summary = summary ?: "",
+    name = name,
+    summary = summary,
     description = description ?: "",
     owner = owner?.toMain() ?: ProfileModel.NONE,
     photoUrls = photoUrls?.toSet() ?: mutableSetOf(),
     tags = tags?.map { it.toMain() }?.toSet() ?: setOf(),
     visibility = visibility.toMain(),
     joinability = joinability.toMain(),
-    status = status.toMain()
+    status = status.toMain(),
+    cans = cans?.toMutableSet() ?: mutableSetOf()
 )
 
 fun Collection<TeamModel>.toApiResults() = this.map { it.toApi() }
@@ -57,6 +58,7 @@ fun TeamModel.toApi() = Team(
     owner = owner.takeIf { it != ProfileModel.NONE }?.toApi(),
     photoUrls = photoUrls.takeIf { it.isNotEmpty() }?.toTypedArray(),
     tags = tags.takeIf { it.isNotEmpty() }?.toApiTags()?.toTypedArray(),
+    cans = cans.takeIf { it.isNotEmpty() },
     visibility = visibility.toApi(),
     joinability = joinability.toApi(),
     status = status.toApi()

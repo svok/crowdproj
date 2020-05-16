@@ -299,6 +299,20 @@ components:
             wrapped: true
           items:
             $ref: '#/components/schemas/Tag'
+#        relation:
+#          type: string
+#          enum:
+#            - own,
+#            - member,
+#            - invitations,
+#            - accessed,
+#            - applied,
+#            - unavailable,
+        cans:
+          type: array
+          uniqueItems: true
+          items:
+            type: string
         visibility:
           $ref: '#/components/schemas/TeamVisibility'
         joinability:

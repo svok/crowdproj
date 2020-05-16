@@ -5,6 +5,7 @@ import com.crowdproj.common.ContextStatuses
 import com.crowdproj.teams.main.common.KonveyorEnvironment
 import com.crowdproj.teams.main.errors.ErrorStorage
 import com.crowdproj.teams.main.exceptions.ErrorSavingToDb
+import com.crowdproj.teams.main.handlers.SolveCansHandler
 import com.crowdproj.teams.storage.common.ITeamStorage
 
 class TeamsFindService(
@@ -31,6 +32,7 @@ class TeamsFindService(
                     addFatal(ErrorStorage(message = e.message ?: ""))
                 }
             }
+            + SolveCansHandler
         }
     }
 }

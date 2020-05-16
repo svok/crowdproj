@@ -5,10 +5,10 @@ import codes.spectrum.konveyor.IKonveyorHandler
 import com.crowdproj.teams.back.transport.rest.common.models.TeamRelations
 import com.crowdproj.teams.main.TeamContext
 
-object SolveRelationsHandler : IKonveyorHandler<TeamContext> {
+object SolveCansHandler : IKonveyorHandler<TeamContext> {
     override suspend fun exec(context: TeamContext, env: IKonveyorEnvironment) {
         context.result.forEach {
-            it.relations.addAll(TeamRelations.own.expandRelation())
+//            it.cans.addAll("")
         }
     }
 

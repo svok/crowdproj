@@ -24,4 +24,8 @@ tasks {
     test {
         useJUnitPlatform()
     }
+
+//    compileKotlin {
+//        dependsOn(project(":crowdproj-teams:generated-models-dt").getTasksByName("build", false))
+//    }
 }

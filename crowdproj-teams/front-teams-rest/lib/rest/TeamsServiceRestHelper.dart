@@ -1,5 +1,7 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:crowdproj_teams_models/models/ApiResponse.dart' as local;
 import 'package:crowdproj_teams_models/models/Profile.dart' as local;
+import 'package:crowdproj_teams_models/models/ProfileStatus.dart' as local;
 import 'package:crowdproj_teams_models/models/Team.dart' as local;
 import 'package:crowdproj_teams_models/models/TeamVisibility.dart' as local;
 import 'package:crowdproj_teams_models/models/TeamJoinability.dart' as local;
@@ -8,6 +10,7 @@ import 'package:crowdproj_teams_models/models/TeamStatus.dart' as local;
 import 'package:generated_models_teams/model/api_response_status.dart'
     as remote;
 import 'package:generated_models_teams/model/profile.dart' as remote;
+import 'package:generated_models_teams/model/profile_status.dart' as remote;
 import 'package:generated_models_teams/model/team.dart' as remote;
 import 'package:generated_models_teams/model/api_error.dart' as remote;
 import 'package:generated_models_teams/model/api_response.dart' as remote;
@@ -17,10 +20,9 @@ import 'package:generated_models_teams/model/team_status.dart' as remote;
 import 'package:generated_models_teams/model/team_visibility.dart' as remote;
 
 extension RemoteErrorLevels on String {
-  local.ErrorLevels toLocal() =>
-      local.ErrorLevels.values.firstWhere(
-              (e) => e.toString().toLowerCase() == toLowerCase(),
-          orElse: () => null); //return null if not found
+  local.ErrorLevels toLocal() => local.ErrorLevels.values.firstWhere(
+      (e) => e.toString().toLowerCase() == toLowerCase(),
+      orElse: () => null); //return null if not found
 }
 
 extension TimeParse on String {
@@ -29,9 +31,12 @@ extension TimeParse on String {
 
 extension RemoteApiResponseTeam on remote.ApiResponseTeam {
   local.ApiResponseTeam toLocal() => local.ApiResponseTeam(
-        teams: data?.map((remoteTeam) => remoteTeam?.toLocal())?.skipWhile((value) => value == null),
+        teams: data
+            ?.map((remoteTeam) => remoteTeam?.toLocal())
+//            ?.skipWhile((value) => value == null)
+            ?.toList(),
         status: status.toLocal(),
-        errors: errors.map((el) => el.toLocal()),
+        errors: errors?.map((el) => el.toLocal())?.toList(),
         timeRequested: timeReceived?.toDateTime(),
         timeFinished: timeFinished?.toDateTime(),
       );
@@ -52,14 +57,35 @@ extension RemoteApiResponseStatus on remote.ApiResponseStatus {
 
 extension RemoteProfile on remote.Profile {
   local.Profile toLocal() => local.Profile(
-        id: id,
-        alias: alias,
-        fName: fName,
-        lName: lName,
-        mName: mName,
-        phone: phone,
-        email: email,
-      );
+      id: id,
+      alias: alias,
+      fName: fName,
+      lName: lName,
+      mName: mName,
+      phone: phone,
+      email: email,
+      status: profileStatus?.toLocal(),
+  );
+}
+
+extension RemoteProfileStatus on remote.ProfileStatus {
+  local.ProfileStatus toLocal() {
+    switch(this) {
+      case remote.ProfileStatus.profileActive: return local.ProfileStatus.active;
+      case remote.ProfileStatus.profileClosed: return local.ProfileStatus.closed;
+      case remote.ProfileStatus.profileDeleted: return local.ProfileStatus.deleted;
+    }
+  }
+}
+
+extension LocalProfileStatus on local.ProfileStatus {
+  remote.ProfileStatus toRemote() {
+    switch(this) {
+      case local.ProfileStatus.active: return remote.ProfileStatus.profileActive;
+      case local.ProfileStatus.closed: return remote.ProfileStatus.profileClosed;
+      case local.ProfileStatus.deleted: return remote.ProfileStatus.profileDeleted;
+    }
+  }
 }
 
 extension RemoteTeamVisibility on remote.TeamVisibility {
@@ -89,7 +115,8 @@ extension LocalProfile on local.Profile {
     ..lName = lName
     ..mName = mName
     ..email = email
-    ..phone = phone;
+    ..phone = phone
+    ..profileStatus = status.toRemote();
 }
 
 extension LocalTeamVisibility on local.TeamVisibility {
@@ -180,8 +207,8 @@ extension LocalTeam on local.Team {
     ..owner = owner?.toRemoteBuilder()
     ..visibility = visibility?.toRemote()
     ..joinability = joinability?.toRemote()
-    ..status = status?.toRemote();
-
+    ..status = status?.toRemote()
+    ..cans = ListBuilder(cans);
   remote.Team toRemote() => toRemoteBuilder().build();
 }
 
@@ -192,18 +219,21 @@ extension RemoteTeam on remote.Team {
         summary: summary,
         description: description,
         owner: owner?.toLocal(),
+//        photoUrls: photoUrls,
+//        tags: tags?.map((it) => it.toLocal()),
         visibility: visibility?.toLocal(),
         joinability: joinability?.toLocal(),
         status: status?.toLocal(),
+        cans: cans.asList(),
       );
 }
 
 extension RemoteApiError on remote.ApiError {
   local.ApiError toLocal() => local.ApiError(
-          code: code,
-          field: field,
-          message: message,
-          description: description,
-          level: level?.toLocal(),
-        );
+        code: code,
+        field: field,
+        message: message,
+        description: description,
+        level: level?.toLocal(),
+      );
 }

@@ -19,7 +19,7 @@ dependencies:
     path: ../../crowdproj-common/crowdproj-common-dt
 
   dio: ^3.0.9
-
+  built_collection: ^4.3.2
 
 dev_dependencies:
   flutter_test:

@@ -62,7 +62,7 @@ class Team {
 
   List<String> cans = [];
 
-  bool can(String tag) => cans?.contains(tag);
+  bool can(String tag) => cans?.contains(tag) ?? false;
 
   @override
   String toString() => "Team{id=$id, name=$name}";
@@ -76,8 +76,8 @@ class Team {
     TeamVisibility visibility,
     TeamJoinability joinability,
     TeamStatus status,
-    TeamRelations relation,
-    List<String> cansJoin,
+    TeamRelations relations,
+    List<String> cans,
   }) =>
       Team(
         id: id ?? this.id,
@@ -88,7 +88,7 @@ class Team {
         visibility: visibility ?? this.visibility,
         joinability: joinability ?? this.joinability,
         status: status ?? this.status,
-        relation: relation ?? this.relation,
+        relation: relations ?? this.relation,
         cans: cans ?? this.cans,
       );
 
