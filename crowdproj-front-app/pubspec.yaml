@@ -29,8 +29,8 @@ dependencies:
     path: ../crowdproj-teams/front-teams
   crowdproj_teams_models:
     path: ../crowdproj-teams/front-teams-models
-  crowdproj_teams_stub:
-    path: ../crowdproj-teams/front-teams-stub
+#  crowdproj_teams_stub:
+#    path: ../crowdproj-teams/front-teams-stub
   crowdproj_teams_rest:
     path: ../crowdproj-teams/front-teams-rest
 

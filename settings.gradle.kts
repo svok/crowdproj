@@ -19,7 +19,7 @@ include(":crowdproj-teams:back-logics")
 include(":crowdproj-teams:crowdproj-teams-aws")
 include(":crowdproj-teams:front-teams-models")
 include(":crowdproj-teams:front-teams-rest")
-include(":crowdproj-teams:front-teams-stub")
+//include(":crowdproj-teams:front-teams-stub")
 include(":crowdproj-teams:front-teams")
 
 // crowdptoj personal front application

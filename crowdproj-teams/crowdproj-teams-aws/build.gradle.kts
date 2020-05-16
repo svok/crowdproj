@@ -107,5 +107,10 @@ tasks {
         dependsOn(shadowJar)
         inputs.file(shadowJar.get().archiveFile)
     }
+
+    val deploy by creating {
+        group = "build"
+        dependsOn(tfApply)
+    }
 }
 

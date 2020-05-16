@@ -11,7 +11,6 @@ import 'package:crowdproj_common/common/storage/IAppPreferences.dart';
 import 'package:crowdproj_teams/crowdproj_teams.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
 import 'package:crowdproj_teams_rest/rest/TeamsServiceRest.dart';
-import 'package:crowdproj_teams_stub/TeamsServiceStub.dart';
 import 'package:flutter/material.dart';
 
 class AppSession {

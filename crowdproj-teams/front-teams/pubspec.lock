@@ -122,13 +122,6 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
-  crowdproj_teams_stub:
-    dependency: "direct main"
-    description:
-      path: "../front-teams-stub"
-      relative: true
-    source: path
-    version: "0.0.1"
   crypted_preferences:
     dependency: transitive
     description:
