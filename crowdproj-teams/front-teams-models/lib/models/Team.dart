@@ -1,3 +1,5 @@
+import 'package:crowdproj_teams_models/models/TeamAccess.dart';
+
 import 'Profile.dart';
 import 'TeamJoinability.dart';
 import 'TeamRelations.dart';
@@ -60,9 +62,9 @@ class Team {
    */
   TeamRelations relation;
 
-  List<String> cans = [];
+  Set<TeamAccess> cans = {};
 
-  bool can(String tag) => cans?.contains(tag) ?? false;
+  bool can(TeamAccess access) => cans?.contains(access) ?? false;
 
   @override
   String toString() => "Team{id=$id, name=$name}";
@@ -77,7 +79,7 @@ class Team {
     TeamJoinability joinability,
     TeamStatus status,
     TeamRelations relations,
-    List<String> cans,
+    List<TeamAccess> cans,
   }) =>
       Team(
         id: id ?? this.id,

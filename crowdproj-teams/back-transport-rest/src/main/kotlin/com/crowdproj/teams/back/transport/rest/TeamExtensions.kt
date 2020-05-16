@@ -1,17 +1,12 @@
 package com.crowdproj.teams.back.transport.rest
 
-import com.crowdproj.rest.teams.models.ApiQueryTeamFind
-import com.crowdproj.rest.teams.models.ApiQueryTeamSave
-import com.crowdproj.rest.teams.models.Team
-import com.crowdproj.rest.teams.models.TeamStatus
+import com.crowdproj.rest.teams.models.*
 import com.crowdproj.teams.back.common.models.*
 import com.crowdproj.teams.back.transport.rest.common.models.*
 import com.crowdproj.teams.back.transport.rest.common.models.TeamFindQuery.Companion.DEFAULT_TEAMS_LIMIT
-import com.crowdproj.rest.teams.models.TeamJoinability as ApiTeamJoinability
-import com.crowdproj.rest.teams.models.TeamVisibility as ApiTeamVisibility
 
 
-fun Team.toMain() = TeamModel(
+fun RestTeam.toMain() = TeamModel(
     id = id ?: "",
     name = name,
     summary = summary,
@@ -22,35 +17,35 @@ fun Team.toMain() = TeamModel(
     visibility = visibility.toMain(),
     joinability = joinability.toMain(),
     status = status.toMain(),
-    cans = cans?.toMutableSet() ?: mutableSetOf()
+    cans = cans?.map { it.toMain() }?.toMutableSet() ?: mutableSetOf()
 )
 
 fun Collection<TeamModel>.toApiResults() = this.map { it.toApi() }
 
-fun ApiTeamVisibility?.toMain() = when (this) {
+fun RestTeamVisibility?.toMain() = when (this) {
     null -> TeamVisibility.none
-    ApiTeamVisibility.teamPublic -> TeamVisibility.public
-    ApiTeamVisibility.teamGroupOnly -> TeamVisibility.groupOnly
-    ApiTeamVisibility.teamMembersOnly -> TeamVisibility.membersOnly
-    ApiTeamVisibility.teamRegisteredOnly -> TeamVisibility.registeredOnly
+    RestTeamVisibility.teamPublic -> TeamVisibility.public
+    RestTeamVisibility.teamGroupOnly -> TeamVisibility.groupOnly
+    RestTeamVisibility.teamMembersOnly -> TeamVisibility.membersOnly
+    RestTeamVisibility.teamRegisteredOnly -> TeamVisibility.registeredOnly
 }
 
-fun ApiTeamJoinability?.toMain() = when (this) {
+fun RestTeamJoinability?.toMain() = when (this) {
     null -> TeamJoinability.none
-    ApiTeamJoinability.byMember -> TeamJoinability.byMember
-    ApiTeamJoinability.byOwner -> TeamJoinability.byOwner
-    ApiTeamJoinability.byUser -> TeamJoinability.byUser
+    RestTeamJoinability.byMember -> TeamJoinability.byMember
+    RestTeamJoinability.byOwner -> TeamJoinability.byOwner
+    RestTeamJoinability.byUser -> TeamJoinability.byUser
 }
 
-fun TeamStatus?.toMain() = when (this) {
+fun RestTeamStatus?.toMain() = when (this) {
     null -> TeamStatusEnum.none
-    TeamStatus.active -> TeamStatusEnum.active
-    TeamStatus.deleted -> TeamStatusEnum.deleted
-    TeamStatus.pending -> TeamStatusEnum.pending
-    TeamStatus.closed -> TeamStatusEnum.closed
+    RestTeamStatus.active -> TeamStatusEnum.active
+    RestTeamStatus.deleted -> TeamStatusEnum.deleted
+    RestTeamStatus.pending -> TeamStatusEnum.pending
+    RestTeamStatus.closed -> TeamStatusEnum.closed
 }
 
-fun TeamModel.toApi() = Team(
+fun TeamModel.toApi() = RestTeam(
     id = id.takeIf { it.isNotBlank() },
     name = name,
     summary = summary,
@@ -58,42 +53,64 @@ fun TeamModel.toApi() = Team(
     owner = owner.takeIf { it != ProfileModel.NONE }?.toApi(),
     photoUrls = photoUrls.takeIf { it.isNotEmpty() }?.toTypedArray(),
     tags = tags.takeIf { it.isNotEmpty() }?.toApiTags()?.toTypedArray(),
-    cans = cans.takeIf { it.isNotEmpty() },
+    cans = cans.takeIf { it.isNotEmpty() }?.map { it.toApi() }?.toMutableSet(),
     visibility = visibility.toApi(),
     joinability = joinability.toApi(),
     status = status.toApi()
 )
 
-private fun TeamJoinability.toApi(): ApiTeamJoinability? = when(this) {
-    TeamJoinability.byMember -> ApiTeamJoinability.byMember
-    TeamJoinability.byOwner -> ApiTeamJoinability.byOwner
-    TeamJoinability.byUser -> ApiTeamJoinability.byUser
+fun TeamOperations.toApi(): RestTeamOperations = when(this) {
+    TeamOperations.ACCEPT_INVITATION -> RestTeamOperations.acceptInvitation
+    TeamOperations.UPDATE -> RestTeamOperations.update
+    TeamOperations.UNAPPLY -> RestTeamOperations.unapply
+    TeamOperations.LEAVE -> RestTeamOperations.leave
+    TeamOperations.JOIN -> RestTeamOperations.join
+    TeamOperations.INVITE -> RestTeamOperations.invite
+    TeamOperations.DENY_INVITATION -> RestTeamOperations.cancelInvitation
+    TeamOperations.APPLY -> RestTeamOperations.apply
+}
+
+fun RestTeamOperations.toMain(): TeamOperations = when(this) {
+    RestTeamOperations.acceptInvitation -> TeamOperations.ACCEPT_INVITATION
+    RestTeamOperations.update -> TeamOperations.UPDATE
+    RestTeamOperations.unapply -> TeamOperations.UNAPPLY
+    RestTeamOperations.leave -> TeamOperations.LEAVE
+    RestTeamOperations.join -> TeamOperations.JOIN
+    RestTeamOperations.invite -> TeamOperations.INVITE
+    RestTeamOperations.cancelInvitation -> TeamOperations.DENY_INVITATION
+    RestTeamOperations.apply -> TeamOperations.APPLY
+}
+
+private fun TeamJoinability.toApi(): RestTeamJoinability? = when(this) {
+    TeamJoinability.byMember -> RestTeamJoinability.byMember
+    TeamJoinability.byOwner -> RestTeamJoinability.byOwner
+    TeamJoinability.byUser -> RestTeamJoinability.byUser
     TeamJoinability.none -> null
 }
 
-fun TeamVisibility.toApi(): ApiTeamVisibility? = when (this) {
+fun TeamVisibility.toApi(): RestTeamVisibility? = when (this) {
     TeamVisibility.none -> null
-    TeamVisibility.public -> ApiTeamVisibility.teamPublic
-    TeamVisibility.groupOnly -> ApiTeamVisibility.teamGroupOnly
-    TeamVisibility.membersOnly -> ApiTeamVisibility.teamMembersOnly
-    TeamVisibility.registeredOnly -> ApiTeamVisibility.teamRegisteredOnly
+    TeamVisibility.public -> RestTeamVisibility.teamPublic
+    TeamVisibility.groupOnly -> RestTeamVisibility.teamGroupOnly
+    TeamVisibility.membersOnly -> RestTeamVisibility.teamMembersOnly
+    TeamVisibility.registeredOnly -> RestTeamVisibility.teamRegisteredOnly
 }
 
-fun TeamStatusEnum.toApi(): TeamStatus? = when (this) {
+fun TeamStatusEnum.toApi(): RestTeamStatus? = when (this) {
     TeamStatusEnum.none -> null
-    TeamStatusEnum.active -> TeamStatus.active
-    TeamStatusEnum.deleted -> TeamStatus.deleted
-    TeamStatusEnum.pending -> TeamStatus.pending
-    TeamStatusEnum.closed -> TeamStatus.closed
+    TeamStatusEnum.active -> RestTeamStatus.active
+    TeamStatusEnum.deleted -> RestTeamStatus.deleted
+    TeamStatusEnum.pending -> RestTeamStatus.pending
+    TeamStatusEnum.closed -> RestTeamStatus.closed
 }
 
-fun TeamSaveQuery.Companion.from(query: ApiQueryTeamSave) =
+fun TeamSaveQuery.Companion.from(query: RestQueryTeamSave) =
     TeamSaveQuery(
         team = query.data?.toMain()
             ?: TeamModel.NONE
     )
 
-fun ApiQueryTeamFind?.toMain() = if (this == null) TeamFindQuery.EMPTY
+fun RestQueryTeamFind?.toMain() = if (this == null) TeamFindQuery.EMPTY
 else TeamFindQuery(
     offset = offset ?: 0L,
     limit = limit ?: DEFAULT_TEAMS_LIMIT

@@ -40,10 +40,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagSave'
+              $ref: '#/components/schemas/RestQueryTagSave'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagSave'
+              $ref: '#/components/schemas/RestQueryTagSave'
           text/plain:
             schema:
               type: string
@@ -56,12 +56,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTag'
+                  $ref: '#/components/schemas/RestResponseTag'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTag'
+                  $ref: '#/components/schemas/RestResponseTag'
             text/plain:
               schema:
                 type: string
@@ -89,10 +89,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagSave'
+              $ref: '#/components/schemas/RestQueryTagSave'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagSave'
+              $ref: '#/components/schemas/RestQueryTagSave'
         required: true
       responses:
         200:
@@ -139,10 +139,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagFind'
+              $ref: '#/components/schemas/RestQueryTagFind'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTagFind'
+              $ref: '#/components/schemas/RestQueryTagFind'
         required: true
 
       responses:
@@ -151,10 +151,10 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApiResponseTag'
+                $ref: '#/components/schemas/RestResponseTag'
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseTag'
+                $ref: '#/components/schemas/RestResponseTag'
         400:
           description: Invalid status value
           content: {}
@@ -194,10 +194,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseTag'
+                $ref: '#/components/schemas/RestResponseTag'
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApiResponseTag'
+                $ref: '#/components/schemas/RestResponseTag'
         # 400:
         #   description: Invalid ID supplied
         #   content: {}
@@ -236,14 +236,14 @@ paths:
 components:
   schemas:
 
-    ApiQuery:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiQuery'
-    ApiResponse:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiResponse'
-    ApiError:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiError'
+    RestQuery:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestQuery'
+    RestResponse:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestResponse'
+    RestError:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestError'
 
-    Tag:
+    RestTag:
       type: object
       properties:
         id:
@@ -258,9 +258,9 @@ components:
       xml:
         name: Tag
 
-    ApiQueryTagFind:
+    RestQueryTagFind:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             tagIds:
@@ -268,23 +268,23 @@ components:
               items:
                 type: string
 
-    ApiQueryTagSave:
+    RestQueryTagSave:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/Tag'
+              $ref: '#/components/schemas/RestTag'
 
-    ApiResponseTag:
+    RestResponseTag:
       allOf:
-        - $ref: '#/components/schemas/ApiResponse'
+        - $ref: '#/components/schemas/RestResponse'
         - type: object
           properties:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/Tag'
+                $ref: '#/components/schemas/RestTag'
 
   securitySchemes:
     crowdproj_auth:

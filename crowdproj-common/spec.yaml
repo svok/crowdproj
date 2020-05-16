@@ -320,7 +320,7 @@ paths:
           content: {}
 components:
   schemas:
-    ApiQuery:
+    RestQuery:
       type: object
       description: "Basic query structure that must be sent to request some fuctionality from the server"
       properties:
@@ -331,7 +331,7 @@ components:
           type: string
           description: "Request a debug information from the server"
 
-    ApiResponse:
+    RestResponse:
       type: object
       description: "Basic response structure that to be received from the server due to API request"
       properties:
@@ -342,16 +342,16 @@ components:
           type: string
           example: "2019-02-03T16:17:18.100Z"
         status:
-          $ref: '#/components/schemas/ApiResponseStatus'
+          $ref: '#/components/schemas/RestResponseStatus'
         errors:
           type: array
           description: "Errors, warnings and info messages concerning the response"
           items:
-            $ref: '#/components/schemas/ApiError'
+            $ref: '#/components/schemas/RestError'
         debug:
           type: object
 
-    ApiResponseStatus:
+    RestResponseStatus:
       type: string
       description: "Result of the request handling by server"
       example: "responseOk"
@@ -359,7 +359,7 @@ components:
         - responseOk
         - responseError
 
-    ApiError:
+    RestError:
       type: object
       description: "Error description"
       properties:

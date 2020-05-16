@@ -1,11 +1,11 @@
 package com.crowdproj.teams.back.transport.rest
 
-import com.crowdproj.rest.teams.models.Profile
-import com.crowdproj.rest.teams.models.ProfileStatus
+import com.crowdproj.rest.teams.models.RestProfile
+import com.crowdproj.rest.teams.models.RestProfileStatus
 import com.crowdproj.teams.back.transport.rest.common.models.ProfileModel
 import com.crowdproj.teams.back.transport.rest.common.models.ProfileStatusEnum
 
-fun ProfileModel.toApi(): Profile = Profile(
+fun ProfileModel.toApi(): RestProfile = RestProfile(
     id = id.takeIf { it.isNotBlank() },
     alias = alias.takeIf { it.isNotBlank() },
     fName = fName.takeIf { it.isNotBlank() },
@@ -16,7 +16,7 @@ fun ProfileModel.toApi(): Profile = Profile(
     profileStatus = status.toApiProfileStatus()
 )
 
-fun Profile?.toMain() =
+fun RestProfile?.toMain() =
     if (this == null) ProfileModel.NONE
     else ProfileModel(
         id = id ?: "",
@@ -31,14 +31,14 @@ fun Profile?.toMain() =
 
 fun ProfileStatusEnum.toApiProfileStatus() = when (this) {
     ProfileStatusEnum.none -> null
-    ProfileStatusEnum.active -> ProfileStatus.profileActive
-    ProfileStatusEnum.closed -> ProfileStatus.profileClosed
-    ProfileStatusEnum.deleted -> ProfileStatus.profileDeleted
+    ProfileStatusEnum.active -> RestProfileStatus.profileActive
+    ProfileStatusEnum.closed -> RestProfileStatus.profileClosed
+    ProfileStatusEnum.deleted -> RestProfileStatus.profileDeleted
 }
 
-fun ProfileStatus?.toMain() = when (this) {
+fun RestProfileStatus?.toMain() = when (this) {
     null -> ProfileStatusEnum.none
-    ProfileStatus.profileActive -> ProfileStatusEnum.active
-    ProfileStatus.profileClosed -> ProfileStatusEnum.closed
-    ProfileStatus.profileDeleted -> ProfileStatusEnum.deleted
+    RestProfileStatus.profileActive -> ProfileStatusEnum.active
+    RestProfileStatus.profileClosed -> ProfileStatusEnum.closed
+    RestProfileStatus.profileDeleted -> ProfileStatusEnum.deleted
 }

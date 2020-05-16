@@ -31,7 +31,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Profile'
+              $ref: '#/components/schemas/RestProfile'
         required: true
       responses:
         default:
@@ -51,7 +51,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Profile'
+                $ref: '#/components/schemas/RestProfile'
         required: true
       responses:
         default:
@@ -71,7 +71,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Profile'
+                $ref: '#/components/schemas/RestProfile'
         required: true
       responses:
         default:
@@ -150,7 +150,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Profile'
+                $ref: '#/components/schemas/RestProfile'
         400:
           description: Invalid username supplied
           content: {}
@@ -175,7 +175,7 @@ paths:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Profile'
+              $ref: '#/components/schemas/RestProfile'
         required: true
       responses:
         400:
@@ -208,14 +208,14 @@ paths:
 components:
   schemas:
 
-    ApiQuery:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiQuery'
-    ApiResponse:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiResponse'
-    ApiError:
-      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/ApiError'
+    RestQuery:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestQuery'
+    RestResponse:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestResponse'
+    RestError:
+      $ref: '../spec/crowdproj-spec.yaml#/components/schemas/RestError'
 
-    Profile:
+    RestProfile:
       type: object
       properties:
         id:
@@ -233,11 +233,11 @@ components:
         phone:
           type: string
         profileStatus:
-          $ref: '#/components/schemas/ProfileStatus'
+          $ref: '#/components/schemas/RestProfileStatus'
       xml:
         name: Profile
 
-    ProfileStatus:
+    RestProfileStatus:
       type: string
       description: Profile Status
       enum:
@@ -245,9 +245,9 @@ components:
         - profileActive
         - profileDeleted
 
-    ApiQueryProfileFind:
+    RestQueryProfileFind:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             tagIds:
@@ -255,23 +255,23 @@ components:
               items:
                 type: string
 
-    ApiQueryProfileSave:
+    RestQueryProfileSave:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/Profile'
+              $ref: '#/components/schemas/RestProfile'
 
-    ApiResponseProfile:
+    RestResponseProfile:
       allOf:
-        - $ref: '#/components/schemas/ApiResponse'
+        - $ref: '#/components/schemas/RestResponse'
         - type: object
           properties:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/Profile'
+                $ref: '#/components/schemas/RestProfile'
 
 
   securitySchemes:

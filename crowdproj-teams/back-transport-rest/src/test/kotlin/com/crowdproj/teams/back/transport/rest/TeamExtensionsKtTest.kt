@@ -7,7 +7,7 @@ import io.kotest.matchers.shouldBe
 internal class TeamExtensionsKtTest : StringSpec() {
     init {
         "Team empty: Api->Main->Api" {
-            val apiTeam = Team(
+            val apiTeam = RestTeam(
                 name = "team name",
                 summary = "team summary"
             )
@@ -26,12 +26,12 @@ internal class TeamExtensionsKtTest : StringSpec() {
             api2Team shouldBe apiTeam
         }
         "Team full: Api->Main->Api" {
-            val apiTeam = Team(
+            val apiTeam = RestTeam(
                 id = "team id",
                 name = "team name",
                 summary = "team summary",
                 description = "team description",
-                owner = Profile(
+                owner = RestProfile(
                     id = "profile id",
                     alias = "profile alias",
                     fName = "Firstname",
@@ -39,30 +39,30 @@ internal class TeamExtensionsKtTest : StringSpec() {
                     lName = "Lastname",
                     email = "email@domain.com",
                     phone = "+9 999 999 9999",
-                    profileStatus = ProfileStatus.profileActive
+                    profileStatus = RestProfileStatus.profileActive
                 ),
                 photoUrls = arrayOf(
                     "photo1",
                     "photo2"
                 ),
                 tags = arrayOf(
-                    Tag(
+                    RestTag(
                         id = "tag id1",
                         name = "tag name 1",
                         description = "tag description 1"
                     ),
-                    Tag(
+                    RestTag(
                         id = "tag id2",
                         name = "tag name 2",
                         description = "tag description 2"
                     )
                 ),
-                visibility = TeamVisibility.teamPublic,
-                joinability = TeamJoinability.byUser,
-                status = TeamStatus.active,
+                visibility = RestTeamVisibility.teamPublic,
+                joinability = RestTeamJoinability.byUser,
+                status = RestTeamStatus.active,
                 cans = setOf(
-                    "can 1",
-                    "can 2"
+                    RestTeamOperations.apply,
+                    RestTeamOperations.invite
                 )
             )
 

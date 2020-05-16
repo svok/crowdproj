@@ -33,10 +33,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamSave'
+              $ref: '#/components/schemas/RestQueryTeamSave'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamSave'
+              $ref: '#/components/schemas/RestQueryTeamSave'
         required: true
       responses:
         200:
@@ -62,10 +62,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamSave'
+              $ref: '#/components/schemas/RestQueryTeamSave'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamSave'
+              $ref: '#/components/schemas/RestQueryTeamSave'
           text/plain:
             schema:
               type: string
@@ -78,12 +78,12 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTeam'
+                  $ref: '#/components/schemas/RestResponseTeam'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ApiResponseTeam'
+                  $ref: '#/components/schemas/RestResponseTeam'
             text/plain:
               schema:
                 type: string
@@ -118,7 +118,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/components/schemas/TeamStatus'
+              $ref: '#/components/schemas/RestTeamStatus'
         - name: tags
           in: query
           description: Tags to filter by
@@ -134,10 +134,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamFind'
+              $ref: '#/components/schemas/RestQueryTeamFind'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamFind'
+              $ref: '#/components/schemas/RestQueryTeamFind'
         required: true
 
       responses:
@@ -146,10 +146,10 @@ paths:
           content:
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
         400:
           description: Invalid status value
           content: {}
@@ -170,10 +170,10 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamGet'
+              $ref: '#/components/schemas/RestQueryTeamGet'
           application/xml:
             schema:
-              $ref: '#/components/schemas/ApiQueryTeamGet'
+              $ref: '#/components/schemas/RestQueryTeamGet'
         required: true
       responses:
         200:
@@ -181,10 +181,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
             application/xml:
               schema:
-                $ref: '#/components/schemas/ApiResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
     #      security:
     #        - api_key: []
   /teams/delete:
@@ -239,7 +239,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ApiResponse'
+                $ref: '#/components/schemas/RestResponse'
       security:
         - crowdproj_auth:
             - write:teams
@@ -247,20 +247,20 @@ paths:
 components:
   schemas:
 
-    ApiQuery:
-      $ref: '../crowdproj-common/spec.yaml#/components/schemas/ApiQuery'
-    ApiResponse:
-      $ref: '../crowdproj-common/spec.yaml#/components/schemas/ApiResponse'
-    ApiError:
-      $ref: '../crowdproj-common/spec.yaml#/components/schemas/ApiError'
+    RestQuery:
+      $ref: '../crowdproj-common/spec.yaml#/components/schemas/RestQuery'
+    RestResponse:
+      $ref: '../crowdproj-common/spec.yaml#/components/schemas/RestResponse'
+    RestError:
+      $ref: '../crowdproj-common/spec.yaml#/components/schemas/RestError'
 
-    Profile:
-      $ref: '../crowdproj-profiles/spec.yaml#/components/schemas/Profile'
+    RestProfile:
+      $ref: '../crowdproj-profiles/spec.yaml#/components/schemas/RestProfile'
 
-    Tag:
-      $ref: '../crowdproj-tags/spec.yaml#/components/schemas/Tag'
+    RestTag:
+      $ref: '../crowdproj-tags/spec.yaml#/components/schemas/RestTag'
 
-    Team:
+    RestTeam:
       required:
         - name
         - summary
@@ -284,7 +284,7 @@ components:
           description: "The team description field in markdown format."
           example: "# New York swimming team\n\nYou are **welcome** ..."
         owner:
-          $ref: '#/components/schemas/Profile'
+          $ref: '#/components/schemas/RestProfile'
         photoUrls:
           type: array
           xml:
@@ -298,7 +298,7 @@ components:
             name: tag
             wrapped: true
           items:
-            $ref: '#/components/schemas/Tag'
+            $ref: '#/components/schemas/RestTag'
 #        relation:
 #          type: string
 #          enum:
@@ -312,17 +312,17 @@ components:
           type: array
           uniqueItems: true
           items:
-            type: string
+            $ref: '#/components/schemas/RestTeamOperations'
         visibility:
-          $ref: '#/components/schemas/TeamVisibility'
+          $ref: '#/components/schemas/RestTeamVisibility'
         joinability:
-          $ref: '#/components/schemas/TeamJoinability'
+          $ref: '#/components/schemas/RestTeamJoinability'
         status:
-          $ref: '#/components/schemas/TeamStatus'
+          $ref: '#/components/schemas/RestTeamStatus'
       xml:
         name: Team
 
-    TeamVisibility:
+    RestTeamVisibility:
       type: string
       description: Visibility type of the team
       enum:
@@ -331,7 +331,20 @@ components:
         - teamGroupOnly
         - teamMembersOnly
 
-    TeamJoinability:
+    RestTeamOperations:
+      type: string
+      description: The operations the user is permitted to perform on the team
+      enum:
+        - apply
+        - unapply
+        - join
+        - leave
+        - update
+        - invite
+        - cancelInvitation
+        - acceptInvitation
+
+    RestTeamJoinability:
       type: string
       description: How users can join this team
       enum:
@@ -339,7 +352,7 @@ components:
         - byMember
         - byUser
 
-    TeamStatus:
+    RestTeamStatus:
       type: string
       description: team status in the store
       enum:
@@ -348,7 +361,7 @@ components:
         - closed
         - deleted
 
-    TeamRelations:
+    RestTeamRelations:
       type: string
       description: Relations of the user to the team
       enum:
@@ -360,9 +373,9 @@ components:
         - unavailable
 
 
-    ApiQueryTeamFind:
+    RestQueryTeamFind:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             offset:
@@ -380,31 +393,31 @@ components:
               items:
                 type: string
 
-    ApiQueryTeamSave:
+    RestQueryTeamSave:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             data:
-              $ref: '#/components/schemas/Team'
+              $ref: '#/components/schemas/RestTeam'
 
-    ApiQueryTeamGet:
+    RestQueryTeamGet:
       allOf:
-        - $ref: '#/components/schemas/ApiQuery'
+        - $ref: '#/components/schemas/RestQuery'
         - type: object
           properties:
             teamId:
               type: string
 
-    ApiResponseTeam:
+    RestResponseTeam:
       allOf:
-        - $ref: '#/components/schemas/ApiResponse'
+        - $ref: '#/components/schemas/RestResponse'
         - type: object
           properties:
             data:
               type: array
               items:
-                $ref: '#/components/schemas/Team'
+                $ref: '#/components/schemas/RestTeam'
 
   securitySchemes:
     crowdproj_auth:

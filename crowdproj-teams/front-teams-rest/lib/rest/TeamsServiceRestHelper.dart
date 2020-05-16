@@ -1,26 +1,26 @@
 import 'package:built_collection/built_collection.dart';
-import 'package:crowdproj_teams_models/models/ApiResponse.dart' as local;
-import 'package:crowdproj_teams_models/models/Profile.dart' as local;
-import 'package:crowdproj_teams_models/models/ProfileStatus.dart' as local;
-import 'package:crowdproj_teams_models/models/Team.dart' as local;
-import 'package:crowdproj_teams_models/models/TeamVisibility.dart' as local;
-import 'package:crowdproj_teams_models/models/TeamJoinability.dart' as local;
-import 'package:crowdproj_teams_models/models/TeamStatus.dart' as local;
+import 'package:crowdproj_teams_models/models/ApiResponse.dart';
+import 'package:crowdproj_teams_models/models/Profile.dart';
+import 'package:crowdproj_teams_models/models/ProfileStatus.dart';
+import 'package:crowdproj_teams_models/models/Team.dart';
+import 'package:crowdproj_teams_models/models/TeamAccess.dart' ;
+import 'package:crowdproj_teams_models/models/TeamVisibility.dart' ;
+import 'package:crowdproj_teams_models/models/TeamJoinability.dart' ;
+import 'package:crowdproj_teams_models/models/TeamStatus.dart' ;
 
-import 'package:generated_models_teams/model/api_response_status.dart'
-    as remote;
-import 'package:generated_models_teams/model/profile.dart' as remote;
-import 'package:generated_models_teams/model/profile_status.dart' as remote;
-import 'package:generated_models_teams/model/team.dart' as remote;
-import 'package:generated_models_teams/model/api_error.dart' as remote;
-import 'package:generated_models_teams/model/api_response.dart' as remote;
-import 'package:generated_models_teams/model/api_response_team.dart' as remote;
-import 'package:generated_models_teams/model/team_joinability.dart' as remote;
-import 'package:generated_models_teams/model/team_status.dart' as remote;
-import 'package:generated_models_teams/model/team_visibility.dart' as remote;
+import 'package:generated_models_teams/model/rest_error.dart';
+import 'package:generated_models_teams/model/rest_profile.dart';
+import 'package:generated_models_teams/model/rest_profile_status.dart';
+import 'package:generated_models_teams/model/rest_response_status.dart';
+import 'package:generated_models_teams/model/rest_response_team.dart';
+import 'package:generated_models_teams/model/rest_team.dart';
+import 'package:generated_models_teams/model/rest_team_joinability.dart';
+import 'package:generated_models_teams/model/rest_team_operations.dart';
+import 'package:generated_models_teams/model/rest_team_status.dart';
+import 'package:generated_models_teams/model/rest_team_visibility.dart';
 
 extension RemoteErrorLevels on String {
-  local.ErrorLevels toLocal() => local.ErrorLevels.values.firstWhere(
+  ErrorLevels toLocal() => ErrorLevels.values.firstWhere(
       (e) => e.toString().toLowerCase() == toLowerCase(),
       orElse: () => null); //return null if not found
 }
@@ -29,8 +29,8 @@ extension TimeParse on String {
   DateTime toDateTime() => DateTime.tryParse(this);
 }
 
-extension RemoteApiResponseTeam on remote.ApiResponseTeam {
-  local.ApiResponseTeam toLocal() => local.ApiResponseTeam(
+extension RemoteApiResponseTeam on RestResponseTeam {
+  ApiResponseTeam toLocal() => ApiResponseTeam(
         teams: data
             ?.map((remoteTeam) => remoteTeam?.toLocal())
 //            ?.skipWhile((value) => value == null)
@@ -42,21 +42,21 @@ extension RemoteApiResponseTeam on remote.ApiResponseTeam {
       );
 }
 
-extension RemoteApiResponseStatus on remote.ApiResponseStatus {
-  local.ApiResponseStatuses toLocal() {
+extension RemoteApiResponseStatus on RestResponseStatus {
+  ApiResponseStatuses toLocal() {
     switch (this) {
-      case remote.ApiResponseStatus.responseOk:
-        return local.ApiResponseStatuses.success;
-      case remote.ApiResponseStatus.responseError:
-        return local.ApiResponseStatuses.error;
+      case RestResponseStatus.responseOk:
+        return ApiResponseStatuses.success;
+      case RestResponseStatus.responseError:
+        return ApiResponseStatuses.error;
       default:
         return null;
     }
   }
 }
 
-extension RemoteProfile on remote.Profile {
-  local.Profile toLocal() => local.Profile(
+extension RemoteProfile on RestProfile {
+  Profile toLocal() => Profile(
       id: id,
       alias: alias,
       fName: fName,
@@ -68,47 +68,47 @@ extension RemoteProfile on remote.Profile {
   );
 }
 
-extension RemoteProfileStatus on remote.ProfileStatus {
-  local.ProfileStatus toLocal() {
+extension RemoteProfileStatus on RestProfileStatus {
+  ProfileStatus toLocal() {
     switch(this) {
-      case remote.ProfileStatus.profileActive: return local.ProfileStatus.active;
-      case remote.ProfileStatus.profileClosed: return local.ProfileStatus.closed;
-      case remote.ProfileStatus.profileDeleted: return local.ProfileStatus.deleted;
+      case RestProfileStatus.profileActive: return ProfileStatus.active;
+      case RestProfileStatus.profileClosed: return ProfileStatus.closed;
+      case RestProfileStatus.profileDeleted: return ProfileStatus.deleted;
     }
   }
 }
 
-extension LocalProfileStatus on local.ProfileStatus {
-  remote.ProfileStatus toRemote() {
+extension LocalProfileStatus on ProfileStatus {
+  RestProfileStatus toRemote() {
     switch(this) {
-      case local.ProfileStatus.active: return remote.ProfileStatus.profileActive;
-      case local.ProfileStatus.closed: return remote.ProfileStatus.profileClosed;
-      case local.ProfileStatus.deleted: return remote.ProfileStatus.profileDeleted;
+      case ProfileStatus.active: return RestProfileStatus.profileActive;
+      case ProfileStatus.closed: return RestProfileStatus.profileClosed;
+      case ProfileStatus.deleted: return RestProfileStatus.profileDeleted;
     }
   }
 }
 
-extension RemoteTeamVisibility on remote.TeamVisibility {
-  local.TeamVisibility toLocal() {
+extension RemoteTeamVisibility on RestTeamVisibility {
+  TeamVisibility toLocal() {
     switch (this) {
-      case remote.TeamVisibility.teamGroupOnly:
-        return local.TeamVisibility.groupOnly;
-      case remote.TeamVisibility.teamMembersOnly:
-        return local.TeamVisibility.membersOnly;
-      case remote.TeamVisibility.teamPublic:
-        return local.TeamVisibility.public;
-      case remote.TeamVisibility.teamRegisteredOnly:
-        return local.TeamVisibility.registeredOnly;
+      case RestTeamVisibility.teamGroupOnly:
+        return TeamVisibility.groupOnly;
+      case RestTeamVisibility.teamMembersOnly:
+        return TeamVisibility.membersOnly;
+      case RestTeamVisibility.teamPublic:
+        return TeamVisibility.public;
+      case RestTeamVisibility.teamRegisteredOnly:
+        return TeamVisibility.registeredOnly;
       default:
         null;
     }
   }
 }
 
-extension LocalProfile on local.Profile {
-  remote.Profile toRemote() => toRemoteBuilder().build();
+extension LocalProfile on Profile {
+  RestProfile toRemote() => toRemoteBuilder().build();
 
-  remote.ProfileBuilder toRemoteBuilder() => remote.ProfileBuilder()
+  RestProfileBuilder toRemoteBuilder() => RestProfileBuilder()
     ..id = id
     ..alias = alias
     ..fName = fName
@@ -119,87 +119,87 @@ extension LocalProfile on local.Profile {
     ..profileStatus = status.toRemote();
 }
 
-extension LocalTeamVisibility on local.TeamVisibility {
-  remote.TeamVisibility toRemote() {
+extension LocalTeamVisibility on TeamVisibility {
+  RestTeamVisibility toRemote() {
     switch (this) {
-      case local.TeamVisibility.groupOnly:
-        return remote.TeamVisibility.teamGroupOnly;
-      case local.TeamVisibility.membersOnly:
-        return remote.TeamVisibility.teamMembersOnly;
-      case local.TeamVisibility.public:
-        return remote.TeamVisibility.teamPublic;
-      case local.TeamVisibility.registeredOnly:
-        return remote.TeamVisibility.teamRegisteredOnly;
+      case TeamVisibility.groupOnly:
+        return RestTeamVisibility.teamGroupOnly;
+      case TeamVisibility.membersOnly:
+        return RestTeamVisibility.teamMembersOnly;
+      case TeamVisibility.public:
+        return RestTeamVisibility.teamPublic;
+      case TeamVisibility.registeredOnly:
+        return RestTeamVisibility.teamRegisteredOnly;
       default:
         null;
     }
   }
 }
 
-extension RemoteTeamJoinability on remote.TeamJoinability {
-  local.TeamJoinability toLocal() {
+extension RemoteTeamJoinability on RestTeamJoinability {
+  TeamJoinability toLocal() {
     switch (this) {
-      case remote.TeamJoinability.byMember:
-        return local.TeamJoinability.byMember;
-      case remote.TeamJoinability.byOwner:
-        return local.TeamJoinability.byOwner;
-      case remote.TeamJoinability.byUser:
-        return local.TeamJoinability.byUser;
+      case RestTeamJoinability.byMember:
+        return TeamJoinability.byMember;
+      case RestTeamJoinability.byOwner:
+        return TeamJoinability.byOwner;
+      case RestTeamJoinability.byUser:
+        return TeamJoinability.byUser;
       default:
         return null;
     }
   }
 }
 
-extension LocalTeamJoinability on local.TeamJoinability {
-  remote.TeamJoinability toRemote() {
+extension LocalTeamJoinability on TeamJoinability {
+  RestTeamJoinability toRemote() {
     switch (this) {
-      case local.TeamJoinability.byUser:
-        return remote.TeamJoinability.byUser;
-      case local.TeamJoinability.byOwner:
-        return remote.TeamJoinability.byOwner;
-      case local.TeamJoinability.byMember:
-        return remote.TeamJoinability.byMember;
+      case TeamJoinability.byUser:
+        return RestTeamJoinability.byUser;
+      case TeamJoinability.byOwner:
+        return RestTeamJoinability.byOwner;
+      case TeamJoinability.byMember:
+        return RestTeamJoinability.byMember;
     }
   }
 }
 
-extension RemoteTeamStatus on remote.TeamStatus {
-  local.TeamStatus toLocal() {
+extension RemoteTeamStatus on RestTeamStatus {
+  TeamStatus toLocal() {
     switch (this) {
-      case remote.TeamStatus.active:
-        return local.TeamStatus.active;
-      case remote.TeamStatus.closed:
-        return local.TeamStatus.closed;
-      case remote.TeamStatus.deleted:
-        return local.TeamStatus.deleted;
-      case remote.TeamStatus.pending:
-        return local.TeamStatus.pending;
+      case RestTeamStatus.active:
+        return TeamStatus.active;
+      case RestTeamStatus.closed:
+        return TeamStatus.closed;
+      case RestTeamStatus.deleted:
+        return TeamStatus.deleted;
+      case RestTeamStatus.pending:
+        return TeamStatus.pending;
       default:
         return null;
     }
   }
 }
 
-extension LocalTeamStatus on local.TeamStatus {
-  remote.TeamStatus toRemote() {
+extension LocalTeamStatus on TeamStatus {
+  RestTeamStatus toRemote() {
     switch (this) {
-      case local.TeamStatus.active:
-        return remote.TeamStatus.active;
-      case local.TeamStatus.closed:
-        return remote.TeamStatus.closed;
-      case local.TeamStatus.deleted:
-        return remote.TeamStatus.deleted;
-      case local.TeamStatus.pending:
-        return remote.TeamStatus.pending;
+      case TeamStatus.active:
+        return RestTeamStatus.active;
+      case TeamStatus.closed:
+        return RestTeamStatus.closed;
+      case TeamStatus.deleted:
+        return RestTeamStatus.deleted;
+      case TeamStatus.pending:
+        return RestTeamStatus.pending;
       default:
         return null;
     }
   }
 }
 
-extension LocalTeam on local.Team {
-  remote.TeamBuilder toRemoteBuilder() => remote.TeamBuilder()
+extension LocalTeam on Team {
+  RestTeamBuilder toRemoteBuilder() => RestTeamBuilder()
     ..id = id
     ..name = name
     ..summary = summary
@@ -208,12 +208,44 @@ extension LocalTeam on local.Team {
     ..visibility = visibility?.toRemote()
     ..joinability = joinability?.toRemote()
     ..status = status?.toRemote()
-    ..cans = ListBuilder(cans);
-  remote.Team toRemote() => toRemoteBuilder().build();
+    ..cans = ListBuilder(cans.map((can) => can.toRemote()));
+  RestTeam toRemote() => toRemoteBuilder().build();
 }
 
-extension RemoteTeam on remote.Team {
-  local.Team toLocal() => local.Team(
+extension RemoteTeamOperations on RestTeamOperations {
+  TeamAccess toLocal() {
+    switch(this) {
+      case RestTeamOperations.acceptInvitation: return TeamAccess.ACCEPT_INVITATION;
+      case RestTeamOperations.cancelInvitation: return TeamAccess.DENY_INVITATION;
+      case RestTeamOperations.apply: return TeamAccess.APPLY;
+      case RestTeamOperations.invite: return TeamAccess.INVITE;
+      case RestTeamOperations.join: return TeamAccess.JOIN;
+      case RestTeamOperations.leave: return TeamAccess.LEAVE;
+      case RestTeamOperations.unapply: return TeamAccess.UNAPPLY;
+      case RestTeamOperations.update: return TeamAccess.UPDATE;
+    }
+    return null;
+  }
+}
+
+extension LocalTeamOperations on TeamAccess {
+  RestTeamOperations toRemote() {
+    switch(this) {
+      case TeamAccess.ACCEPT_INVITATION: return RestTeamOperations.acceptInvitation;
+      case TeamAccess.DENY_INVITATION: return RestTeamOperations.cancelInvitation;
+      case TeamAccess.APPLY: return RestTeamOperations.apply;
+      case TeamAccess.INVITE: return RestTeamOperations.invite;
+      case TeamAccess.JOIN: return RestTeamOperations.join;
+      case TeamAccess.LEAVE: return RestTeamOperations.leave;
+      case TeamAccess.UNAPPLY: return RestTeamOperations.unapply;
+      case TeamAccess.UPDATE: return RestTeamOperations.update;
+    }
+    return null;
+  } 
+}
+
+extension RemoteTeam on RestTeam {
+  Team toLocal() => Team(
         id: id,
         name: name,
         summary: summary,
@@ -224,12 +256,12 @@ extension RemoteTeam on remote.Team {
         visibility: visibility?.toLocal(),
         joinability: joinability?.toLocal(),
         status: status?.toLocal(),
-        cans: cans.asList(),
+        cans: cans?.map((can) => can.toLocal())?.toSet(),
       );
 }
 
-extension RemoteApiError on remote.ApiError {
-  local.ApiError toLocal() => local.ApiError(
+extension RemoteApiError on RestError {
+  ApiError toLocal() => ApiError(
         code: code,
         field: field,
         message: message,

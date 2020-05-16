@@ -1,27 +1,27 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:generated_models_teams/model/api_response_team.dart' as remote;
-import 'package:generated_models_teams/model/profile.dart' as remote;
-import 'package:generated_models_teams/model/profile_status.dart' as remote;
-import 'package:generated_models_teams/model/tag.dart' as remote;
-import 'package:generated_models_teams/model/team_joinability.dart' as remote;
-import 'package:generated_models_teams/model/team.dart' as remote;
-import 'package:generated_models_teams/model/team_status.dart' as remote;
-import 'package:generated_models_teams/model/team_visibility.dart' as remote;
-
 import 'package:crowdproj_teams_rest/rest/TeamsServiceRestHelper.dart';
+import 'package:generated_models_teams/model/rest_profile.dart';
+import 'package:generated_models_teams/model/rest_profile_status.dart';
+import 'package:generated_models_teams/model/rest_response_team.dart';
+import 'package:generated_models_teams/model/rest_tag.dart';
+import 'package:generated_models_teams/model/rest_team.dart';
+import 'package:generated_models_teams/model/rest_team_joinability.dart';
+import 'package:generated_models_teams/model/rest_team_operations.dart';
+import 'package:generated_models_teams/model/rest_team_status.dart';
+import 'package:generated_models_teams/model/rest_team_visibility.dart';
 
 void main() {
   test('adds one to input values', () {
-    final remoteApiResponseTeam = remote.ApiResponseTeam((upd) => upd
-      ..data = ListBuilder<remote.Team>([
-        (remote.TeamBuilder()
+    final remoteApiResponseTeam = RestResponseTeam((upd) => upd
+      ..data = ListBuilder<RestTeam>([
+        (RestTeamBuilder()
               ..id = "team id"
               ..name = "team name"
               ..summary = "team summary"
               ..description = "team description"
-              ..owner = (remote.ProfileBuilder()
+              ..owner = (RestProfileBuilder()
                 ..id = "profile id"
                 ..alias = "profile alias"
                 ..fName = "FirstName"
@@ -29,24 +29,24 @@ void main() {
                 ..lName = "LastName"
                 ..email = "email@profile.dom"
                 ..phone = "+9 999 999 9999"
-                ..profileStatus = remote.ProfileStatus.profileActive)
+                ..profileStatus = RestProfileStatus.profileActive)
               ..photoUrls = ListBuilder([
                 "photo 1",
                 "photo 2",
               ])
-              ..tags = ListBuilder<remote.Tag>([
-                (remote.TagBuilder()
+              ..tags = ListBuilder<RestTag>([
+                (RestTagBuilder()
                       ..id = "tag id"
                       ..name = "tag name"
                       ..description = "tag description")
                     .build(),
               ])
-              ..status = remote.TeamStatus.active
-              ..visibility = remote.TeamVisibility.teamPublic
-              ..joinability = remote.TeamJoinability.byUser
+              ..status = RestTeamStatus.active
+              ..visibility = RestTeamVisibility.teamPublic
+              ..joinability = RestTeamJoinability.byUser
               ..cans = ListBuilder([
-                "can 1",
-                "can 2",
+                RestTeamOperations.acceptInvitation,
+                RestTeamOperations.invite,
               ]))
             .build()
       ]));

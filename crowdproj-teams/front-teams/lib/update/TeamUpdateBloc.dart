@@ -7,7 +7,6 @@ import 'package:crowdproj_teams_models/models/TeamAccess.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../TeamPageArguments.dart';
 import 'TeamUpdateEventChange.dart';
 import 'TeamUpdateEventRead.dart';
 import 'TeamUpdateEventReset.dart';

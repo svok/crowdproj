@@ -4,17 +4,17 @@ import com.crowdproj.aws.base.RequestContext
 import com.crowdproj.aws.base.TeamsAwsBaseHandler
 import com.crowdproj.aws.base.TeamsRequestContext
 import com.crowdproj.teams.main.TeamContext
-import com.crowdproj.rest.teams.models.ApiQueryTeamGet
-import com.crowdproj.rest.teams.models.ApiResponseTeam
+import com.crowdproj.rest.teams.models.RestQueryTeamGet
+import com.crowdproj.rest.teams.models.RestResponseTeam
 import com.crowdproj.teams.main.TeamsGetService
 import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 
-class TeamsGetHandler: TeamsAwsBaseHandler<ApiQueryTeamGet>(
-    requestClass = ApiQueryTeamGet::class.java
+class TeamsGetHandler: TeamsAwsBaseHandler<RestQueryTeamGet>(
+    requestClass = RestQueryTeamGet::class.java
 ) {
-    override fun createContext(): RequestContext<ApiQueryTeamGet, ApiResponseTeam> = TeamsGetRequestContext()
+    override fun createContext(): RequestContext<RestQueryTeamGet, RestResponseTeam> = TeamsGetRequestContext()
 
-    override suspend fun handler(oContext: TeamsRequestContext<ApiQueryTeamGet>, iContext: TeamContext) {
+    override suspend fun handler(oContext: TeamsRequestContext<RestQueryTeamGet>, iContext: TeamContext) {
         val service = TeamsGetService(
             storage = DynamoDbTeamsStorage(oContext.logger)
         )

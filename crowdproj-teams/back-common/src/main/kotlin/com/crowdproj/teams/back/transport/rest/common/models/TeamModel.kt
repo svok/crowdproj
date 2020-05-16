@@ -12,7 +12,7 @@ data class TeamModel(
     var photoUrls: Set<String> = mutableSetOf(),
     var tags: Set<TagModel> = mutableSetOf(),
     var timeCreated: Instant = Instant.MIN,
-    var cans: MutableSet<String> = mutableSetOf(),
+    var cans: MutableSet<TeamOperations> = mutableSetOf(),
     var visibility: TeamVisibility = TeamVisibility.none,
     var joinability: TeamJoinability = TeamJoinability.none,
     var status: TeamStatusEnum = TeamStatusEnum.none,
