@@ -40,8 +40,17 @@ paths:
         required: true
       responses:
         200:
-          description: Successful operation
-
+          description: Success
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/RestResponseTeam'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestResponseTeam'
+            text/plain:
+              schema:
+                type: string
         405:
           description: Invalid input
           content: {}
@@ -76,14 +85,10 @@ paths:
           content:
             application/xml:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RestResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/RestResponseTeam'
+                $ref: '#/components/schemas/RestResponseTeam'
             text/plain:
               schema:
                 type: string

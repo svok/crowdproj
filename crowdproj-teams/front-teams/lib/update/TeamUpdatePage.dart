@@ -2,6 +2,8 @@ import 'package:crowdproj_common/common/RouteDescription.dart';
 import 'package:crowdproj_common/modules/layouts/PageSimpleWithTabs.dart';
 import 'package:crowdproj_common/widgets/ActivitySpinner.dart';
 import 'package:crowdproj_teams/translations/TeamsLocalizations.dart';
+import 'package:crowdproj_teams/view/TeamViewBloc.dart';
+import 'package:crowdproj_teams/view/TeamViewEvent.dart';
 import 'package:crowdproj_teams/view/TeamViewPage.dart';
 import 'package:crowdproj_teams/view/TeamViewWidget.dart';
 import 'package:flutter/material.dart';
@@ -49,12 +51,18 @@ class TeamUpdatePage extends StatelessWidget {
     if (arguments is! TeamPageArguments)
       throw ArgumentError("Argument must have TeamPageArgument type");
     final arg = arguments as TeamPageArguments;
-    return BlocProvider<TeamUpdateBloc>(
-      create: (context) => TeamUpdateBloc(context: context)
-        ..add(TeamUpdateEventRead(
-          teamId: arg.teamId,
-          team: arg.team,
-        )),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<TeamUpdateBloc>(
+            create: (context) => TeamUpdateBloc(context: context)
+              ..add(TeamUpdateEventRead(
+                teamId: arg.teamId,
+                team: arg.team,
+              ))),
+        BlocProvider<TeamViewBloc>(
+            create: (context) => TeamViewBloc(context: context)
+              ..add(TeamViewEventRead(teamId: arg.teamId, team: arg.team))),
+      ],
       child: Builder(
         builder: (context) => PageSimpleWithTabs(
           title: TeamUpdatePage.route.titleFormatted(context: context),

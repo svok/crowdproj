@@ -32,12 +32,17 @@ class TeamsServiceRest extends ITeamsService {
 
   @override
   Future<ApiResponseTeam> saveTeam(Team team) async {
-    final webRes = team?.id == null
-        ? await _api.addTeam(RestQueryTeamSave(
-            (builder) => builder..data = team.toRemoteBuilder()))
-        : await _api.updateTeam(RestQueryTeamSave(
-            (builder) => builder..data = team.toRemoteBuilder()));
+    final saveQuery = RestQueryTeamSave(
+            (builder) => builder..data = team.toRemoteBuilder());
+    final webRes = (
+        team?.id == null
+        ? await _api.addTeam(saveQuery)
+        : await _api.updateTeam(saveQuery)
+    );
     final res = webRes.data;
+    if (res == null) {
+      return null;
+    }
     final localRes = res.toLocal();
 //    if (localRes?.status == ApiResponseStatuses.success) {
     notifyListeners();
@@ -62,11 +67,11 @@ class TeamsServiceRest extends ITeamsService {
 //      ..s = query.statuses.map((status) => TeamsServiceRestHelper.toStatus(status)),
 //      tags: query.tagIds,
           ));
-      print("getTeams got a result: ${webRes}");
-      print("converted to ${webRes.data?.toLocal()}");
+      print("getTeams got a result: ${webRes.toString()}");
+      print("converted to ${webRes.data?.toLocal().toString()}");
       return webRes.data?.toLocal();
     } catch (e, stacktrace) {
-      print(e);
+      print("Error in getTeams: $e");
       print(stacktrace);
       return ApiResponseTeam(
           status: ApiResponseStatuses.error,

@@ -67,7 +67,18 @@ class Team {
   bool can(TeamAccess access) => cans?.contains(access) ?? false;
 
   @override
-  String toString() => "Team{id=$id, name=$name}";
+  String toString() => "Team{"
+      "id=$id, "
+      "name=$name,"
+      "summary=$summary,"
+      "description=$description,"
+      "owner=$owner,"
+      "visibility=$visibility,"
+      "joinability=$joinability,"
+      "status=$status,"
+      "relation=$relation,"
+      "cans=$cans,"
+      "}";
 
   Team copyWith({
     String id,

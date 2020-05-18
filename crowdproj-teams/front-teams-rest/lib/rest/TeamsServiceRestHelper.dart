@@ -208,7 +208,7 @@ extension LocalTeam on Team {
     ..visibility = visibility?.toRemote()
     ..joinability = joinability?.toRemote()
     ..status = status?.toRemote()
-    ..cans = ListBuilder(cans.map((can) => can.toRemote()));
+    ..cans = cans == null ? null : ListBuilder(cans.map((can) => can.toRemote()));
   RestTeam toRemote() => toRemoteBuilder().build();
 }
 

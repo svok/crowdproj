@@ -20,8 +20,8 @@ class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
       final next = await event.go(navigatorKey?.currentState);
       if (next != null) add(next);
       yield true;
-    } catch (e) {
-      print("NavigatorBloc.mapEventToState.EXCEPTION: $e");
+    } catch (e, stacktrace) {
+      print("NavigatorBloc.mapEventToState.EXCEPTION: $e\n$stacktrace");
     }
   }
 }

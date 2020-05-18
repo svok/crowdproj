@@ -48,7 +48,7 @@ class _SigninWidgetState extends State<SigninWidget> {
       } else {
         widget.onSignediInCallback();
       }
-    } on CognitoClientException catch (e) {
+    } on CognitoClientException catch (e, stacktrace) {
       if (e.code == 'InvalidParameterException' ||
           e.code == 'NotAuthorizedException' ||
           e.code == 'UserNotFoundException' ||
@@ -57,6 +57,7 @@ class _SigninWidgetState extends State<SigninWidget> {
       } else {
         if (kDebugMode) {
           print(e);
+          print(stacktrace);
         }
         message = 'An unknown client error occured';
       }

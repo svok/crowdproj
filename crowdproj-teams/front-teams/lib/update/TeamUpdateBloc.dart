@@ -116,8 +116,8 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
     ApiResponseTeam response;
     try {
       response = await service.saveTeam(state.teamUpdated);
-    } catch (e) {
-      print(e);
+    } catch (e, stacktrace) {
+      print("Error in TeamUpdateBloc::_saveTeam: $e\n$stacktrace");
       response = ApiResponseTeam(
           teams: [],
           status: ApiResponseStatuses.error,
@@ -132,7 +132,8 @@ class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
           ]);
     }
     yield TeamUpdateState(
-      team: response.team, teamUpdated: response.team?.copyWith(),
+      team: response.team,
+      teamUpdated: response.team?.copyWith(),
       errors: response.errors,
     );
   }

@@ -13,7 +13,7 @@ import 'package:generated_models_teams/model/rest_team_status.dart';
 import 'package:generated_models_teams/model/rest_team_visibility.dart';
 
 void main() {
-  test('adds one to input values', () {
+  test('rest->local', () {
     final remoteApiResponseTeam = RestResponseTeam((upd) => upd
       ..data = ListBuilder<RestTeam>([
         (RestTeamBuilder()
@@ -49,6 +49,30 @@ void main() {
                 RestTeamOperations.invite,
               ]))
             .build()
+      ]));
+    final localApiResponseTeam = remoteApiResponseTeam.toLocal();
+    final remoteTeamOrig = remoteApiResponseTeam.data.first;
+    final remoteTeam2 = localApiResponseTeam.team.toRemote();
+    expect(remoteTeam2.id, remoteTeamOrig.id);
+    expect(remoteTeam2.name, remoteTeamOrig.name);
+    expect(remoteTeam2.summary, remoteTeamOrig.summary);
+    expect(remoteTeam2.description, remoteTeamOrig.description);
+    expect(remoteTeam2.owner, remoteTeamOrig.owner);
+//    expect(remoteTeam2.photoUrls, remoteTeamOrig.photoUrls);
+//    expect(remoteTeam2.tags, remoteTeamOrig.tags);
+    expect(remoteTeam2.status, remoteTeamOrig.status);
+    expect(remoteTeam2.visibility, remoteTeamOrig.visibility);
+    expect(remoteTeam2.joinability, remoteTeamOrig.joinability);
+    expect(remoteTeam2.cans, remoteTeamOrig.cans);
+  });
+
+  test('rest->local empty', () {
+    final remoteApiResponseTeam = RestResponseTeam((upd) => upd
+      ..data = ListBuilder<RestTeam>([
+        (RestTeamBuilder()
+//              ..name = "team name"
+//              ..summary = "team summary"
+        ).build()
       ]));
     final localApiResponseTeam = remoteApiResponseTeam.toLocal();
     final remoteTeamOrig = remoteApiResponseTeam.data.first;
