@@ -82,6 +82,7 @@ class AuthService with ChangeNotifier {
       if (e.code == 'UserNotConfirmedException') {
         return User(confirmed: false, hasAccess: false);
       } else {
+        print("FAiled user email: ${authDetails?.getUsername()}, validation: ${authDetails.getValidationData()}");
         throw e;
       }
     }

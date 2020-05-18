@@ -40,7 +40,7 @@ class _SigninWidgetState extends State<SigninWidget> {
     form.save();
     String message;
     try {
-      _user = await _userService.signIn(_user.email, _user.password);
+      _user = await _userService.signIn(_user.email.trim(), _user.password.trim());
       message = 'User sucessfully logged in!';
       if (!_user.confirmed) {
         message = 'Please confirm user account';
@@ -54,6 +54,8 @@ class _SigninWidgetState extends State<SigninWidget> {
           e.code == 'UserNotFoundException' ||
           e.code == 'ResourceNotFoundException') {
         message = e.message;
+        print("Auth failed: $e");
+        print(stacktrace);
       } else {
         if (kDebugMode) {
           print(e);
