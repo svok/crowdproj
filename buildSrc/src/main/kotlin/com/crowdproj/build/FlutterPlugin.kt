@@ -86,7 +86,7 @@ fun Project.flutter(block: FlutterDescription.() -> Unit) {
                 fileTree("$dir/lib")
             )
             outputs.files(
-                fileTree("$dir/build/web")
+                fileTree("${project.buildDir}/web")
             )
         }
 

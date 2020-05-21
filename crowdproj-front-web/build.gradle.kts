@@ -111,6 +111,16 @@ tasks {
 //        stateFilePath = "$buildDir/tf/main/terraform.tfstate"
 //    }
 
+    val deployAws by creating {
+        group = "deploy"
+        dependsOn(tfApply)
+    }
+
+    val deploy by creating {
+        group = "deploy"
+        dependsOn(deployAws)
+    }
+
     clean {
         delete("$projectDir/out")
     }
