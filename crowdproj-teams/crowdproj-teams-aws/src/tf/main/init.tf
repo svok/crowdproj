@@ -164,9 +164,26 @@ data "aws_s3_bucket" "crowdproj_bucket" {
   bucket = var.bucketBackend
 }
 
+# Parameter store in SSM
+resource "aws_ssm_parameter" "parameter-cors-origins" {
+  name  = var.parameterCorsOrigins
+  type  = "StringList"
+  value = join(",", var.corsOrigins)
+}
+resource "aws_ssm_parameter" "parameter-cors-headers" {
+  name  = var.parameterCorsHeaders
+  type  = "StringList"
+  value = join(",", var.corsHeaders)
+}
+resource "aws_ssm_parameter" "parameter-cors-methods" {
+  name  = var.parameterCorsMethods
+  type  = "StringList"
+  value = join(",", var.corsMethods)
+}
+
 # See also the following AWS managed policy: AWSLambdaBasicExecutionRole
 resource "aws_iam_policy" "lambda_logging" {
-  name        = "lambda_logging"
+  name        = "${var.parametersPrefix}-lambda_logging"
   path        = "/"
   description = "IAM policy for logging from a lambda"
 
@@ -183,6 +200,30 @@ resource "aws_iam_policy" "lambda_logging" {
       "Resource": "arn:aws:logs:*:*:*",
       "Effect": "Allow"
     }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_policy" "params_access" {
+  name        = "${var.parametersPrefix}-params_access"
+  path        = "/"
+  description = "IAM policy for accessing SSM parameters"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+      {
+          "Sid": "SSMFixinatorAPIKeyPolicy",
+          "Effect": "Allow",
+          "Action": [
+            "ssm:GetParameters"
+          ],
+          "Resource": [
+            "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${var.parametersPrefix}.*"
+          ]
+      }
   ]
 }
 EOF

@@ -77,3 +77,8 @@ resource "aws_iam_role_policy_attachment" "teams_get_post" {
   role       = aws_iam_role.teams_get_post.name
   policy_arn = aws_iam_policy.lambda_logging.arn
 }
+
+resource "aws_iam_role_policy_attachment" "teams_get_ssm" {
+  role       = aws_iam_role.teams_get_post.name
+  policy_arn = aws_iam_policy.params_access.arn
+}

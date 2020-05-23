@@ -14,7 +14,7 @@ tasks {
     val generateDartModels by creating(org.openapitools.generator.gradle.plugin.tasks.GenerateTask::class) {
         group = "openapi"
         val destDir = project.projectDir
-        val genPackage = "${project.group}.rest.teams"
+//        val genPackage = "${project.group}.rest.teams"
         inputs.files(specFile)
         outputs.files(fileTree(destDir), file("$destDir/pubspec.yaml"))
         generatorName.set("dart-dio")

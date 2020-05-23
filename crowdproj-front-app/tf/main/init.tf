@@ -81,23 +81,24 @@ resource "aws_s3_bucket" "main" {
 }
 EOF
 
-  cors_rule {
-    allowed_headers = ["*"]
-    allowed_methods = ["PUT", "POST", "DELETE", "GET"]
-    allowed_origins = var.corsOrigins
-//    expose_headers  = ["ETag"]
-    max_age_seconds = 3000
-  }
-
   website {
     index_document = "index.html"
     error_document = "index.html"
   }
+
 //  cors_rule {
-//    allowed_headers = ["*"]
-//    allowed_methods = ["PUT", "POST"]
-//    allowed_origins = ["https://s3-website-test.hashicorp.com"]
-//    expose_headers  = ["ETag"]
+//    allowed_headers = [
+//      "*",
+//            "Content-Type",
+//            "X-Amz-Date",
+//            "Authorization",
+//            "X-Api-Key",
+//            "X-Amz-Security-Token",
+//            "X-Requested-With"
+//    ]
+//    allowed_methods = ["PUT", "POST", "DELETE", "GET", "HEAD"]
+//    allowed_origins = var.corsOrigins
+//    //    expose_headers  = ["Date", "x-api-id"]
 //    max_age_seconds = 3000
 //  }
 }
@@ -196,7 +197,7 @@ resource "aws_cloudfront_distribution" "cdn" {
     custom_origin_config {
       http_port                = "80"
       https_port               = "443"
-      origin_keepalive_timeout = 5
+      origin_keepalive_timeout = 30
       origin_protocol_policy   = "http-only"
       origin_ssl_protocols     = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
@@ -215,7 +216,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   default_cache_behavior {
-    allowed_methods  = ["GET", "HEAD"]
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "S3-${element(local.domains, count.index)}"
     compress         = var.enable_gzip

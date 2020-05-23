@@ -67,3 +67,8 @@ resource "aws_iam_role_policy_attachment" "teams_update_post" {
   role       = aws_iam_role.teams_update_post.name
   policy_arn = aws_iam_policy.lambda_logging.arn
 }
+
+resource "aws_iam_role_policy_attachment" "teams_update_ssm" {
+  role       = aws_iam_role.teams_update_post.name
+  policy_arn = aws_iam_policy.params_access.arn
+}

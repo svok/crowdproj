@@ -1,7 +1,14 @@
 package com.crowdproj.aws.base
 
+import com.amazonaws.internal.SdkInternalList
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
+import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
+import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest
+import com.amazonaws.services.simplesystemsmanagement.model.Parameter
+import com.crowdproj.aws.CrowdprojConstants
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
@@ -16,16 +23,46 @@ abstract class AwsBaseHandler<T, R>(
     val requestClass: Class<T>
 ) : RequestStreamHandler {
 
+    protected val parameters by lazy {
+        try {
+            val ssm: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementClientBuilder.defaultClient()
+            ssm.getParameters(
+                GetParametersRequest()
+                    .withNames(
+                        CrowdprojConstants.parameterCorsOrigins,
+                        CrowdprojConstants.parameterCorsHeaders,
+                        CrowdprojConstants.parameterCorsMethods
+                    )
+            )
+                .parameters
+        } catch (e: Throwable) {
+            SdkInternalList<Parameter>()
+        }
+    }
+    protected val corsOrigins: String by lazy {
+        getParamStringList(CrowdprojConstants.parameterCorsOrigins)
+            .joinToString(",")
+    }
+    protected val corsHeaders: String by lazy {
+        getParamStringList(CrowdprojConstants.parameterCorsHeaders)
+            .joinToString(",")
+    }
+    protected val corsMethods: String by lazy {
+        getParamStringList(CrowdprojConstants.parameterCorsMethods)
+            .joinToString(",")
+    }
+
     override fun handleRequest(
         inputStream: InputStream,
         outputStream: OutputStream,
         context: Context
     ) {
-        context.logger.log("CROWDPROJ GOT REQIEST")
+        val logger = context.logger
+        logger.log("CROWDPROJ GOT REQIEST")
         val localContext = createContext()
             .apply {
                 timeStart = Instant.now()
-                logger = AwsLogger(context.logger)
+                this.logger = AwsLogger(logger)
             }
         val objectMapper = ObjectMapper()
             .registerKotlinModule()
@@ -34,7 +71,7 @@ abstract class AwsBaseHandler<T, R>(
         runBlocking {
             val obj = try {
                 val json = inputStream.bufferedReader().use { it.readText() }
-                context.logger.log("LAMBDA GOT $json")
+                logger.log("LAMBDA GOT $json")
 //                localContext.request = objectMapper.readValue<T>(inputStream, requestClass) ?: throw EmptyDataException()
                 val receivedRecord = objectMapper.readTree(json) ?: throw EmptyDataException()
                 val body = receivedRecord["body"]?.asText() ?: ""
@@ -42,14 +79,14 @@ abstract class AwsBaseHandler<T, R>(
                     requestData = receivedRecord
                     request = objectMapper.readValue(body, requestClass) ?: throw EmptyDataException()
                 }
-                context.logger.log("CRPWDPROJ GOT QUERY: ${localContext.request}")
+                logger.log("CRPWDPROJ GOT QUERY: ${localContext.request}")
                 handlePost(localContext)
             } catch (e: EmptyDataException) {
-                context.logger.log(e.toString())
+                logger.log(e.toString())
                 localContext.exception = e
                 handleError(localContext)
             } catch (e: Exception) {
-                context.logger.log(e.toString())
+                logger.log(e.toString())
                 localContext.exception = e
                 handleError(localContext)
             }
@@ -57,7 +94,11 @@ abstract class AwsBaseHandler<T, R>(
 
         val responseObject = AwsResponse(
                 statusCode = 200,
-                headers = mutableMapOf(),
+                headers = mutableMapOf(
+                    "Access-Control-Allow-Origin" to corsOrigins,
+                    "Access-Control-Allow-Headers" to corsHeaders,
+                    "Access-Control-Allow-Methods" to corsMethods
+                ),
                 body = objectMapper.writeValueAsString(localContext.response)
         )
         val responseJson = objectMapper.writeValueAsString(responseObject)
@@ -69,4 +110,10 @@ abstract class AwsBaseHandler<T, R>(
     abstract fun createContext(): RequestContext<T, R>
     abstract suspend fun handlePost(context: RequestContext<T, R>)
     abstract suspend fun handleError(context: RequestContext<T, R>)
+
+    fun getParamStringList(name: String): List<String> = parameters
+        .find { it.name == name }
+        ?.value
+        ?.split(",")
+        ?: emptyList()
 }

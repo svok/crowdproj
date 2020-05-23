@@ -24,3 +24,27 @@ variable "handlers" {
 variable "remote_state" {
   type = map(string)
 }
+variable "corsOrigins" {
+  type = list(string)
+  default = ["*"]
+}
+variable "corsHeaders" {
+  type = list(string)
+  default = ["OPTIONS,POST"]
+}
+variable "corsMethods" {
+  type = list(string)
+  default = ["*"]
+}
+variable "parametersPrefix" {
+  default = ""
+}
+variable "parameterCorsOrigins" {
+  default = ""
+}
+variable "parameterCorsHeaders" {
+  default = ""
+}
+variable "parameterCorsMethods" {
+  default = ""
+}
