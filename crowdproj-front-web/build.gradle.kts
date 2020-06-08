@@ -17,48 +17,49 @@ repositories {
 dependencies {
     val orchidVersion: String by project
 
-    implementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
-    orchidImplementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
-    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPosts:$orchidVersion")
+    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidAll:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPages:$orchidVersion")
+//    implementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
+//    orchidImplementation("io.github.javaeden.orchid:OrchidCore:$orchidVersion")
+    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPosts:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidWiki:$orchidVersion")
-//    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidNetlifyCMS:$orchidVersion")
+////    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidNetlifyCMS:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidPluginDocs:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidSearch:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidWritersBlocks:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidSyntaxHighlighter:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidTaxonomies:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidFutureImperfect:$orchidVersion")
+
+    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidEditorial:$orchidVersion")
     orchidRuntimeOnly("io.github.javaeden.orchid:OrchidBsDoc:$orchidVersion")
-//    orchidRuntimeOnly("io.github.javaeden.orchid:OrchidAsciidoc:$orchidVersion")
 }
 
 val orchidDest = "$buildDir/docs"
 val orchidContentDest = orchidDest
 
-orchid {
-    // Theme is required
-    theme = "BsDoc"
+val awsRegions: String by project
+val apiVersion: String by project
+val apiDomain: String by project
+val awsBucket: String by project
+val awsBucketState: String by project
 
-    // The following properties are optional
+val serviceAlias = "$apiVersion-public"
+val bucketPublic = "$awsBucket.$serviceAlias"
+
+
+orchid {
+    theme = "BsDoc"
     version = "${project.version}"
-//    baseUrl = "{baseUrl}"                         // a baseUrl prepended to all generated links. Defaults to '/'
+//    baseUrl = "https://$serviceAlias.$apiDomain"                         // a baseUrl prepended to all generated links. Defaults to '/'
 //    srcDir  = "path/to/new/source/directory"      // defaults to 'src/orchid/resources'
 //    destDir = "path/to/new/destination/directory" // defaults to 'build/docs/orchid'
     runTask = "build"                             // specify a task to run with 'gradle orchidRun'
     destDir = orchidDest
+    diagnose = true
 }
 
 terraform {
-    val awsRegions: String by project
-    val apiVersion: String by project
-    val apiDomain: String by project
-    val awsBucket: String by project
-    val awsBucketState: String by project
-
-    val serviceAlias = "$apiVersion-public"
-    val bucketPublic = "$awsBucket.$serviceAlias"
-
     variables {
         `var`("sourcePath", orchidContentDest)
         `var`("region", awsRegions)
@@ -70,14 +71,16 @@ terraform {
         map(mapOf<String, String>(
             "txt" to "text/plain",
             "html" to "text/html",
-            "css" to "text/style",
+            "xml" to "text/xml",
+            "yml" to  "application/yaml",
+            "yaml" to "application/yaml",
+            "css" to "text/css",
             "jpg" to "image/jpeg",
             "jpeg" to "image/jpeg",
             "ttf" to "font/ttf",
             "js" to "application/javascript",
             "map" to "application/javascript",
             "json" to "application/json",
-            "xml" to "text/xml",
             "ico" to "image/vnd.microsoft.icon"
         ), "mime_types")
 //        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
@@ -105,11 +108,8 @@ tasks {
     tfApply {
         dependsOn(tfInit)
         dependsOn(orchidBuild)
+        inputs.dir(orchidDest)
     }
-
-//    tfStatePush {
-//        stateFilePath = "$buildDir/tf/main/terraform.tfstate"
-//    }
 
     val deployAws by creating {
         group = "deploy"

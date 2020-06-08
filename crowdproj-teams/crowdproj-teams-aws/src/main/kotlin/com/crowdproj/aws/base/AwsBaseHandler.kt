@@ -39,9 +39,8 @@ abstract class AwsBaseHandler<T, R>(
             SdkInternalList<Parameter>()
         }
     }
-    protected val corsOrigins: String by lazy {
+    protected val corsOrigins by lazy {
         getParamStringList(CrowdprojConstants.parameterCorsOrigins)
-            .joinToString(",")
     }
     protected val corsHeaders: String by lazy {
         getParamStringList(CrowdprojConstants.parameterCorsHeaders)
@@ -95,7 +94,10 @@ abstract class AwsBaseHandler<T, R>(
         val responseObject = AwsResponse(
                 statusCode = 200,
                 headers = mutableMapOf(
-                    "Access-Control-Allow-Origin" to corsOrigins,
+                    "Content-Type" to "application/json",
+                    "X-Custom-Header" to "application/json",
+//                    "Access-Control-Allow-Origin" to corsOrigins.first { it ==  },
+                    "Access-Control-Allow-Origin" to corsOrigins.first(),
                     "Access-Control-Allow-Headers" to corsHeaders,
                     "Access-Control-Allow-Methods" to corsMethods
                 ),

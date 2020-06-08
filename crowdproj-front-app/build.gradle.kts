@@ -30,7 +30,7 @@ terraform {
             "last_build_id" to "text/plain",
             "txt" to "text/plain",
             "html" to "text/html",
-            "css" to "text/style",
+            "css" to "text/css",
             "jpg" to "image/jpeg",
             "png" to "image/png",
             "gif" to "image/gif",

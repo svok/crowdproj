@@ -10,10 +10,10 @@ components:
     noWrapper: true
     template:
       - 'includes/postPreview_large'
-  - type: 
+#  - type: 
 next: 'category1'
 ---
 
 # High there
 
-Go to [private area](/pra)
+Go to [private area](https://v001-private.crowdproj.com)
