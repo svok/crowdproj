@@ -4,6 +4,7 @@ rootProject.name = "crowdproj"
 include(":crowdproj-common")
 include(":crowdproj-common:crowdproj-common-kt")
 include(":crowdproj-common:crowdproj-common-dt")
+include(":crowdproj-common:crowdproj-common-aws")
 
 // teams backend
 include(":crowdproj-teams")
@@ -12,6 +13,7 @@ include(":crowdproj-teams:generated-models-dt")
 include(":crowdproj-teams:back-common")
 include(":crowdproj-teams:back-storage-common")
 include(":crowdproj-teams:back-storage-dynamodb")
+include(":crowdproj-teams:back-storage-neptunedb")
 //include(":crowdproj-teams:back-transport-common")
 include(":crowdproj-teams:back-transport-rest")
 include(":crowdproj-teams:back-logics")
@@ -24,6 +26,7 @@ include(":crowdproj-teams:front-teams")
 
 // crowdptoj personal front application
 include(":crowdproj-front-app")
+include("crowdproj-back-main")
 
 // crowdptoj public web site
 include(":crowdproj-front-web")
@@ -65,4 +68,3 @@ pluginManagement {
         maven(url = "https://jitpack.io")
     }
 }
-include("crowdproj-back-main")

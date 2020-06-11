@@ -45,7 +45,6 @@ val awsBucket: String by project
 val awsBucketState: String by project
 
 val serviceAlias = "$apiVersion-public"
-val bucketPublic = "$awsBucket.$serviceAlias"
 
 
 orchid {
@@ -60,6 +59,9 @@ orchid {
 }
 
 terraform {
+//    val awsBucketPublic: String by project(":crowdproj-common:crowdproj-common-aws").extra
+    val awsBucketPublic: String by rootProject.extra
+    val bucketPublic = awsBucketPublic
     variables {
         `var`("sourcePath", orchidContentDest)
         `var`("region", awsRegions)
@@ -106,9 +108,12 @@ tasks {
     }
 
     tfApply {
+        dependsOn(":crowdproj-common:crowdproj-common-aws:tfApply")
         dependsOn(tfInit)
         dependsOn(orchidBuild)
         inputs.dir(orchidDest)
+        inputs.dir("$projectDir/src/tf/main")
+        inputs.file("build.gradle.kts")
     }
 
     val deployAws by creating {
@@ -119,6 +124,23 @@ tasks {
     val deploy by creating {
         group = "deploy"
         dependsOn(deployAws)
+    }
+
+    tfDestroy {
+        finalizedBy(clean)
+        setAutoApprove(true)
+    }
+    val destroyAws by creating {
+        group = "deploy"
+        dependsOn(tfInit)
+        dependsOn(tfDestroy)
+//        outputs.upToDateWhen { false }
+    }
+
+    val destroy by creating {
+        group = "deploy"
+        dependsOn(destroyAws)
+//        outputs.upToDateWhen { false }
     }
 
     clean {

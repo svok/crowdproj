@@ -1,3 +1,4 @@
+import 'package:crowdproj_common/widgets/ActivitySpinner.dart';
 import 'package:crowdproj_common/widgets/BottomLoader.dart';
 import 'package:crowdproj_teams/TeamsModule.dart';
 import 'package:crowdproj_teams_models/ITeamsService.dart';
@@ -31,11 +32,12 @@ class _TeamsWidgetState extends State<TeamsWidget> {
     return BlocBuilder<TeamsBloc, TeamsState>(
       builder: (context, state) {
         teamsState = state;
-        return
-          Stack(
+        return ActivitySpinner(
+          isWaiting: state?.isWaiting,
+          child: Stack(
             alignment: AlignmentDirectional.topStart,
             children: <Widget>[
-            Scrollbar(
+              Scrollbar(
                 child: ListView.builder(
                   itemBuilder: (context, index) {
                     return index >= state.teams.length
@@ -66,12 +68,14 @@ class _TeamsWidgetState extends State<TeamsWidget> {
                 }),
               ),
             ],
+          ),
         );
       },
     );
   }
 
   int sizeFlag = 0;
+
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
     final currentScroll = _scrollController.position.pixels;

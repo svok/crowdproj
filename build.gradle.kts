@@ -9,6 +9,11 @@ plugins {
 group = "com.crowdproj"
 version = "0.0.1"
 
+val awsBucket: String by project
+val apiVersion: String by project
+
+rootProject.extra["awsBucketPublic"] = "$awsBucket.$apiVersion-public"
+
 allprojects {
     repositories {
         mavenCentral()

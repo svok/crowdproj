@@ -13,16 +13,18 @@ terraform {
     val apiVersion: String by project
     val apiDomain: String by project
     val awsBucket: String by project
+    val awsBucketPublic: String by rootProject.extra
     val awsBucketState: String by project
 
     val serviceAlias = "$apiVersion-private"
-    val bucketPublic = "$awsBucket.$serviceAlias"
+    val bucketPublic = awsBucketPublic
 
     variables {
         `var`("sourcePath", "$buildDir/web")
         `var`("region", awsRegions)
         `var`("domainZone", apiDomain)
         `var`("domain", "$serviceAlias.$apiDomain")
+        `var`("baseName", "/pr/")
         `var`("bucketPublic", bucketPublic)
         `var`("enable_gzip", true)
         `var`("enable_health_check", false)
@@ -43,6 +45,7 @@ terraform {
             "ico" to "image/vnd.microsoft.icon"
         ), "mime_types")
         list("corsOrigins",
+            "https://$apiVersion.$apiDomain",
             "https://$apiVersion-*.$apiDomain",
             "https://public.$apiDomain",
             "https://private.$apiDomain"
@@ -119,6 +122,7 @@ tasks {
 
     tfApply {
         dependsOn(flutterBuildWeb)
+        dependsOn(":crowdproj-common:crowdproj-common-aws:deployAws")
         dependsOn(tfInit)
     }
 
@@ -130,6 +134,20 @@ tasks {
     val deploy by creating {
         group = "deploy"
         dependsOn(deployAws)
+    }
+
+    tfDestroy {
+        setAutoApprove(true)
+    }
+    val destroyAws by creating {
+        group = "deploy"
+        dependsOn(tfInit)
+        dependsOn(tfDestroy)
+    }
+
+    val destroy by creating {
+        group = "deploy"
+        dependsOn(destroyAws)
     }
 
 }

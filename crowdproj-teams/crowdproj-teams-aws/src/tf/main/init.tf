@@ -33,7 +33,7 @@ data "aws_iam_policy_document" "crowdproj_static_assume" {
 }
 
 resource "aws_api_gateway_resource" "teams" {
-  depends_on = ["aws_api_gateway_rest_api.back_app"]
+  depends_on = [aws_api_gateway_rest_api.back_app]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   parent_id = aws_api_gateway_rest_api.back_app.root_resource_id
   path_part = "teams"
@@ -144,7 +144,7 @@ resource "aws_api_gateway_deployment" "crowdproj_teams" {
 data "aws_iam_policy_document" "crowdproj_static_policy" {
   statement {
     effect = "Allow"
-    resources = ["${data.aws_s3_bucket.crowdproj_bucket.arn}/*"]
+    resources = ["${aws_s3_bucket.crowdproj_bucket.arn}/*"]
     actions = ["s3:GetObject"]
   }
 }
@@ -160,7 +160,7 @@ data "aws_route53_zone" "crowdproj_com" {
   private_zone = false
 }
 
-data "aws_s3_bucket" "crowdproj_bucket" {
+resource "aws_s3_bucket" "crowdproj_bucket" {
   bucket = var.bucketBackend
 }
 
