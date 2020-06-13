@@ -12,4 +12,4 @@ theme:
       url: '/contact'
     - type: link
       title: 'LogIn'
-      url: 'https://v001-private.crowdproj.com/'
+      url: '/pr/'

@@ -1,5 +1,5 @@
 resource "aws_api_gateway_integration" "teams_index" {
-  depends_on = ["aws_api_gateway_resource.teams_index"]
+  depends_on = [aws_api_gateway_resource.teams_index]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = "POST"
@@ -17,14 +17,14 @@ resource "aws_lambda_permission" "teams_index" {
 }
 
 resource "aws_api_gateway_resource" "teams_index" {
-  depends_on = ["aws_api_gateway_resource.teams"]
+  depends_on = [aws_api_gateway_resource.teams]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   parent_id = aws_api_gateway_resource.teams.id
   path_part = "index"
 }
 
 resource "aws_api_gateway_method" "teams_index" {
-  depends_on = ["aws_api_gateway_resource.teams_index"]
+  depends_on = [aws_api_gateway_resource.teams_index]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_index.id
   http_method = "POST"

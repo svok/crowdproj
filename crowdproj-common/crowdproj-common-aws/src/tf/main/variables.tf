@@ -4,6 +4,9 @@ variable "sourcePath" {
 variable "bucketPublic" {
   default = ""
 }
+variable "bucketPrivate" {
+  default = ""
+}
 variable "bucketState" {
   default = ""
 }

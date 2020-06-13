@@ -12,19 +12,18 @@ val apiDomain: String by project
 val awsBucket: String by project
 val awsBucketState: String by project
 
-val serviceAlias = "$apiVersion-public"
-val bucketPublic = "$awsBucket.$serviceAlias"
-
-//rootProject.extra["awsBucketPublic"] = bucketPublic
 val awsBucketPublic: String by rootProject.extra
+val awsBucketPrivate: String by rootProject.extra
+val domainPublic: String by rootProject.extra
 
 terraform {
     variables {
         `var`("region", awsRegions)
         `var`("domainZone", apiDomain)
 //        `var`("domain", "$serviceAlias.$apiDomain")
-        `var`("domain", "$apiVersion.$apiDomain")
-        `var`("bucketPublic", bucketPublic)
+        `var`("domain", domainPublic)
+        `var`("bucketPublic", awsBucketPublic)
+        `var`("bucketPrivate", awsBucketPrivate)
         `var`("enable_gzip", true)
         `var`("enable_health_check", false)
 //        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
@@ -70,7 +69,7 @@ tasks {
         group = "deploy"
         dependsOn(tfInit)
         dependsOn(tfDestroy)
-//        dependsOn(":crowdproj-teams:crowdproj-teams-aws:destroyAws")
+        dependsOn(":crowdproj-teams:crowdproj-teams-aws:destroyAws")
         dependsOn(":crowdproj-front-app:destroyAws")
         dependsOn(":crowdproj-front-web:destroyAws")
 //        outputs.upToDateWhen { false }

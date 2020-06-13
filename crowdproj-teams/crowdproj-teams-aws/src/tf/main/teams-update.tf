@@ -1,5 +1,5 @@
 resource "aws_api_gateway_method" "teams_update" {
-  depends_on = ["aws_api_gateway_resource.teams_update"]
+  depends_on = [aws_api_gateway_resource.teams_update]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_update.id
   http_method = "POST"
@@ -15,7 +15,7 @@ resource "aws_lambda_permission" "teams_update" {
 }
 
 resource "aws_api_gateway_integration" "teams_update" {
-  depends_on = ["aws_api_gateway_resource.teams_update"]
+  depends_on = [aws_api_gateway_resource.teams_update]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_update.id
   http_method = "POST"
@@ -25,7 +25,7 @@ resource "aws_api_gateway_integration" "teams_update" {
 }
 
 resource "aws_api_gateway_resource" "teams_update" {
-  depends_on = ["aws_api_gateway_resource.teams"]
+  depends_on = [aws_api_gateway_resource.teams]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   parent_id = aws_api_gateway_resource.teams.id
   path_part = "update"

@@ -68,9 +68,10 @@ val apiVersion: String by project
 val apiDomain: String by project
 val awsBucket: String by project
 val awsBucketState: String by project
+val awsBucketPrivate: String by rootProject.extra
+val domainPublic: String by rootProject.extra
 
 val serviceAlias = "$apiVersion-teams"
-val bucketBackend = "$awsBucket.$apiVersion"
 
 val paramsPrefix = "$awsBucket.$serviceAlias"
 val paramCorsOrigins = "$paramsPrefix.cors-origins"
@@ -82,12 +83,11 @@ terraform {
         "version" to "0.12.24"
     ))
     variables {
-//        `var`("sourcePath", )
         `var`("region", awsRegions)
         `var`("domainZone", apiDomain)
         `var`("domain", "$serviceAlias.$apiDomain")
         `var`("bucketJarName", "$awsBucket.$serviceAlias")
-        `var`("bucketBackend", bucketBackend)
+        `var`("bucketBackend", awsBucketPrivate)
         `var`("handlerJar", tasks.shadowJar.get().archiveFile.get().asFile.absoluteFile)
         `var`("parametersPrefix", paramsPrefix)
         `var`("parameterCorsOrigins", paramCorsOrigins)
@@ -100,9 +100,7 @@ terraform {
             "teams-get" to "com.crowdproj.aws.handlers.TeamsGetHandler::handleRequest"
         ), "handlers")
         list("corsOrigins",
-//            "https://crowdproj.com",
-//            "https://private.crowdproj.com",
-            "https://$apiVersion-private.crowdproj.com"
+            "https://$domainPublic"
         )
         list("corsHeaders",
             "*",
@@ -132,6 +130,7 @@ val generatedCode = "$buildDir/generated/main/kotlin"
 
 tasks {
     tfApply {
+        dependsOn(":crowdproj-common:crowdproj-common-aws:deployAws")
         dependsOn(tfInit)
         dependsOn(shadowJar)
         inputs.file(shadowJar.get().archiveFile)
@@ -171,6 +170,23 @@ tasks {
     val deploy by creating {
         group = "deploy"
         dependsOn(deployAws)
+    }
+
+    tfDestroy {
+//        finalizedBy(clean)
+        setAutoApprove(true)
+    }
+    val destroyAws by creating {
+        group = "deploy"
+        dependsOn(tfInit)
+        dependsOn(tfDestroy)
+//        outputs.upToDateWhen { false }
+    }
+
+    val destroy by creating {
+        group = "deploy"
+        dependsOn(destroyAws)
+//        outputs.upToDateWhen { false }
     }
 }
 

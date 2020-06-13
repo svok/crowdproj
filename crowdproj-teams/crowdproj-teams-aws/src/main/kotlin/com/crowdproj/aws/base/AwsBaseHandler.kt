@@ -5,7 +5,6 @@ import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
-import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest
 import com.amazonaws.services.simplesystemsmanagement.model.Parameter
 import com.crowdproj.aws.CrowdprojConstants
@@ -91,17 +90,22 @@ abstract class AwsBaseHandler<T, R>(
             }
         }
 
+        val headers = localContext.requestData["headers"]
+        val origin = headers?.get("Origin")?.asText("") ?: headers?.get("origin")?.asText("")
+        val allowOrigin = origin.takeIf {
+            corsOrigins.contains(it) || corsOrigins.contains("$it/")
+        } ?: ""
+        logger.log("Headers: $headers, Origin: $origin, Origins: $corsOrigins, AllowOrigin: $allowOrigin")
         val responseObject = AwsResponse(
-                statusCode = 200,
-                headers = mutableMapOf(
-                    "Content-Type" to "application/json",
-                    "X-Custom-Header" to "application/json",
-//                    "Access-Control-Allow-Origin" to corsOrigins.first { it ==  },
-                    "Access-Control-Allow-Origin" to corsOrigins.first(),
-                    "Access-Control-Allow-Headers" to corsHeaders,
-                    "Access-Control-Allow-Methods" to corsMethods
-                ),
-                body = objectMapper.writeValueAsString(localContext.response)
+            statusCode = 200,
+            headers = mutableMapOf(
+                "Content-Type" to "application/json",
+                "X-Custom-Header" to "application/json",
+                "Access-Control-Allow-Origin" to allowOrigin,
+                "Access-Control-Allow-Headers" to corsHeaders,
+                "Access-Control-Allow-Methods" to corsMethods
+            ),
+            body = objectMapper.writeValueAsString(localContext.response)
         )
         val responseJson = objectMapper.writeValueAsString(responseObject)
         val writer = OutputStreamWriter(outputStream, "UTF-8")

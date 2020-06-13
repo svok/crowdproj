@@ -7,14 +7,14 @@ resource "aws_lambda_permission" "teams_create" {
 }
 
 resource "aws_api_gateway_resource" "teams_create" {
-  depends_on = ["aws_api_gateway_resource.teams"]
+  depends_on = [aws_api_gateway_resource.teams]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   parent_id = aws_api_gateway_resource.teams.id
   path_part = "create"
 }
 
 resource "aws_api_gateway_method" "teams_create" {
-  depends_on = ["aws_api_gateway_resource.teams_create"]
+  depends_on = [aws_api_gateway_resource.teams_create]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_create.id
   http_method = "POST"
@@ -22,7 +22,7 @@ resource "aws_api_gateway_method" "teams_create" {
 }
 
 resource "aws_api_gateway_integration" "teams_create" {
-  depends_on = ["aws_api_gateway_resource.teams_create"]
+  depends_on = [aws_api_gateway_resource.teams_create]
   rest_api_id = aws_api_gateway_rest_api.back_app.id
   resource_id = aws_api_gateway_resource.teams_create.id
   http_method = "POST"

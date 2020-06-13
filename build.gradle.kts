@@ -11,8 +11,13 @@ version = "0.0.1"
 
 val awsBucket: String by project
 val apiVersion: String by project
+val apiDomain: String by project
 
-rootProject.extra["awsBucketPublic"] = "$awsBucket.$apiVersion-public"
+rootProject.apply {
+    extra["awsBucketPublic"] = "$awsBucket.$apiVersion-public"
+    extra["awsBucketPrivate"] = "$awsBucket.$apiVersion"
+    extra["domainPublic"] = "$apiVersion.$apiDomain"
+}
 
 allprojects {
     repositories {

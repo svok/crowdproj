@@ -16,18 +16,11 @@ terraform {
     val awsBucketPublic: String by rootProject.extra
     val awsBucketState: String by project
 
-    val serviceAlias = "$apiVersion-private"
-    val bucketPublic = awsBucketPublic
-
     variables {
         `var`("sourcePath", "$buildDir/web")
         `var`("region", awsRegions)
-        `var`("domainZone", apiDomain)
-        `var`("domain", "$serviceAlias.$apiDomain")
         `var`("baseName", "/pr/")
-        `var`("bucketPublic", bucketPublic)
-        `var`("enable_gzip", true)
-        `var`("enable_health_check", false)
+        `var`("bucketPublic", awsBucketPublic)
         map(mapOf<String, String>(
             "last_build_id" to "text/plain",
             "txt" to "text/plain",
@@ -71,12 +64,6 @@ tasks {
         dependsOn(project(":crowdproj-teams:front-teams").getTasksByName("build", false))
         dependsOn(project(":crowdproj-common:crowdproj-common-dt").getTasksByName("build", false))
     }
-
-//    val conf = project.configurations.create("webDistConfig")
-//    val setWebArtifact by creating {
-//        dependsOn(flutterBuildWeb)
-//        artifacts.add(conf.name, fileTree("$buildDir/web").dir)
-//    }
 
     val prepareConstants by creating {
         val awsUserPoolId: String by project

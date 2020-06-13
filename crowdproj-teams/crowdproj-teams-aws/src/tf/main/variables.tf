@@ -16,13 +16,9 @@ variable "bucketBackend" {
 variable "bucketJarName" {
   default = ""
 }
-
 variable "handlers" {
   type = map(string)
   default = {}
-}
-variable "remote_state" {
-  type = map(string)
 }
 variable "corsOrigins" {
   type = list(string)
@@ -47,4 +43,7 @@ variable "parameterCorsHeaders" {
 }
 variable "parameterCorsMethods" {
   default = ""
+}
+variable "remote_state" {
+  type = map(string)
 }

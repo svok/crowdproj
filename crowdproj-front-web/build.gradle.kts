@@ -65,11 +65,7 @@ terraform {
     variables {
         `var`("sourcePath", orchidContentDest)
         `var`("region", awsRegions)
-        `var`("domainZone", apiDomain)
-        `var`("domain", "$serviceAlias.$apiDomain")
         `var`("bucketPublic", bucketPublic)
-        `var`("enable_gzip", true)
-        `var`("enable_health_check", false)
         map(mapOf<String, String>(
             "txt" to "text/plain",
             "html" to "text/html",
@@ -85,8 +81,6 @@ terraform {
             "json" to "application/json",
             "ico" to "image/vnd.microsoft.icon"
         ), "mime_types")
-//        `var`("stateTable", "arn:aws:dynamodb:us-east-1:709565996550:table/com.crowdproj.states")
-//        `var`("health_check_alarm_sns_topics", "crowdproj-public-website-alarm")
     }
     remote {
         setPrefix("states-$apiVersion/state-public")

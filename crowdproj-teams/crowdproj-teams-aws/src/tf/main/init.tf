@@ -45,7 +45,7 @@ output "application_url" {
 
 resource "aws_route53_record" "v001_teams_crowdproj_com" {
   zone_id = data.aws_route53_zone.crowdproj_com.zone_id
-  name = "v001-teams"
+  name = element(split(",", var.domain), 0)
   type = "A"
   alias {
     name = aws_api_gateway_domain_name.back_crowdproj_app.cloudfront_domain_name
