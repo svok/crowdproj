@@ -12,14 +12,6 @@ repositories {
     maven { setUrl("http://repo.maven.apache.org/maven2") }
 }
 
-// If requiring AWS JDK, uncomment the dependencyManagement to use the bill of materials
-//   https://aws.amazon.com/blogs/developer/managing-dependencies-with-aws-sdk-for-java-bill-of-materials-module-bom/
-//dependencyManagement {
-//    imports {
-//        mavenBom("com.amazonaws:aws-java-sdk-bom:1.11.206")
-//    }
-//}
-
 tasks {
     val conf = project.configurations.create("serverlessArtifacts")
     val setArtifacts = create("setArtifacts") {
@@ -99,6 +91,7 @@ terraform {
             "teams-index" to "com.crowdproj.aws.handlers.TeamsIndexHandler::handleRequest",
             "teams-get" to "com.crowdproj.aws.handlers.TeamsGetHandler::handleRequest"
         ), "handlers")
+        `var`("handler", "com.crowdproj.aws.base.TeamsApiGatewayHandler::handleRequest")
         list("corsOrigins",
             "https://$domainPublic"
         )

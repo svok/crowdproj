@@ -28,7 +28,8 @@ dependencies {
     val commonsValidatorVersion: String by project
 
     implementation(project(":crowdproj-teams:generated-models-kt"))
-    implementation(project(":crowdproj-teams:back-main"))
+
+    implementation(project(":crowdproj-teams:back-logics"))
     implementation(project(":crowdproj-common:crowdproj-common-kt"))
 
     implementation("io.kotless", "ktor-lang", kotlessVersion)
@@ -76,8 +77,8 @@ kotless {
 //            version = "0.12.24"
         }
         optimization {
-//            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
-            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.None
+            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.All
+//            mergeLambda = io.kotless.KotlessConfig.Optimization.MergeLambda.None
 //            autowarm = KotlessConfig.Optimization.Autowarm(enable = false, minutes = 0)
         }
     }

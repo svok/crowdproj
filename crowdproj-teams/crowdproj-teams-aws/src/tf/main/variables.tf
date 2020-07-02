@@ -20,6 +20,9 @@ variable "handlers" {
   type = map(string)
   default = {}
 }
+variable "handler" {
+  default = ""
+}
 variable "corsOrigins" {
   type = list(string)
   default = ["*"]

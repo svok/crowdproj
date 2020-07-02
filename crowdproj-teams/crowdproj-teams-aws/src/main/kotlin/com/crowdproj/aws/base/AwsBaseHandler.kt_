@@ -91,7 +91,9 @@ abstract class AwsBaseHandler<T, R>(
         }
 
         val headers = localContext.requestData["headers"]
-        val origin = headers?.get("Origin")?.asText("") ?: headers?.get("origin")?.asText("")
+        val origin =
+            headers?.get("Origin")?.asText("")
+            ?: headers?.get("origin")?.asText("")
         val allowOrigin = origin.takeIf {
             corsOrigins.contains(it) || corsOrigins.contains("$it/")
         } ?: ""

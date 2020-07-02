@@ -1,28 +1,24 @@
 package com.crowdproj.aws.handlers
 
-import com.crowdproj.aws.base.RequestContext
-import com.crowdproj.aws.base.TeamsAwsBaseHandler
-import com.crowdproj.aws.base.TeamsRequestContext
-import com.crowdproj.teams.main.TeamContext
 import com.crowdproj.rest.teams.models.RestQueryTeamSave
-import com.crowdproj.rest.teams.models.RestResponseTeam
 import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 import com.crowdproj.teams.back.transport.rest.toMain
+import com.crowdproj.teams.main.TeamContext
 import com.crowdproj.teams.main.TeamsCreateService
 import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 
-class TeamsCreateHandler: TeamsAwsBaseHandler<RestQueryTeamSave>(
-    requestClass = RestQueryTeamSave::class.java
-) {
-    override fun createContext(): RequestContext<RestQueryTeamSave, RestResponseTeam> = TeamsSaveRequestContext()
-
-    override suspend fun handler(oContext: TeamsRequestContext<RestQueryTeamSave>, iContext: TeamContext) {
+class TeamsCreateHandler: TeamsBaseHandler<RestQueryTeamSave, TeamsSaveRequestContext>() {
+    override suspend fun handleRequest(context: TeamsSaveRequestContext, iContext: TeamContext) {
         val service = TeamsCreateService(
-            storage = DynamoDbTeamsStorage(oContext.logger)
+            storage = DynamoDbTeamsStorage(context.logger)
         )
-        val request = oContext.request
-        iContext.requestTeam = request.data?.toMain() ?: TeamModel.NONE
+        iContext.apply {
+            requestTeam = context.request.data?.toMain() ?: TeamModel.NONE
+        }
         service.exec(iContext)
     }
 
+    companion object {
+        const val requestResource = "/teams/create"
+    }
 }

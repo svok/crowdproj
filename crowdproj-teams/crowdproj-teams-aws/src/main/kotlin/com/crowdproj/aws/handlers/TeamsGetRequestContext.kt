@@ -1,26 +1,42 @@
 package com.crowdproj.aws.handlers
 
-import com.crowdproj.aws.base.TeamsRequestContext
+import com.amazonaws.services.lambda.runtime.Context
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
+import com.crowdproj.aws.base.EmptyAwsLambdaContext
+import com.crowdproj.aws.base.RequestContext
+import com.crowdproj.common.ContextStatuses
+import com.crowdproj.common.Error
 import com.crowdproj.common.ILogger
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestResponseTeam
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.NullNode
-import com.fasterxml.jackson.databind.node.ObjectNode
 import java.time.Instant
 
 data class TeamsGetRequestContext(
-    override var requestData: JsonNode = NullNode.instance,
+    override var status: ContextStatuses = ContextStatuses.none,
     override var request: RestQueryTeamGet = RestQueryTeamGet(),
     override var response: RestResponseTeam = RestResponseTeam(),
-    override var exception: Throwable? = null,
+    override var errors: MutableList<Error> = mutableListOf(),
     override var timeStart: Instant = Instant.MIN,
-    override var logger: ILogger = ILogger.NONE
-): TeamsRequestContext<RestQueryTeamGet>(
-    requestData = requestData,
+    override var logger: ILogger = ILogger.NONE,
+    override var requestInput: APIGatewayProxyRequestEvent = APIGatewayProxyRequestEvent(),
+    override var requestContext: Context = EmptyAwsLambdaContext,
+    override var requestBody: String = "",
+    override var responseHeaders: MutableMap<String, String> = mutableMapOf(),
+    override var responseBody: String = "",
+    override var responseEncoded: Boolean = false,
+    override var responseCode: Int = 0
+): RequestContext<RestQueryTeamGet, RestResponseTeam>(
+    status = status,
     request = request,
     response = response,
-    exception = exception,
     timeStart = timeStart,
-    logger = logger
+    logger = logger,
+    errors = errors,
+    requestInput = requestInput,
+    responseHeaders = responseHeaders,
+    requestContext = requestContext,
+    requestBody = requestBody,
+    responseBody = responseBody,
+    responseEncoded = responseEncoded,
+    responseCode = responseCode
 )

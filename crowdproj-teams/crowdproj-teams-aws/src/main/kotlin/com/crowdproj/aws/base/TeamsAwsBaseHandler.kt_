@@ -12,27 +12,27 @@ import java.time.Instant
 
 abstract class TeamsAwsBaseHandler<T>(
     requestClass: Class<T>
-) : AwsBaseHandler<T, RestResponseTeam>(
-    requestClass = requestClass
-) {
+): IAwsHandler {
 
-    abstract suspend fun handler(oContext: TeamsRequestContext<T>, iContext: TeamContext)
+    abstract suspend fun handler(oContext: TeamsRequestContext<T>)
 
-    override suspend fun handlePost(context: RequestContext<T, RestResponseTeam>): Unit = with(context) {
-        val innerContext = TeamContext()
-        handler(context as TeamsRequestContext<T>, innerContext)
+    override suspend fun exec(context: IRequestContext) {
+        handler(context as TeamsRequestContext<T>)
+    }
+
+    suspend fun handleRequest(context: RequestContext<T, RestResponseTeam>): Unit = with(context) {
         response = RestResponseTeam(
             timeReceived = timeStart.toString(),
             timeFinished = Instant.now().toString(),
             status = RestResponseStatus.responseOk,
-            errors = innerContext.errors.toApiErrors().toTypedArray(),
-            data = innerContext.result.toApiResults().toTypedArray()
+            errors = context.errors.toApiErrors().toTypedArray(),
+            data = context.response.toApiResults().toTypedArray()
         )
     }
     override suspend fun handleError(context: RequestContext<T, RestResponseTeam>): Unit = with(context) {
         response = RestResponseTeam(
             status = RestResponseStatus.responseError,
-            errors = arrayOf(resolveError(exception)),
+            errors = context.exceptions.map { it.toRest() }.toTypedArray(),
             timeReceived = timeStart.toString(),
             timeFinished = Instant.now().toString()
         )

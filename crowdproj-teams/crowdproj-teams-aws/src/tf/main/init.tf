@@ -1,3 +1,12 @@
+data "aws_caller_identity" "current" {
+}
+
+provider "aws" {
+  region = var.region
+  profile = "default"
+  version = "~> 2.7"
+}
+
 resource "aws_api_gateway_rest_api" "back_app" {
   name = "v001-teams-back-crowdproj-app"
   binary_media_types = [
@@ -16,10 +25,6 @@ resource "aws_api_gateway_rest_api" "back_app" {
 resource "aws_iam_role" "crowdproj_static_role" {
   name = "v001-teams-crowdproj-static-role"
   assume_role_policy = data.aws_iam_policy_document.crowdproj_static_assume.json
-}
-
-data "aws_caller_identity" "current" {
-
 }
 
 data "aws_iam_policy_document" "crowdproj_static_assume" {
@@ -112,12 +117,6 @@ data "aws_region" "current" {
 resource "aws_iam_role_policy" "crowdproj_static_policy" {
   role = aws_iam_role.crowdproj_static_role.name
   policy = data.aws_iam_policy_document.crowdproj_static_policy.json
-}
-
-provider "aws" {
-  region = var.region
-  profile = "default"
-  version = "~> 2.7"
 }
 
 resource "aws_api_gateway_deployment" "crowdproj_teams" {

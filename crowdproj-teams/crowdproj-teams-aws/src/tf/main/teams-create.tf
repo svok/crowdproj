@@ -1,7 +1,8 @@
 resource "aws_lambda_permission" "teams_create" {
   statement_id = "v001-teams-teams-create"
   action = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.teams_create_post.arn
+  function_name = aws_lambda_function.teams_merged.arn
+//  function_name = aws_lambda_function.teams_create_post.arn
   principal = "apigateway.amazonaws.com"
   source_arn = "arn:aws:execute-api:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${aws_api_gateway_rest_api.back_app.id}/*/POST/teams/create"
 }
@@ -28,25 +29,26 @@ resource "aws_api_gateway_integration" "teams_create" {
   http_method = "POST"
   integration_http_method = "POST"
   type = "AWS_PROXY"
-  uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.teams_create_post.arn}/invocations"
+  uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.teams_merged.arn}/invocations"
+//  uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.teams_create_post.arn}/invocations"
 }
 
-resource "aws_lambda_function" "teams_create_post" {
-  function_name = "v001-teams-create-post"
-  role = aws_iam_role.teams_create_post.arn
-  s3_bucket = var.bucketBackend
-  s3_key = aws_s3_bucket_object.merged_0.key
-  source_code_hash = base64sha256(filebase64sha512(aws_s3_bucket_object.merged_0.source))
-  handler = var.handlers["teams-create"]
-  runtime = "java8"
-  timeout = 300
-  memory_size = 1024
-  environment {
-    variables = {
-      KOTLESS_PACKAGES = "com.crowdproj"
-    }
-  }
-}
+//resource "aws_lambda_function" "teams_create_post" {
+//  function_name = "v001-teams-create-post"
+//  role = aws_iam_role.teams_create_post.arn
+//  s3_bucket = var.bucketBackend
+//  s3_key = aws_s3_bucket_object.merged_0.key
+//  source_code_hash = base64sha256(filebase64sha512(aws_s3_bucket_object.merged_0.source))
+//  handler = var.handlers["teams-create"]
+//  runtime = "java8"
+//  timeout = 300
+//  memory_size = 1024
+//  environment {
+//    variables = {
+//      KOTLESS_PACKAGES = "com.crowdproj"
+//    }
+//  }
+//}
 
 resource "aws_iam_role" "teams_create_post" {
   name = "v001-teams-create-post"
@@ -58,10 +60,10 @@ resource "aws_iam_role_policy" "crowdproj_teams_create_post" {
   policy = data.aws_iam_policy_document.crowdproj_teams_table.json
 }
 
-resource "aws_cloudwatch_log_group" "teams_create_post" {
-  name              = "/aws/lambda/${aws_lambda_function.teams_create_post.function_name}"
-  retention_in_days = 14
-}
+//resource "aws_cloudwatch_log_group" "teams_create_post" {
+//  name              = "/aws/lambda/${aws_lambda_function.teams_create_post.function_name}"
+//  retention_in_days = 14
+//}
 
 resource "aws_iam_role_policy_attachment" "teams_create_post" {
   role       = aws_iam_role.teams_create_post.name
