@@ -8,8 +8,8 @@ import com.crowdproj.teams.back.transport.rest.common.models.TeamFindQuery.Compa
 
 fun RestTeam.toMain() = TeamModel(
     id = id ?: "",
-    name = name,
-    summary = summary,
+    name = name ?: "",
+    summary = summary ?: "",
     description = description ?: "",
     owner = owner?.toMain() ?: ProfileModel.NONE,
     photoUrls = photoUrls?.toSet() ?: mutableSetOf(),
@@ -47,8 +47,8 @@ fun RestTeamStatus?.toMain() = when (this) {
 
 fun TeamModel.toApi() = RestTeam(
     id = id.takeIf { it.isNotBlank() },
-    name = name,
-    summary = summary,
+    name = name.takeIf { it.isNotBlank() },
+    summary = summary.takeIf { it.isNotBlank() },
     description = description.takeIf { it.isNotBlank() },
     owner = owner.takeIf { it != ProfileModel.NONE }?.toApi(),
     photoUrls = photoUrls.takeIf { it.isNotEmpty() }?.toTypedArray(),

@@ -11,10 +11,12 @@ import com.crowdproj.common.ContextStatuses
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestQueryTeamSave
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
 
 class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
     private val jsonMapper = JsonMapper()
+        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     private val parameters by lazy {
         try {
@@ -149,9 +151,12 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
             responseEncoded = false
         }
         try {
+            context.logger.debug("Parsing class $requestClass with json ${config.requestBody}")
             val parsedRequest: Rq = jsonMapper.readValue(config.requestBody, requestClass)
             context.request = parsedRequest
+            context.logger.info("JSON: ${config.requestBody} -> $parsedRequest")
         } catch (e: Throwable) {
+            context.logger.error("Error parsing request body: $e")
             context.errors.add(e.toError("BAD_REQUEST"))
             context.status = ContextStatuses.failing
         }

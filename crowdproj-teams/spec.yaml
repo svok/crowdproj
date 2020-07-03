@@ -266,9 +266,9 @@ components:
       $ref: '../crowdproj-tags/spec.yaml#/components/schemas/RestTag'
 
     RestTeam:
-      required:
-        - name
-        - summary
+#      required:
+#        - name
+#        - summary
       type: object
       properties:
         id:

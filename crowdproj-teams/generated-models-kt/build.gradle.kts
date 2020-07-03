@@ -41,7 +41,9 @@ tasks {
         configOptions.putAll(
             mutableMapOf(
 //                "modelMutable" to "true",
-                "swaggerAnnotations" to "true"
+                "swaggerAnnotations" to "true",
+//                "serializationLibrary" to "gson"
+                "serializationLibrary" to "jackson"
             )
         )
         systemProperties.putAll(
