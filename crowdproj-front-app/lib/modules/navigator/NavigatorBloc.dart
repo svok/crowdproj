@@ -7,12 +7,9 @@ class NavigatorBloc extends Bloc<NavigatorAction, dynamic>{
 
   NavigatorBloc({
     @required this.navigatorKey
-  }): super();
+  }): super(0);
 
   final GlobalKey<NavigatorState> navigatorKey;
-
-  @override
-  dynamic get initialState => 0;
 
   @override
   Stream<dynamic> mapEventToState(NavigatorAction event) async* {

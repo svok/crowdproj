@@ -2,13 +2,14 @@ package com.crowdproj.aws.handlers
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
-import com.crowdproj.aws.base.EmptyAwsLambdaContext
-import com.crowdproj.aws.base.RequestContext
 import com.crowdproj.common.ContextStatuses
 import com.crowdproj.common.Error
 import com.crowdproj.common.ILogger
+import com.crowdproj.common.aws.RequestContext
+import com.crowdproj.common.aws.models.EmptyAwsLambdaContext
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestResponseTeam
+import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
 import java.time.Instant
 
 data class TeamsGetRequestContext(
@@ -24,7 +25,8 @@ data class TeamsGetRequestContext(
     override var responseHeaders: MutableMap<String, String> = mutableMapOf(),
     override var responseBody: String = "",
     override var responseEncoded: Boolean = false,
-    override var responseCode: Int = 0
+    override var responseCode: Int = 0,
+    var dbTeamsStorage: NeptuneDbTeamsStorage = NeptuneDbTeamsStorage.NONE
 ): RequestContext<RestQueryTeamGet, RestResponseTeam>(
     status = status,
     request = request,

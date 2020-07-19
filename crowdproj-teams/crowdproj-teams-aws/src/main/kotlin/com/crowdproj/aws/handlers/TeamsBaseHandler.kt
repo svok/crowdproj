@@ -1,9 +1,9 @@
 package com.crowdproj.aws.handlers
 
-import com.crowdproj.aws.base.IAwsHandler
-import com.crowdproj.aws.base.IRequestContext
-import com.crowdproj.aws.base.RequestContext
-import com.crowdproj.aws.base.toError
+import com.crowdproj.common.aws.IAwsHandler
+import com.crowdproj.common.aws.IRequestContext
+import com.crowdproj.common.aws.RequestContext
+import com.crowdproj.common.aws.toError
 import com.crowdproj.rest.teams.models.RestResponseStatus
 import com.crowdproj.rest.teams.models.RestResponseTeam
 import com.crowdproj.teams.back.transport.rest.toApiError

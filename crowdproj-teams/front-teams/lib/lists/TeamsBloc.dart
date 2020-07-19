@@ -14,7 +14,7 @@ import 'TeamsEventUpdate.dart';
 import 'TeamsState.dart';
 
 class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
-  TeamsBloc(this.context, this.teamRelation) : super() {
+  TeamsBloc(this.context, this.teamRelation) : super(TeamsState()) {
     print("TeamsBloc CREATED");
   }
 
@@ -39,9 +39,6 @@ class TeamsBloc extends Bloc<TeamsEvent, TeamsState> {
         statuses: statuses,
         relations: relations,
       );
-
-  @override
-  TeamsState get initialState => TeamsState();
 
   @override
   Stream<TeamsState> mapEventToState(TeamsEvent event) async* {

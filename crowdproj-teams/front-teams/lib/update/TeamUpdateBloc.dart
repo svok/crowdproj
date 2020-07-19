@@ -17,12 +17,9 @@ import 'TeamUpdateEvent.dart';
 class TeamUpdateBloc extends Bloc<TeamUpdateEvent, TeamUpdateState> {
   TeamUpdateBloc({
     @required this.context,
-  }) : super();
+  }) : super(TeamUpdateState());
 
   final BuildContext context;
-
-  @override
-  TeamUpdateState get initialState => TeamUpdateState();
 
   @override
   Stream<TeamUpdateState> mapEventToState(TeamUpdateEvent event) async* {

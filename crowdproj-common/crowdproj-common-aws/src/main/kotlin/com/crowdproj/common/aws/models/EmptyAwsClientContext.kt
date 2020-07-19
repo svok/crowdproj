@@ -1,7 +1,8 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws.models
 
 import com.amazonaws.services.lambda.runtime.Client
 import com.amazonaws.services.lambda.runtime.ClientContext
+import com.crowdproj.common.aws.models.EmptyAwsClient
 
 object EmptyAwsClientContext: ClientContext {
     override fun getCustom(): MutableMap<String, String> = mutableMapOf()

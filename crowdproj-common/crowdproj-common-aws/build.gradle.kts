@@ -1,10 +1,45 @@
 plugins {
+    kotlin("jvm")
     id("org.ysb33r.terraform")
     id("org.ysb33r.terraform.remotestate.s3")
 }
 
 group = rootProject.group
 version = rootProject.version
+
+dependencies {
+    val kotlinVersion: String by project
+    val coroutinesVersion: String by project
+    val jacksonVersion: String by project
+    val awsCoreVersion: String by project
+    val awsLog4jVersion: String by project
+    val awsEventsVersion: String by project
+    val awsSsmVersion: String by project
+    val slf4jVersion: String by project
+
+    implementation(project(":crowdproj-common:crowdproj-common-kt"))
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
+    implementation("com.amazonaws:aws-lambda-java-core:$awsCoreVersion")
+    implementation("com.amazonaws:aws-lambda-java-log4j2:$awsLog4jVersion")
+    implementation("com.amazonaws:aws-lambda-java-events:$awsEventsVersion")
+    implementation("com.amazonaws:aws-java-sdk-ssm:$awsSsmVersion")
+
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
+    // SLF4j
+    implementation("org.apache.logging.log4j:log4j-api:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-core:$slf4jVersion")
+    runtimeOnly("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
+    runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:1.2.0")
+
+
+}
 
 val awsRegions: String by project
 val apiVersion: String by project
@@ -56,9 +91,9 @@ tasks {
         dependsOn(deployAws)
     }
 
-    val clean by creating(Delete::class) {
-        delete(buildDir)
-    }
+//    val clean by creating(Delete::class) {
+//        delete(buildDir)
+//    }
 
     tfDestroy {
         outputs.upToDateWhen { false }

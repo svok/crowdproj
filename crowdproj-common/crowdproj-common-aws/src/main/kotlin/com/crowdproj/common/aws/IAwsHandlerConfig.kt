@@ -1,4 +1,4 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws
 
 interface IAwsHandlerConfig {
     val handler: IAwsHandler

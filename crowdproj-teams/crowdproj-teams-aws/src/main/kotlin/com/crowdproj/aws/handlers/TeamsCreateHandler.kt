@@ -5,12 +5,11 @@ import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 import com.crowdproj.teams.back.transport.rest.toMain
 import com.crowdproj.teams.main.TeamContext
 import com.crowdproj.teams.main.TeamsCreateService
-import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 
 class TeamsCreateHandler: TeamsBaseHandler<RestQueryTeamSave, TeamsSaveRequestContext>() {
     override suspend fun handleRequest(context: TeamsSaveRequestContext, iContext: TeamContext) {
         val service = TeamsCreateService(
-            storage = DynamoDbTeamsStorage(context.logger)
+            storage = context.dbTeamsStorage
         )
         iContext.apply {
             requestTeam = context.request.data?.toMain() ?: TeamModel.NONE

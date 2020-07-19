@@ -1,4 +1,4 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws.models
 
 import com.amazonaws.services.lambda.runtime.ClientContext
 import com.amazonaws.services.lambda.runtime.CognitoIdentity
@@ -8,7 +8,8 @@ import com.amazonaws.services.lambda.runtime.LambdaLogger
 object EmptyAwsLambdaContext : Context {
     override fun getAwsRequestId(): String = ""
     override fun getLogStreamName(): String = ""
-    override fun getClientContext(): ClientContext = EmptyAwsClientContext
+    override fun getClientContext(): ClientContext =
+        EmptyAwsClientContext
     override fun getFunctionName(): String = ""
     override fun getRemainingTimeInMillis(): Int = -1
     override fun getLogger(): LambdaLogger = EmptyAwsLambdaLogger
@@ -16,5 +17,6 @@ object EmptyAwsLambdaContext : Context {
     override fun getMemoryLimitInMB(): Int = -1
     override fun getLogGroupName(): String = ""
     override fun getFunctionVersion(): String = ""
-    override fun getIdentity(): CognitoIdentity = EmptyAwsCognitoIdentity
+    override fun getIdentity(): CognitoIdentity =
+        EmptyAwsCognitoIdentity
 }

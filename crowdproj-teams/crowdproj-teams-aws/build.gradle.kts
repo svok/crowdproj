@@ -32,11 +32,12 @@ dependencies {
     val awsDynamoVersion: String by project
     val awsSsmVersion: String by project
 
+    implementation(project(":crowdproj-common:crowdproj-common-aws"))
     implementation(project(":crowdproj-teams:generated-models-kt"))
     implementation(project(":crowdproj-teams:back-common"))
     implementation(project(":crowdproj-teams:back-logics"))
     implementation(project(":crowdproj-teams:back-storage-common"))
-    implementation(project(":crowdproj-teams:back-storage-dynamodb"))
+    implementation(project(":crowdproj-teams:back-storage-neptunedb"))
     implementation(project(":crowdproj-teams:back-transport-rest"))
     implementation(project(":crowdproj-common:crowdproj-common-kt"))
 
@@ -69,6 +70,7 @@ val paramsPrefix = "$awsBucket.$serviceAlias"
 val paramCorsOrigins = "$paramsPrefix.cors-origins"
 val paramCorsHeaders = "$paramsPrefix.cors-headers"
 val paramCorsMethods = "$paramsPrefix.cors-methods"
+val parameterNeptuneEndpoint = "$paramsPrefix.neptune-endpoint"
 
 terraform {
     this.executable(mapOf(
@@ -85,6 +87,7 @@ terraform {
         `var`("parameterCorsOrigins", paramCorsOrigins)
         `var`("parameterCorsHeaders", paramCorsHeaders)
         `var`("parameterCorsMethods", paramCorsMethods)
+        `var`("parameterNeptuneEndpoint", parameterNeptuneEndpoint)
         map(mapOf<String, String>(
             "teams-create" to "com.crowdproj.aws.handlers.TeamsCreateHandler::handleRequest",
             "teams-update" to "com.crowdproj.aws.handlers.TeamsUpdateHandler::handleRequest",
@@ -128,6 +131,7 @@ tasks {
         dependsOn(shadowJar)
         inputs.file(shadowJar.get().archiveFile)
         inputs.file("build.gradle.kts")
+//        inputs.dir("$projectDir/src/tf/main")
     }
 
     val prepareConstants by creating {
@@ -139,6 +143,7 @@ tasks {
                 const val parameterCorsOrigins = "$paramCorsOrigins"
                 const val parameterCorsHeaders = "$paramCorsHeaders"
                 const val parameterCorsMethods = "$paramCorsMethods"
+                const val parameterNeptuneEndpoint = "$paramCorsMethods"
             }
         """.trimIndent()
         val dir = "$generatedCode/${project.group.toString().replace(".", "/")}/aws"

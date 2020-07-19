@@ -1,4 +1,4 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws.models
 
 data class AwsResponse(
     val isBase64Encoded: Boolean = false,

@@ -1,4 +1,4 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws.models
 
 import com.amazonaws.services.lambda.runtime.CognitoIdentity
 

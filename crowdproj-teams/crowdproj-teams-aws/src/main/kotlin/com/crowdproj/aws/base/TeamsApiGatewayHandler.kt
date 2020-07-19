@@ -6,11 +6,17 @@ import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest
 import com.amazonaws.services.simplesystemsmanagement.model.Parameter
 import com.crowdproj.aws.CrowdprojConstants
+import com.crowdproj.common.aws.exceptions.AwsParameterNotSet
+import com.crowdproj.common.aws.exceptions.NoSuchResourceException
 import com.crowdproj.aws.handlers.*
 import com.crowdproj.common.ContextStatuses
+import com.crowdproj.common.aws.*
+import com.crowdproj.common.aws.models.HandlerConfig
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestQueryTeamSave
+import com.crowdproj.rest.teams.models.RestResponseTeam
+import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
 
@@ -26,7 +32,8 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                     .withNames(
                         CrowdprojConstants.parameterCorsOrigins,
                         CrowdprojConstants.parameterCorsHeaders,
-                        CrowdprojConstants.parameterCorsMethods
+                        CrowdprojConstants.parameterCorsMethods,
+                        CrowdprojConstants.parameterNeptuneEndpoint
                     )
             )
                 .parameters
@@ -44,8 +51,13 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
         getParamStringList(CrowdprojConstants.parameterCorsMethods)
     }
 
+    val neptuneEndpoint: String? by lazy {
+        getParamString(CrowdprojConstants.parameterNeptuneEndpoint)
+    }
+
     override fun initHandler(body: HandlerConfig.() -> Unit): IAwsHandlerConfig {
-        val config: HandlerConfig = HandlerConfig().apply(body)
+        val config: HandlerConfig = HandlerConfig()
+            .apply(body)
         return when (config.resource) {
             // GET
             TeamsGetHandler.requestResource -> TeamsHandlerConfig(
@@ -58,7 +70,13 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                             requestInput = config.requestInput,
                             requestContext = config.requestContext,
                             requestBody = config.requestBody,
-                            responseHeaders = config.responseHeaders
+                            responseHeaders = config.responseHeaders,
+                            dbTeamsStorage = NeptuneDbTeamsStorage(
+                                neptuneEndpoint = getParamString(CrowdprojConstants.parameterNeptuneEndpoint)
+                                    ?: throw AwsParameterNotSet(
+                                        CrowdprojConstants.parameterNeptuneEndpoint
+                                    )
+                            )
                         ),
                         config = config,
                         requestClass = RestQueryTeamGet::class.java
@@ -167,9 +185,11 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
         context.responseBody = jsonMapper.writeValueAsString(context.response)
     }
 
-    private fun getParamStringList(name: String): List<String> = parameters
+    private fun getParamString(name: String): String? = parameters
         .find { it.name == name }
         ?.value
+
+    private fun getParamStringList(name: String): List<String> = getParamString(name)
         ?.split(",")
         ?: emptyList()
 

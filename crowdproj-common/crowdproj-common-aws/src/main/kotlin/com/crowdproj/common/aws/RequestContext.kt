@@ -1,4 +1,4 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
@@ -21,4 +21,6 @@ open class RequestContext<T, R>(
     override var responseEncoded: Boolean,
     override var responseCode: Int,
     override var status: ContextStatuses
-) : IRequestContext
+) : IRequestContext {
+
+}

@@ -2,11 +2,11 @@ package com.crowdproj.aws.handlers
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
-import com.crowdproj.aws.base.EmptyAwsLambdaContext
-import com.crowdproj.aws.base.RequestContext
 import com.crowdproj.common.ContextStatuses
 import com.crowdproj.common.Error
 import com.crowdproj.common.ILogger
+import com.crowdproj.common.aws.RequestContext
+import com.crowdproj.common.aws.models.EmptyAwsLambdaContext
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestResponseTeam
 import java.time.Instant

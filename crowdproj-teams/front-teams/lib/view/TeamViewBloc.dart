@@ -13,13 +13,9 @@ typedef Future<ApiResponseTeam> _TeamFunc(String teamId);
 class TeamViewBloc extends Bloc<TeamViewEvent, TeamViewState> {
   TeamViewBloc({
     @required this.context,
-  }) : super();
+  }) : super(TeamViewState());
 
   final BuildContext context;
-
-  @override
-  TeamViewState get initialState => TeamViewState();
-
 
   @override
   Stream<TeamViewState> mapEventToState(TeamViewEvent event) async* {

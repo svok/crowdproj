@@ -1,8 +1,9 @@
-package com.crowdproj.aws.base
+package com.crowdproj.common.aws.models
 
 import com.amazonaws.services.lambda.runtime.Context
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent
 import com.crowdproj.common.ILogger
+import com.crowdproj.common.aws.models.EmptyAwsLambdaContext
 import java.time.Instant
 
 class HandlerConfig() {

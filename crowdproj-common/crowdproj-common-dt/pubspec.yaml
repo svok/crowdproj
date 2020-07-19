@@ -1,8 +1,8 @@
 name: crowdproj_common
 description: A new Flutter package project.
 version: 0.0.1
-author:
-homepage:
+author: Sergey Okatov
+homepage: https://crowdproj.com
 
 environment:
   sdk: ">=2.8.0 <3.0.0"

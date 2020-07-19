@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Configuration packages="com.amazonaws.services.lambda.runtime.log4j2.LambdaAppender">
+<Configuration status="WARN">
     <Appenders>
         <Lambda name="Lambda">
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %-5p %c{1}:%L - %m%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %-5p %c{1} - %m%n</pattern>
             </PatternLayout>
         </Lambda>
     </Appenders>
@@ -12,6 +11,6 @@
             <AppenderRef ref="Lambda"/>
         </Root>
         <Logger name="software.amazon.awssdk" level="WARN" />
-        <Logger name="com.crowdproj" level="DEBUG" />
+        <Logger name="software.amazon.awssdk.request" level="DEBUG" />
     </Loggers>
 </Configuration>
