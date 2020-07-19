@@ -16,9 +16,6 @@ tasks {
 dependencies {
     val kotlinVersion: String by project
     val coroutinesVersion: String by project
-    val jacksonVersion: String by project
-//    val awsDynamoVersion: String by project
-    val gremlinDriverVersion: String by project
     val kotestVersion: String by project
     val slf4jVersion: String by project
 
@@ -29,17 +26,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
-//    implementation("com.amazonaws:aws-java-sdk-dynamodb:$awsDynamoVersion")
-    implementation("org.apache.tinkerpop:gremlin-driver:$gremlinDriverVersion")
-
-    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-
-    // SLF4j
     implementation("org.apache.logging.log4j:log4j-api:$slf4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$slf4jVersion")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
     runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:1.2.0")
 
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
 }
 
 tasks {

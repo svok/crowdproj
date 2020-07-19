@@ -8,21 +8,20 @@ import com.amazonaws.services.dynamodbv2.document.KeyAttribute
 import com.amazonaws.services.dynamodbv2.document.Table
 import com.amazonaws.services.dynamodbv2.document.spec.ScanSpec
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.crowdproj.common.ILogger
 import com.crowdproj.teams.back.transport.rest.common.models.TeamFindQuery
 import com.crowdproj.teams.back.transport.rest.common.models.TeamModel
 import com.crowdproj.teams.storage.common.ITeamStorage
 import com.crowdproj.teams.storage.common.exceptions.DbClientException
 import com.crowdproj.teams.storage.common.exceptions.DbServiceException
 import com.crowdproj.teams.storage.common.exceptions.DbUnknownException
+import org.slf4j.LoggerFactory
 import java.time.Instant
 import java.util.*
 
-private const val tableName: String = "crowdproj-teams-table"
-
 class DynamoDbTeamsStorage(
-    val logger: ILogger = ILogger.NONE
+    val tableName: String = ""
 ) : ITeamStorage {
+    private val logger = LoggerFactory.getLogger(DynamoDbTeamsStorage::class.java)
     private val client = AmazonDynamoDBClientBuilder
         .standard()
         .build()

@@ -9,6 +9,9 @@ import com.crowdproj.common.aws.RequestContext
 import com.crowdproj.common.aws.models.EmptyAwsLambdaContext
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestResponseTeam
+import com.crowdproj.teams.storage.common.ITeamStorage
+import com.crowdproj.teams.storage.dynamodb.InMemoryDbTeamsStorage
+import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
 import java.time.Instant
 
 data class TeamsIndexRequestContext(
@@ -24,7 +27,8 @@ data class TeamsIndexRequestContext(
     override var responseHeaders: MutableMap<String, String> = mutableMapOf(),
     override var responseBody: String = "",
     override var responseEncoded: Boolean = false,
-    override var responseCode: Int = 0
+    override var responseCode: Int = 0,
+    var dbTeamsStorage: ITeamStorage = InMemoryDbTeamsStorage.DEFAULT
 ): RequestContext<RestQueryTeamFind, RestResponseTeam>(
     status = status,
     request = request,

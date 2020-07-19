@@ -35,7 +35,7 @@ dependencies {
     // SLF4j
     implementation("org.apache.logging.log4j:log4j-api:$slf4jVersion")
     implementation("org.apache.logging.log4j:log4j-core:$slf4jVersion")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
     runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:1.2.0")
 
 

@@ -31,6 +31,6 @@ dependencies {
 //    implementation("com.amazonaws:aws-lambda-java-core:$awsCoreVersion")
 //    implementation("com.amazonaws:aws-lambda-java-log4j2:$awsLog4jVersion")
 //    implementation("com.amazonaws:aws-lambda-java-events:$awsEventsVersion")
-    implementation("com.amazonaws:aws-java-sdk-dynamodb:$awsDynamoVersion")
+//    implementation("com.amazonaws:aws-java-sdk-dynamodb:$awsDynamoVersion")
 }
 

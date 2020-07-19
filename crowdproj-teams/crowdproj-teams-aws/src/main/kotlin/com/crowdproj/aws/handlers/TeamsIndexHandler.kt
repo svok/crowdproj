@@ -4,12 +4,11 @@ import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.teams.back.transport.rest.toMain
 import com.crowdproj.teams.main.TeamContext
 import com.crowdproj.teams.main.TeamsFindService
-import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 
 class TeamsIndexHandler: TeamsBaseHandler<RestQueryTeamFind, TeamsIndexRequestContext>() {
     override suspend fun handleRequest(context: TeamsIndexRequestContext, iContext: TeamContext) {
         val service = TeamsFindService(
-            storage = DynamoDbTeamsStorage(context.logger)
+            storage = context.dbTeamsStorage
         )
         val request = context.request
         iContext.query = request.toMain()

@@ -15,7 +15,8 @@ import com.crowdproj.common.aws.models.HandlerConfig
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestQueryTeamSave
-import com.crowdproj.rest.teams.models.RestResponseTeam
+import com.crowdproj.teams.storage.common.ITeamStorage
+import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
 import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
@@ -51,9 +52,24 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
         getParamStringList(CrowdprojConstants.parameterCorsMethods)
     }
 
-    val neptuneEndpoint: String? by lazy {
+    private val neptuneEndpoint: String by lazy {
         getParamString(CrowdprojConstants.parameterNeptuneEndpoint)
+            ?: throw AwsParameterNotSet(
+                CrowdprojConstants.parameterNeptuneEndpoint
+            )
     }
+
+//    private val storage: ITeamStorage by lazy {
+//        NeptuneDbTeamsStorage(
+//            neptuneEndpoint = neptuneEndpoint
+//        )
+//    }
+    private val storage: ITeamStorage by lazy {
+        DynamoDbTeamsStorage(
+            tableName = "crowdproj-teams-table"
+        )
+    }
+
 
     override fun initHandler(body: HandlerConfig.() -> Unit): IAwsHandlerConfig {
         val config: HandlerConfig = HandlerConfig()
@@ -71,12 +87,8 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                             requestContext = config.requestContext,
                             requestBody = config.requestBody,
                             responseHeaders = config.responseHeaders,
-                            dbTeamsStorage = NeptuneDbTeamsStorage(
-                                neptuneEndpoint = getParamString(CrowdprojConstants.parameterNeptuneEndpoint)
-                                    ?: throw AwsParameterNotSet(
-                                        CrowdprojConstants.parameterNeptuneEndpoint
-                                    )
-                            )
+                            dbTeamsStorage = storage
+
                         ),
                         config = config,
                         requestClass = RestQueryTeamGet::class.java
@@ -95,7 +107,8 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                             requestInput = config.requestInput,
                             requestContext = config.requestContext,
                             requestBody = config.requestBody,
-                            responseHeaders = config.responseHeaders
+                            responseHeaders = config.responseHeaders,
+                            dbTeamsStorage = storage
                         ),
                         config = config,
                         requestClass = RestQueryTeamFind::class.java
@@ -115,7 +128,8 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                             requestInput = config.requestInput,
                             requestContext = config.requestContext,
                             requestBody = config.requestBody,
-                            responseHeaders = config.responseHeaders
+                            responseHeaders = config.responseHeaders,
+                            dbTeamsStorage = storage
                         ),
                         config = config,
                         requestClass = RestQueryTeamSave::class.java
@@ -135,7 +149,8 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
                             requestInput = config.requestInput,
                             requestContext = config.requestContext,
                             requestBody = config.requestBody,
-                            responseHeaders = config.responseHeaders
+                            responseHeaders = config.responseHeaders,
+                            dbTeamsStorage = storage
                         ),
                         config = config,
                         requestClass = RestQueryTeamSave::class.java

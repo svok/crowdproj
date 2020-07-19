@@ -37,6 +37,8 @@ dependencies {
     implementation(project(":crowdproj-teams:back-common"))
     implementation(project(":crowdproj-teams:back-logics"))
     implementation(project(":crowdproj-teams:back-storage-common"))
+    implementation(project(":crowdproj-teams:back-storage-inmemorydb"))
+    implementation(project(":crowdproj-teams:back-storage-dynamodb"))
     implementation(project(":crowdproj-teams:back-storage-neptunedb"))
     implementation(project(":crowdproj-teams:back-transport-rest"))
     implementation(project(":crowdproj-common:crowdproj-common-kt"))
