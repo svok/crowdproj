@@ -162,6 +162,10 @@ tasks {
         }
     }
 
+    shadowJar {
+        transform(com.github.jengelman.gradle.plugins.shadow.transformers.Log4j2PluginsCacheFileTransformer::class.java)
+    }
+
     val deployAws by creating {
         group = "deploy"
         dependsOn(tfApply)
