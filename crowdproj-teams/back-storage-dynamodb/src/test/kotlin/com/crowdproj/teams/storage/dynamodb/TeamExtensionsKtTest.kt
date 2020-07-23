@@ -2,9 +2,10 @@ package com.crowdproj.teams.storage.dynamodb
 
 import com.crowdproj.teams.back.common.models.TeamVisibility
 import com.crowdproj.teams.back.transport.rest.common.models.*
+import com.crowdproj.teams.storage.dynamodb.from
+import com.crowdproj.teams.storage.dynamodb.toItem
 import io.kotest.core.spec.style.StringSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldHave
 
 internal class TeamExtensionsKtTest: StringSpec() {
     init {

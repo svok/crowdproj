@@ -40,25 +40,7 @@ resource "aws_api_gateway_integration" "teams_get" {
   integration_http_method = "POST"
   type = "AWS_PROXY"
   uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.teams_merged.arn}/invocations"
-//  uri = "arn:aws:apigateway:${data.aws_region.current.name}:lambda:path/2015-03-31/functions/${aws_lambda_function.teams_get_post.arn}/invocations"
 }
-
-//resource "aws_lambda_function" "teams_get_post" {
-//  function_name = "v001-teams-get-post"
-//  role = aws_iam_role.teams_get_post.arn
-//  s3_bucket = var.bucketBackend
-//  s3_key = aws_s3_bucket_object.merged_0.key
-//  source_code_hash = base64sha256(filebase64sha512(aws_s3_bucket_object.merged_0.source))
-//  handler = var.handlers["teams-get"]
-//  runtime = "java8"
-//  timeout = 300
-//  memory_size = 1024
-//  environment {
-//    variables = {
-//      KOTLESS_PACKAGES = "com.crowdproj"
-//    }
-//  }
-//}
 
 resource "aws_iam_role" "teams_get_post" {
   name = "v001-teams-get-post"

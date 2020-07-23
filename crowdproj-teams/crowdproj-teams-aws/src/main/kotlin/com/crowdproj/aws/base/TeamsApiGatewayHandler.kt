@@ -1,45 +1,88 @@
 package com.crowdproj.aws.base
 
-import com.amazonaws.internal.SdkInternalList
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder
+import com.amazonaws.services.simplesystemsmanagement.model.GetParameterRequest
 import com.amazonaws.services.simplesystemsmanagement.model.GetParametersRequest
-import com.amazonaws.services.simplesystemsmanagement.model.Parameter
 import com.crowdproj.aws.CrowdprojConstants
-import com.crowdproj.common.aws.exceptions.AwsParameterNotSet
-import com.crowdproj.common.aws.exceptions.NoSuchResourceException
 import com.crowdproj.aws.handlers.*
 import com.crowdproj.common.ContextStatuses
 import com.crowdproj.common.aws.*
+import com.crowdproj.common.aws.exceptions.AwsParameterNotSet
+import com.crowdproj.common.aws.exceptions.NoSuchResourceException
 import com.crowdproj.common.aws.models.HandlerConfig
 import com.crowdproj.rest.teams.models.RestQueryTeamFind
 import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestQueryTeamSave
 import com.crowdproj.teams.storage.common.ITeamStorage
-import com.crowdproj.teams.storage.dynamodb.DynamoDbTeamsStorage
-import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
+import com.crowdproj.teams.storage.neptunedb.NeptuneDbTeamsStorage
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.runBlocking
+import org.slf4j.LoggerFactory
+import kotlin.system.measureTimeMillis
+import kotlin.time.ExperimentalTime
+import kotlin.time.measureTimedValue
 
 class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
     private val jsonMapper = JsonMapper()
         .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    private val logger = LoggerFactory.getLogger(this.javaClass)!!
 
+    @OptIn(ExperimentalTime::class)
     private val parameters by lazy {
         try {
-            val ssm: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementClientBuilder.defaultClient()
-            ssm.getParameters(
-                GetParametersRequest()
-                    .withNames(
-                        CrowdprojConstants.parameterCorsOrigins,
-                        CrowdprojConstants.parameterCorsHeaders,
-                        CrowdprojConstants.parameterCorsMethods,
-                        CrowdprojConstants.parameterNeptuneEndpoint
-                    )
-            )
-                .parameters
+            val timedProperties = measureTimedValue {
+                val ssm: AWSSimpleSystemsManagement = AWSSimpleSystemsManagementClientBuilder.defaultClient()
+//                val paramsMap: Map<String, String> = runBlocking {
+//                    listOf(
+//                        CrowdprojConstants.parameterCorsOrigins,
+//                        CrowdprojConstants.parameterCorsHeaders,
+//                        CrowdprojConstants.parameterCorsMethods,
+//                        CrowdprojConstants.parameterNeptuneEndpoint,
+//                        CrowdprojConstants.parameterNeptunePort
+//                    )
+//                        .map {
+//                            async {
+//                                ssm.getParameter(
+//                                    GetParameterRequest()
+//                                        .withName(it)
+//                                ).parameter
+//                            }
+//                        }
+//                        .toList()
+//                        .awaitAll()
+//                        .map {
+//                            it.name to it.value
+//                        }
+//                        .toMap()
+//
+//                }
+//                paramsMap
+                ssm.getParameters(
+                    GetParametersRequest()
+                        .withNames(
+                            CrowdprojConstants.parameterCorsOrigins,
+                            CrowdprojConstants.parameterCorsHeaders,
+                            CrowdprojConstants.parameterCorsMethods,
+                            CrowdprojConstants.parameterNeptuneEndpoint,
+                            CrowdprojConstants.parameterNeptunePort
+                        )
+                )
+                    .parameters
+                    .map {
+                        it.name to it.value
+                    }
+                    .toMap()
+            }
+            logger.info("REQUEST to SSM has taken ${timedProperties.duration}")
+            timedProperties.value
         } catch (e: Throwable) {
-            SdkInternalList<Parameter>()
+            logger.error("Error getting SSM parameters: {}", e)
+            throw e
+//            emptyMap<String,String>()
         }
     }
     override val corsOrigins: List<String> by lazy {
@@ -53,22 +96,28 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
     }
 
     private val neptuneEndpoint: String by lazy {
-        getParamString(CrowdprojConstants.parameterNeptuneEndpoint)
-            ?: throw AwsParameterNotSet(
-                CrowdprojConstants.parameterNeptuneEndpoint
-            )
+        val param = CrowdprojConstants.parameterNeptuneEndpoint
+        getParamString(param)
+            ?: throw AwsParameterNotSet(param, parameters)
+    }
+    private val neptunePort: Int by lazy {
+        val param = CrowdprojConstants.parameterNeptunePort
+        getParamString(param)
+            ?.toIntOrNull()
+            ?: 8182
     }
 
-//    private val storage: ITeamStorage by lazy {
-//        NeptuneDbTeamsStorage(
-//            neptuneEndpoint = neptuneEndpoint
-//        )
-//    }
     private val storage: ITeamStorage by lazy {
-        DynamoDbTeamsStorage(
-            tableName = "crowdproj-teams-table"
+        NeptuneDbTeamsStorage(
+            endpoint = neptuneEndpoint,
+            port = neptunePort
         )
     }
+//    private val storage: ITeamStorage by lazy {
+//        DynamoDbTeamsStorage(
+//            tableName = "crowdproj-teams-table"
+//        )
+//    }
 
 
     override fun initHandler(body: HandlerConfig.() -> Unit): IAwsHandlerConfig {
@@ -200,9 +249,7 @@ class TeamsApiGatewayHandler : AwsApiGatewayHandler() {
         context.responseBody = jsonMapper.writeValueAsString(context.response)
     }
 
-    private fun getParamString(name: String): String? = parameters
-        .find { it.name == name }
-        ?.value
+    private fun getParamString(name: String): String? = parameters[name]
 
     private fun getParamStringList(name: String): List<String> = getParamString(name)
         ?.split(",")

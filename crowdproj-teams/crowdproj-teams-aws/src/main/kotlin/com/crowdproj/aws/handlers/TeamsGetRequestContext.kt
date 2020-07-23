@@ -11,7 +11,6 @@ import com.crowdproj.rest.teams.models.RestQueryTeamGet
 import com.crowdproj.rest.teams.models.RestResponseTeam
 import com.crowdproj.teams.storage.common.ITeamStorage
 import com.crowdproj.teams.storage.dynamodb.InMemoryDbTeamsStorage
-import com.crowdproj.teams.storage.dynamodb.NeptuneDbTeamsStorage
 import java.time.Instant
 
 data class TeamsGetRequestContext(

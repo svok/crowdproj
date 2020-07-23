@@ -31,6 +31,7 @@ dependencies {
     val awsEventsVersion: String by project
     val awsDynamoVersion: String by project
     val awsSsmVersion: String by project
+    val slf4jVersion: String by project
 
     implementation(project(":crowdproj-common:crowdproj-common-aws"))
     implementation(project(":crowdproj-teams:generated-models-kt"))
@@ -46,8 +47,12 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 
+    // SLF4j
+    implementation("org.apache.logging.log4j:log4j-api:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-core:$slf4jVersion")
+    implementation("org.apache.logging.log4j:log4j-slf4j18-impl:$slf4jVersion")
+    runtimeOnly("com.amazonaws:aws-lambda-java-log4j2:$awsLog4jVersion")
     implementation("com.amazonaws:aws-lambda-java-core:$awsCoreVersion")
-    implementation("com.amazonaws:aws-lambda-java-log4j2:$awsLog4jVersion")
     implementation("com.amazonaws:aws-lambda-java-events:$awsEventsVersion")
     implementation("com.amazonaws:aws-java-sdk-ssm:$awsSsmVersion")
     implementation("com.amazonaws:aws-java-sdk-dynamodb:$awsDynamoVersion")
@@ -73,6 +78,7 @@ val paramCorsOrigins = "$paramsPrefix.cors-origins"
 val paramCorsHeaders = "$paramsPrefix.cors-headers"
 val paramCorsMethods = "$paramsPrefix.cors-methods"
 val parameterNeptuneEndpoint = "$paramsPrefix.neptune-endpoint"
+val parameterNeptunePort = "$paramsPrefix.neptune-port"
 
 terraform {
     this.executable(mapOf(
@@ -90,6 +96,7 @@ terraform {
         `var`("parameterCorsHeaders", paramCorsHeaders)
         `var`("parameterCorsMethods", paramCorsMethods)
         `var`("parameterNeptuneEndpoint", parameterNeptuneEndpoint)
+        `var`("parameterNeptunePort", parameterNeptunePort)
         map(mapOf<String, String>(
             "teams-create" to "com.crowdproj.aws.handlers.TeamsCreateHandler::handleRequest",
             "teams-update" to "com.crowdproj.aws.handlers.TeamsUpdateHandler::handleRequest",
@@ -145,7 +152,8 @@ tasks {
                 const val parameterCorsOrigins = "$paramCorsOrigins"
                 const val parameterCorsHeaders = "$paramCorsHeaders"
                 const val parameterCorsMethods = "$paramCorsMethods"
-                const val parameterNeptuneEndpoint = "$paramCorsMethods"
+                const val parameterNeptuneEndpoint = "$parameterNeptuneEndpoint"
+                const val parameterNeptunePort = "$parameterNeptunePort"
             }
         """.trimIndent()
         val dir = "$generatedCode/${project.group.toString().replace(".", "/")}/aws"
